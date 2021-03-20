@@ -135,12 +135,13 @@ const maj7: Interval = {
 
 type NoteClass = {
   id: NoteClassId;
+  idx: number;
   sharpOf: NoteClassId;
   flatOf: NoteClassId;
   isNatural: boolean;
 };
 
-type NoteInScaleExtraParams = { direction: "up" | "down" };
+type NoteInScaleExtraParams = { direction?: "up" | "down" };
 type NoteClassInScale = NoteClass & NoteInScaleExtraParams;
 
 type ScaleMovable = {
@@ -148,9 +149,10 @@ type ScaleMovable = {
   extraParams?: { [key: number]: NoteInScaleExtraParams };
 };
 
-type ScaleConcrete = {
+type ScaleRooted = {
   movableVersion?: ScaleMovable;
-  notes: { [key in NoteClassId]: NoteClassInScale };
+  root: NoteClass;
+  notes: { [key in NoteClassId]?: NoteClassInScale };
 };
 
 const a: NoteClass = {
@@ -158,6 +160,7 @@ const a: NoteClass = {
   isNatural: true,
   sharpOf: "gsharp",
   flatOf: "asharp",
+  idx: 0,
 };
 
 const asharp: NoteClass = {
@@ -165,6 +168,7 @@ const asharp: NoteClass = {
   isNatural: false,
   sharpOf: "a",
   flatOf: "b",
+  idx: 1,
 };
 
 const b: NoteClass = {
@@ -172,6 +176,7 @@ const b: NoteClass = {
   isNatural: true,
   sharpOf: "asharp",
   flatOf: "c",
+  idx: 2,
 };
 
 const c: NoteClass = {
@@ -179,6 +184,7 @@ const c: NoteClass = {
   isNatural: true,
   sharpOf: "b",
   flatOf: "csharp",
+  idx: 3,
 };
 
 const csharp: NoteClass = {
@@ -186,6 +192,7 @@ const csharp: NoteClass = {
   isNatural: true,
   sharpOf: "c",
   flatOf: "d",
+  idx: 4,
 };
 
 const d: NoteClass = {
@@ -193,6 +200,7 @@ const d: NoteClass = {
   isNatural: true,
   sharpOf: "csharp",
   flatOf: "dsharp",
+  idx: 5,
 };
 
 const dsharp: NoteClass = {
@@ -200,6 +208,7 @@ const dsharp: NoteClass = {
   isNatural: true,
   sharpOf: "d",
   flatOf: "e",
+  idx: 6,
 };
 
 const e: NoteClass = {
@@ -207,6 +216,7 @@ const e: NoteClass = {
   isNatural: true,
   sharpOf: "dsharp",
   flatOf: "f",
+  idx: 7,
 };
 
 const f: NoteClass = {
@@ -214,6 +224,7 @@ const f: NoteClass = {
   isNatural: true,
   sharpOf: "e",
   flatOf: "fsharp",
+  idx: 8,
 };
 
 const fsharp: NoteClass = {
@@ -221,6 +232,7 @@ const fsharp: NoteClass = {
   isNatural: true,
   sharpOf: "f",
   flatOf: "g",
+  idx: 9,
 };
 
 const g: NoteClass = {
@@ -228,6 +240,7 @@ const g: NoteClass = {
   isNatural: true,
   sharpOf: "fsharp",
   flatOf: "gsharp",
+  idx: 10,
 };
 
 const gsharp: NoteClass = {
@@ -235,19 +248,126 @@ const gsharp: NoteClass = {
   isNatural: true,
   sharpOf: "g",
   flatOf: "a",
+  idx: 11,
 };
+
+const basicNotes: { [key in NoteClassId]: NoteClass } = {
+  a: a,
+  asharp: asharp,
+  b: b,
+  c: c,
+  csharp: csharp,
+  d: d,
+  dsharp: dsharp,
+  e: e,
+  f: f,
+  fsharp: fsharp,
+  g: g,
+  gsharp: gsharp,
+};
+
+const basicNotesArray: Array<NoteClass> = [
+  a,
+  asharp,
+  b,
+  c,
+  csharp,
+  d,
+  dsharp,
+  e,
+  f,
+  fsharp,
+  g,
+  gsharp,
+];
 
 const major: ScaleMovable = {
   intervals: [root, maj2, maj3, perf4, perf5, maj6, maj7],
 };
 
 type Mode = {
+  name: string;
   modeOf: ScaleMovable;
   startOn: ScaleStepIndex;
 } & ScaleMovable;
 
 const ionian = {
+  name: "Ionian",
   modeOf: major,
   startOn: step1,
-  intervals: major.intervals,
+  intervals: [root, maj2, maj3, perf4, perf5, maj6, maj7],
+};
+
+const dorian = {
+  name: "Dorian",
+  modeOf: major,
+  startOn: step2,
+  intervals: [root, maj2, min3, perf4, perf5, maj6, min7],
+};
+
+const phrygian = {
+  name: "Phrygian",
+  modeOf: major,
+  startOn: step3,
+  intervals: [root, min2, min3, perf4, perf5, min6, min7],
+};
+
+const lydian = {
+  name: "Lydian",
+  modeOf: major,
+  startOn: step4,
+  intervals: [root, maj2, maj3, aug4, perf5, maj6, maj7],
+};
+
+const mixolydian = {
+  name: "Myxolydian",
+  modeOf: major,
+  startOn: step5,
+  intervals: [root, maj2, maj3, perf4, perf5, maj6, min7],
+};
+
+const aeolian = {
+  name: "Aeolian",
+  modeOf: major,
+  startOn: step6,
+  intervals: [root, min2, min3, perf4, perf5, min6, min7],
+};
+const minor = aeolian;
+
+const locrian = {
+  name: "Locrian",
+  modeOf: major,
+  startOn: step7,
+  intervals: [root, min2, min3, perf4, dim5, min6, min7],
+};
+
+export function makeRootedScale(
+  movableScale: ScaleMovable,
+  root: NoteClass
+): ScaleRooted {
+  const baseIdx = root.idx;
+
+  const notes = Object.fromEntries(
+    movableScale.intervals
+      .map(interval => (interval.span + baseIdx) % 12)
+      .map(idx => [basicNotesArray[idx].id, basicNotesArray[idx]])
+  );
+
+  return {
+    root: root,
+    notes,
+    movableVersion: movableScale,
+  };
+}
+
+export const notes = { basicNotes, basicNotesArray };
+export const scales = { major, minor };
+export const modesOfMajor = {
+  ionian,
+  dorian,
+  phrygian,
+  lydian,
+  mixolydian,
+  aeolian,
+  locrian,
 };
