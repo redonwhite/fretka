@@ -1,0 +1,22 @@
+{
+  "name": "fretka",
+  "version": "1.0.0",
+  "description": "Flexible fretboard diagrams",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redonwhite/fretka.git"
+  },
+  "keywords": [
+    "fretboard"
+  ],
+  "author": "Paweł Pohl",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/redonwhite/fretka/issues"
+  },
+  "homepage": "https://github.com/redonwhite/fretka#readme"
+}
