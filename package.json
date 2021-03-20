@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/redonwhite/fretka/issues"
   },
-  "homepage": "https://github.com/redonwhite/fretka#readme"
+  "homepage": "https://github.com/redonwhite/fretka#readme",
+  "devDependencies": {
+    "typescript": "^4.2.3"
+  }
 }
