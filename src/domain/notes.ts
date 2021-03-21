@@ -133,7 +133,7 @@ const maj7: Interval = {
   span: 11,
 };
 
-type NoteClass = {
+export type NoteClass = {
   id: NoteClassId;
   idx: number;
   sharpOf: NoteClassId;
@@ -141,15 +141,19 @@ type NoteClass = {
   isNatural: boolean;
 };
 
-type NoteInScaleExtraParams = { direction?: "up" | "down" };
-type NoteClassInScale = NoteClass & NoteInScaleExtraParams;
+export type NoteAbsolute = NoteClass & {
+  absIdx: number;
+};
 
-type ScaleMovable = {
+export type NoteInScaleExtraParams = { direction?: 'up' | 'down' };
+export type NoteClassInScale = NoteClass & NoteInScaleExtraParams;
+
+export type ScaleMovable = {
   intervals: Array<Interval>;
   extraParams?: { [key: number]: NoteInScaleExtraParams };
 };
 
-type ScaleRooted = {
+export type ScaleRooted = {
   movableVersion?: ScaleMovable;
   root: NoteClass;
   notes: { [key in NoteClassId]?: NoteClassInScale };
@@ -359,6 +363,27 @@ export function makeRootedScale(
     movableVersion: movableScale,
   };
 }
+
+export type StringTunings = Array<NoteAbsolute>;
+
+export type GuitarTuning = {
+  name: string;
+  stringTunings: StringTunings;
+};
+
+export const guitarTunings: { [key: string]: GuitarTuning } = {
+  standard: {
+    name: 'Standard Tuning',
+    stringTunings: [
+      { ...basicNotes.e, absIdx: basicNotes.e.idx },
+      { ...basicNotes.e, absIdx: basicNotes.a.idx + 12 },
+      { ...basicNotes.e, absIdx: basicNotes.d.idx + 12 },
+      { ...basicNotes.e, absIdx: basicNotes.g.idx + 12 },
+      { ...basicNotes.e, absIdx: basicNotes.b.idx + 24 },
+      { ...basicNotes.e, absIdx: basicNotes.e.idx + 24 },
+    ],
+  },
+};
 
 export const notes = { basicNotes, basicNotesArray };
 export const scales = { major, minor };
