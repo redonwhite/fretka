@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './App.module.scss';
 import { Fretboard } from './components/fretboard/fretboard';
-import { guitarTunings } from './domain/notes';
+import { guitarTunings, NoteClassId } from './fretka/fretka';
+import { NoteSelection, NoteSelectionContext } from './contexts';
+import { NoteSelector } from './components/noteselector/noteselector';
 
 interface AppProps {}
 
 function App({}: AppProps) {
+  
+  const noteSelectionState = useState<NoteSelection>({});
 
-  return <Fretboard tuning={guitarTunings.standard} />;
+  return (
+    <NoteSelectionContext.Provider value={noteSelectionState}>
+      <div class="app-container">
+        <Fretboard tuning={guitarTunings.standard} />
+        <NoteSelector />
+      </div>
+    </NoteSelectionContext.Provider>
+  ); 
 }
 
 export default App;

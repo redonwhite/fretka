@@ -1,6 +1,6 @@
 import React from 'react';
-import type { GuitarTuning } from './../../domain/notes';
-import { guitarTunings } from './../../domain/notes';
+import type { GuitarTuning } from '../../fretka/fretka';
+import { guitarTunings } from '../../fretka/fretka';
 import { FretboardString } from './fretboardstring';
 
 import styles from './fretboard.module.scss';

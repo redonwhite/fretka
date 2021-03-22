@@ -1,19 +1,19 @@
-type NoteClassId =
-  | "a"
-  | "asharp"
-  | "b"
-  | "c"
-  | "csharp"
-  | "d"
-  | "dsharp"
-  | "e"
-  | "f"
-  | "fsharp"
-  | "g"
-  | "gsharp";
+export type NoteClassId =
+  | 'a'
+  | 'asharp'
+  | 'b'
+  | 'c'
+  | 'csharp'
+  | 'd'
+  | 'dsharp'
+  | 'e'
+  | 'f'
+  | 'fsharp'
+  | 'g'
+  | 'gsharp';
 
-type EqTempInterval = number;
-type ScaleStepIndex = number;
+export type EqTempInterval = number;
+export type ScaleStepIndex = number;
 
 const step1: ScaleStepIndex = 0;
 const step2: ScaleStepIndex = 1;
@@ -29,11 +29,11 @@ const step11: ScaleStepIndex = 10;
 const step12: ScaleStepIndex = 11;
 
 type IntervalQuality =
-  | "minor"
-  | "major"
-  | "perfect"
-  | "augmented"
-  | "diminished";
+  | 'minor'
+  | 'major'
+  | 'perfect'
+  | 'augmented'
+  | 'diminished';
 
 type Interval = {
   name: string;
@@ -43,93 +43,93 @@ type Interval = {
 };
 
 const root: Interval = {
-  name: "root",
+  name: 'root',
   step: 1,
-  quality: "perfect",
+  quality: 'perfect',
   span: 0,
 };
 
 const min2: Interval = {
-  name: "minor second",
+  name: 'minor second',
   step: 2,
-  quality: "minor",
+  quality: 'minor',
   span: 1,
 };
 
 const maj2: Interval = {
-  name: "major second",
+  name: 'major second',
   step: 2,
-  quality: "major",
+  quality: 'major',
   span: 2,
 };
 
 const min3: Interval = {
-  name: "minor third",
+  name: 'minor third',
   step: 3,
-  quality: "minor",
+  quality: 'minor',
   span: 3,
 };
 
 const maj3: Interval = {
-  name: "major third",
+  name: 'major third',
   step: 3,
-  quality: "major",
+  quality: 'major',
   span: 4,
 };
 
 const perf4: Interval = {
-  name: "perfect fourth",
+  name: 'perfect fourth',
   step: 4,
-  quality: "perfect",
+  quality: 'perfect',
   span: 5,
 };
 
 const aug4: Interval = {
-  name: "augmented fourth",
+  name: 'augmented fourth',
   step: 4,
-  quality: "augmented",
+  quality: 'augmented',
   span: 6,
 };
 
 const dim5: Interval = {
-  name: "diminished fifth",
+  name: 'diminished fifth',
   step: 5,
-  quality: "diminished",
+  quality: 'diminished',
   span: 6,
 };
 
 const perf5: Interval = {
-  name: "perfect fifth",
+  name: 'perfect fifth',
   step: 5,
-  quality: "perfect",
+  quality: 'perfect',
   span: 7,
 };
 
 const min6: Interval = {
-  name: "minor sixth",
+  name: 'minor sixth',
   step: 6,
-  quality: "minor",
+  quality: 'minor',
   span: 8,
 };
 
 const maj6: Interval = {
-  name: "major sixth",
+  name: 'major sixth',
   step: 6,
-  quality: "major",
+  quality: 'major',
   span: 9,
 };
 
 const min7: Interval = {
-  name: "minor seventh",
+  name: 'minor seventh',
   step: 7,
-  quality: "minor",
+  quality: 'minor',
   span: 10,
 };
 
 const maj7: Interval = {
-  name: "major seventh",
+  name: 'major seventh',
   step: 7,
-  quality: "major",
+  quality: 'major',
   span: 11,
 };
 
@@ -160,98 +160,98 @@ export type ScaleRooted = {
 };
 
 const a: NoteClass = {
-  id: "a",
+  id: 'a',
   isNatural: true,
-  sharpOf: "gsharp",
-  flatOf: "asharp",
+  sharpOf: 'gsharp',
+  flatOf: 'asharp',
   idx: 0,
 };
 
 const asharp: NoteClass = {
-  id: "asharp",
+  id: 'asharp',
   isNatural: false,
-  sharpOf: "a",
-  flatOf: "b",
+  sharpOf: 'a',
+  flatOf: 'b',
   idx: 1,
 };
 
 const b: NoteClass = {
-  id: "b",
+  id: 'b',
   isNatural: true,
-  sharpOf: "asharp",
-  flatOf: "c",
+  sharpOf: 'asharp',
+  flatOf: 'c',
   idx: 2,
 };
 
 const c: NoteClass = {
-  id: "c",
+  id: 'c',
   isNatural: true,
-  sharpOf: "b",
-  flatOf: "csharp",
+  sharpOf: 'b',
+  flatOf: 'csharp',
   idx: 3,
 };
 
 const csharp: NoteClass = {
-  id: "csharp",
-  isNatural: true,
-  sharpOf: "c",
-  flatOf: "d",
+  id: 'csharp',
+  isNatural: false,
+  sharpOf: 'c',
+  flatOf: 'd',
   idx: 4,
 };
 
 const d: NoteClass = {
-  id: "d",
+  id: 'd',
   isNatural: true,
-  sharpOf: "csharp",
-  flatOf: "dsharp",
+  sharpOf: 'csharp',
+  flatOf: 'dsharp',
   idx: 5,
 };
 
 const dsharp: NoteClass = {
-  id: "dsharp",
-  isNatural: true,
-  sharpOf: "d",
-  flatOf: "e",
+  id: 'dsharp',
+  isNatural: false,
+  sharpOf: 'd',
+  flatOf: 'e',
   idx: 6,
 };
 
 const e: NoteClass = {
-  id: "e",
+  id: 'e',
   isNatural: true,
-  sharpOf: "dsharp",
-  flatOf: "f",
+  sharpOf: 'dsharp',
+  flatOf: 'f',
   idx: 7,
 };
 
 const f: NoteClass = {
-  id: "f",
+  id: 'f',
   isNatural: true,
-  sharpOf: "e",
-  flatOf: "fsharp",
+  sharpOf: 'e',
+  flatOf: 'fsharp',
   idx: 8,
 };
 
 const fsharp: NoteClass = {
-  id: "fsharp",
-  isNatural: true,
-  sharpOf: "f",
-  flatOf: "g",
+  id: 'fsharp',
+  isNatural: false,
+  sharpOf: 'f',
+  flatOf: 'g',
   idx: 9,
 };
 
 const g: NoteClass = {
-  id: "g",
+  id: 'g',
   isNatural: true,
-  sharpOf: "fsharp",
-  flatOf: "gsharp",
+  sharpOf: 'fsharp',
+  flatOf: 'gsharp',
   idx: 10,
 };
 
 const gsharp: NoteClass = {
-  id: "gsharp",
-  isNatural: true,
-  sharpOf: "g",
-  flatOf: "a",
+  id: 'gsharp',
+  isNatural: false,
+  sharpOf: 'g',
+  flatOf: 'a',
   idx: 11,
 };
 
@@ -296,42 +296,42 @@ type Mode = {
 } & ScaleMovable;
 
 const ionian = {
-  name: "Ionian",
+  name: 'Ionian',
   modeOf: major,
   startOn: step1,
   intervals: [root, maj2, maj3, perf4, perf5, maj6, maj7],
 };
 
 const dorian = {
-  name: "Dorian",
+  name: 'Dorian',
   modeOf: major,
   startOn: step2,
   intervals: [root, maj2, min3, perf4, perf5, maj6, min7],
 };
 
 const phrygian = {
-  name: "Phrygian",
+  name: 'Phrygian',
   modeOf: major,
   startOn: step3,
   intervals: [root, min2, min3, perf4, perf5, min6, min7],
 };
 
 const lydian = {
-  name: "Lydian",
+  name: 'Lydian',
   modeOf: major,
   startOn: step4,
   intervals: [root, maj2, maj3, aug4, perf5, maj6, maj7],
 };
 
 const mixolydian = {
-  name: "Myxolydian",
+  name: 'Myxolydian',
   modeOf: major,
   startOn: step5,
   intervals: [root, maj2, maj3, perf4, perf5, maj6, min7],
 };
 
 const aeolian = {
-  name: "Aeolian",
+  name: 'Aeolian',
   modeOf: major,
   startOn: step6,
   intervals: [root, min2, min3, perf4, perf5, min6, min7],
@@ -339,7 +339,7 @@ const aeolian = {
 const minor = aeolian;
 
 const locrian = {
-  name: "Locrian",
+  name: 'Locrian',
   modeOf: major,
   startOn: step7,
   intervals: [root, min2, min3, perf4, dim5, min6, min7],
@@ -347,14 +347,14 @@ const locrian = {
 
 export function makeRootedScale(
   movableScale: ScaleMovable,
-  root: NoteClass
+  root: NoteClass,
 ): ScaleRooted {
   const baseIdx = root.idx;
 
   const notes = Object.fromEntries(
     movableScale.intervals
-      .map(interval => (interval.span + baseIdx) % 12)
-      .map(idx => [basicNotesArray[idx].id, basicNotesArray[idx]])
+      .map((interval) => (interval.span + baseIdx) % 12)
+      .map((idx) => [basicNotesArray[idx].id, basicNotesArray[idx]]),
   );
 
   return {
@@ -396,3 +396,8 @@ export const modesOfMajor = {
   aeolian,
   locrian,
 };
+
+export function getPrettyNoteName(note: NoteClass) {
+  if (note.isNatural) return note.id.toUpperCase();
+  return note.sharpOf.toUpperCase() + '♯';
+}

@@ -1,6 +1,6 @@
 import React from 'react';
-import { notes } from '../../domain/notes';
-import type { NoteAbsolute, NoteClass } from '../../domain/notes';
+import { notes } from '../../fretka/fretka';
+import type { NoteAbsolute, NoteClass } from '../../fretka/fretka';
 import { Fret } from './fret';
 
 // import styles from './fretboardstring.module.scss';

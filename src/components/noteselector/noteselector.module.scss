@@ -1,0 +1,28 @@
+button {
+  border-radius: 5px;
+  transition: background-color .4s ease-out;
+  border: none;
+  min-width: 3em;
+  padding: .2em 15px;
+  cursor: pointer;
+  position: relative;
+
+  &.selected, &.selected:hover, &.selected:focus {
+    background-color: black;
+    color: white;
+  }
+
+  &:hover, &:focus {
+    background-color: rgba(red, .3);
+  }
+
+  & + button {
+    margin-left: 5px;
+  }
+}
+
+.reset {
+  margin-left: 40px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
