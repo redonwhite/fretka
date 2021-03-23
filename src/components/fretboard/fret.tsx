@@ -4,7 +4,7 @@ import {
   NoteSelectionContext,
   NoteSelectionReactContextType,
   useNoteSelection,
-} from '../../contexts';
+} from '../../fretka/contexts';
 import type { getPrettyNoteName, NoteAbsolute } from '../../fretka/fretka';
 
 // import styles from './fret.module.scss';

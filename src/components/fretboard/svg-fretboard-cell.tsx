@@ -6,7 +6,7 @@ import {
   NoteSelectionReactContextType,
   useNoteSelection,
   useNoteSelection as useNoteSelectionContext,
-} from '../../contexts';
+} from '../../fretka/contexts';
 import type { getPrettyNoteName, NoteAbsolute } from '../../fretka/fretka';
 
 // import styles from './fret.module.scss';
@@ -22,9 +22,9 @@ export function SvgFretboardCell(props: {
   const { center, note, fretNumber, width, height } = props;
   const { noteSelection, toggleNote } = useNoteSelection();
   const isNoteSelected = note.id in noteSelection;
-
+  const isRoot = isNoteSelected && noteSelection[note.id]?.isRoot;
   const fretClassNames = classNames({
-    fret: true,
+    fretCellDot: true,
     selected: isNoteSelected,
   });
 
@@ -33,8 +33,8 @@ export function SvgFretboardCell(props: {
   return (
     <>
       <rect
-        x={center.x - width  /  2}
-        y={center.y - height  /  2}
+        x={center.x - width / 2}
+        y={center.y - height / 2}
         width={width}
         height={height}
         onClick={() => toggleNote(note)}
@@ -44,10 +44,9 @@ export function SvgFretboardCell(props: {
       <circle
         cx={center.x}
         cy={center.y}
-        r={isNoteSelected ? 5 : 0}
-        fill={isNoteSelected ? 'black' : 'red'}
-        onClick={() => toggleNote(note)}
-        cursor="pointer"
+        r={isNoteSelected ? ((isRoot ? 7 : 5)) : 0}
+        fill={true ? 'black' : 'red'}
+        className={fretClassNames}
       />
     </>
   );

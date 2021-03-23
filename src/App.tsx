@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.module.scss';
 import { Fretboard } from './components/fretboard/fretboard';
 import { guitarTunings, NoteClassId } from './fretka/fretka';
-import { NoteSelection, NoteSelectionContext } from './contexts';
+import { NoteSelection, NoteSelectionContext } from './fretka/contexts';
 import { NoteSelector } from './components/noteselector/noteselector';
 
 interface AppProps {}
