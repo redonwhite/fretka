@@ -26,7 +26,7 @@ export function FretboardString(props: {
   return (
     <div className="string">
       {fretNotes.map((note, idx) => (
-        <Fret note={note} fretNumber={idx} />
+        <Fret note={note} fretNumber={idx} key={idx} />
       ))}
     </div>
   );

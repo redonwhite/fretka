@@ -37,8 +37,12 @@ export function NoteSelector() {
 
   return (
     <div className={styles.noteSelector}>
-      {notes.map((note) => (
-        <button onClick={getTogglerFor(note)} className={getButtonClass(note)}>
+      {notes.map((note, idx) => (
+        <button
+          onClick={getTogglerFor(note)}
+          className={getButtonClass(note)}
+          key={idx}
+        >
           {fretka.getPrettyNoteName(note)}
         </button>
       ))}

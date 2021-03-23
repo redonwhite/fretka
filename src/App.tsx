@@ -14,7 +14,7 @@ function App({}: AppProps) {
 
   return (
     <NoteSelectionContext.Provider value={noteSelectionState}>
-      <div class="app-container">
+      <div className="app-container">
         <Fretboard tuning={guitarTunings.standard} />
         <NoteSelector />
       </div>

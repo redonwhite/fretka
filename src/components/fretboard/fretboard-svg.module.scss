@@ -1,0 +1,13 @@
+.fretSvg {
+  width: 100%;
+  height: 150px;
+  
+  circle {
+    fill: black;
+    transition: all 1s;
+  }
+  circle:hover {
+    fill: red;
+    cursor: pointer;
+  }
+}
