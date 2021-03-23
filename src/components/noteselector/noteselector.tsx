@@ -1,28 +1,16 @@
 import classNames from 'classnames';
 import React, { useContext } from 'react';
-import { NoteSelectionContext, NoteSelectionContextType } from '../../contexts';
+import { NoteSelectionContext, useNoteSelection } from '../../contexts';
 
 import * as fretka from '../../fretka/fretka';
 import styles from './noteselector.module.scss';
 
 export function NoteSelector() {
-  const [noteSelection, updateNoteSelection] = useContext(
-    NoteSelectionContext,
-  ) as NoteSelectionContextType;
+  const { noteSelection, updateNoteSelection, toggleNote } = useNoteSelection();
 
   const notes = fretka.notes.basicNotesArray;
 
-  console.log(noteSelection);
-
-  const getTogglerFor = (note: fretka.NoteClass) => {
-    return () => {
-      const newSelection = { ...noteSelection };
-      note.id in noteSelection
-        ? delete newSelection[note.id]
-        : (newSelection[note.id] = { selected: true });
-      updateNoteSelection(newSelection);
-    };
-  };
+  const getTogglerFor = (note: fretka.NoteClass) => () => toggleNote(note);
 
   const getButtonClass = (note: fretka.NoteClass) => {
     return classNames({

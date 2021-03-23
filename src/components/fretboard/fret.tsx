@@ -1,6 +1,10 @@
 import classNames from 'classnames';
 import React, { useCallback, useContext } from 'react';
-import { NoteSelectionContext, NoteSelectionContextType } from '../../contexts';
+import {
+  NoteSelectionContext,
+  NoteSelectionReactContextType,
+  useNoteSelection,
+} from '../../contexts';
 import type { getPrettyNoteName, NoteAbsolute } from '../../fretka/fretka';
 
 // import styles from './fret.module.scss';
@@ -8,9 +12,7 @@ import type { getPrettyNoteName, NoteAbsolute } from '../../fretka/fretka';
 export function Fret(props: { note: NoteAbsolute; fretNumber: number }) {
   const { note, fretNumber } = props;
 
-  const [noteSelection, updateNoteSelection] = useContext(
-    NoteSelectionContext,
-  ) as NoteSelectionContextType;
+  const { noteSelection } = useNoteSelection();
 
   const toggleNote = useCallback(() => {
   }, []);

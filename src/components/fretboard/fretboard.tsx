@@ -82,6 +82,7 @@ export function Fretboard(props: { tuning: GuitarTuning; fretCount?: number }) {
                   marginTop + idx * stringDistance,
                 )
               }
+              height={stringDistance}
               tuning={tuning}
               fretCount={fretCount}
               strokeWidth={stringStrokeWidth}

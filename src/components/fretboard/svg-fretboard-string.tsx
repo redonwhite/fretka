@@ -13,8 +13,9 @@ export function SvgFretboardString(props: {
   fromPoint: Point;
   toPoint: Point;
   strokeWidth: number;
+  height: number;
 }) {
-  const { tuning, fretCount, fromPoint, toPoint, strokeWidth } = props;
+  const { tuning, fretCount, fromPoint, toPoint, strokeWidth, height } = props;
 
   const fretNotes: Array<NoteAbsolute> = Array.from(
     { length: fretCount },
@@ -48,6 +49,8 @@ export function SvgFretboardString(props: {
           note={note}
           fretNumber={idx}
           stringTuning={tuning}
+          width={cellWidth}
+          height={height}
           center={new Point(fromPoint.x + cellWidth * (idx + 0.5), fromPoint.y)}
         />
       ))}
