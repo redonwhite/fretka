@@ -33,10 +33,13 @@ export function SvgFretboardCell(props: {
   return (
     <>
       <rect
-        cx={center.x}
-        cy={center.y}
+        x={center.x - width  /  2}
+        y={center.y - height  /  2}
         width={width}
         height={height}
+        onClick={() => toggleNote(note)}
+        fill="transparent"
+        cursor="pointer"
       />
       <circle
         cx={center.x}
