@@ -1,7 +1,6 @@
 import React from 'react';
 import { notes } from '../../fretka/fretka';
 import type { NoteAbsolute, NoteClass } from '../../fretka/fretka';
-import { Fret } from './fret';
 import { Point } from '../../fretka/fretka-svg';
 import { SvgFretboardCell } from './svg-fretboard-cell';
 
