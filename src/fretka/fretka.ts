@@ -255,7 +255,7 @@ const gsharp: NoteClass = {
   idx: 11,
 };
 
-const basicNotes: { [key in NoteClassId]: NoteClass } = {
+export const basicNotes: { [key in NoteClassId]: NoteClass } = {
   a: a,
   asharp: asharp,
   b: b,
@@ -270,7 +270,7 @@ const basicNotes: { [key in NoteClassId]: NoteClass } = {
   gsharp: gsharp,
 };
 
-const basicNotesArray: Array<NoteClass> = [
+export const basicNotesArray: Array<NoteClass> = [
   a,
   asharp,
   b,

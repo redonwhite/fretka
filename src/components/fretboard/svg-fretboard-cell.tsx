@@ -1,13 +1,10 @@
 import classNames from 'classnames';
 import React, { useCallback, useContext } from 'react';
-import type { Point } from 'src/fretka/fretka-svg';
-import {
-  NoteSelectionContext,
-  NoteSelectionReactContextType,
-  useNoteSelection,
-  useNoteSelection as useNoteSelectionContext,
-} from '../../fretka/contexts';
+import { useSelector } from 'react-redux';
+import type { Point } from '../../fretka/fretka-svg';
+import { isNoteSelected } from '../../fretka/note-selection';
 import type { getPrettyNoteName, NoteAbsolute } from '../../fretka/fretka';
+import { noteSelectionSelector } from '../../store';
 
 // import styles from './fret.module.scss';
 
@@ -20,15 +17,12 @@ export function SvgFretboardCell(props: {
   height: number
 }) {
   const { center, note, fretNumber, width, height } = props;
-  const { noteSelection, toggleNote } = useNoteSelection();
-  const isNoteSelected = note.id in noteSelection;
-  const isRoot = isNoteSelected && noteSelection[note.id]?.isRoot;
-  const isRegular = isNoteSelected && !isRoot;
-
+  
+  const noteSelection = useSelector(noteSelectionSelector);
+  console.log(noteSelection);
   const fretClassNames = classNames({
     fretCellDot: true,
-    selected: isNoteSelected,
-    root: isRoot,
+    selected: isNoteSelected(noteSelection, note)
   });
 
   return (
@@ -39,17 +33,15 @@ export function SvgFretboardCell(props: {
           y={center.y - height / 2}
           width={width}
           height={height}
-          onClick={() => toggleNote(note)}
+          // onClick={() => toggleNote(note)}
           fill="transparent"
           cursor="pointer"
         ></rect>
         <circle
           cx={center.x}
           cy={center.y}
-          r={ isRoot ? 4 : (isRegular ? 5 : 0) }
-          fill={isRoot ? "white" : "black"}
-          stroke={isRoot ? "black" : "transparent"}
-          strokeWidth={isRoot ? 3 : 0}
+          r={isNoteSelected(noteSelection, note) ? 5 : 0}
+          fill="black"
           className={fretClassNames}
         />
       </React.Fragment>
