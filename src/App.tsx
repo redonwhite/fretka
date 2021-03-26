@@ -3,8 +3,9 @@ import './App.module.scss';
 import { Fretboard } from './components/fretboard/fretboard';
 import { guitarTunings } from './fretka/fretka';
 import { NoteSelector } from './components/noteselector/noteselector';
-import store from './store';
+import store from './fretka/store';
 import { Provider } from 'react-redux';
+import { LayeredNoteSelector } from './components/noteselector/layered-noteselector';
 
 interface AppProps {}
 
@@ -14,7 +15,7 @@ function App({ }: AppProps) {
     <Provider store={store}>
       <div className="app-container">
         <Fretboard tuning={guitarTunings.standard} />
-        <NoteSelector />
+        <LayeredNoteSelector />
       </div>
     </Provider>
   );

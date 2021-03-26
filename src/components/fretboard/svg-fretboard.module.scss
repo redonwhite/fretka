@@ -1,13 +1,11 @@
+
+
 .fretSvg {
   width: 100%;
   height: 150px;
-  
-  circle {
+
+  circle:global(.fretCellDot) {
+    fill: var(--fretka-layer-color);
     transition: all 1s;
-  }
-  
-  circle:hover {
-    fill: red;
-    cursor: pointer;
   }
 }

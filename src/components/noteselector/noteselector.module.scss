@@ -1,3 +1,11 @@
+:global(.layerColor-red) {
+  --fretka-layer-color: red;
+}
+
+:global(.layerColor-black) {
+  --fretka-layer-color: black;
+}
+
 .buttonSet {
   display: flex;
   flex-direction: column;
@@ -29,13 +37,13 @@ button {
   position: relative;
 
   &.selected, &.selected:hover, &.selected:focus {
-    background-color: black;
+    background-color: var(--fretka-layer-color);
     color: white;
   }
 
   &:hover, &:focus {
     color: white;
-    background-color: rgba(red, .3);
+    background-color: gray;
   }
 
 }

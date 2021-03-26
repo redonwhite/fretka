@@ -1,6 +1,6 @@
 import { configureStore, createSelector } from '@reduxjs/toolkit';
-import { basicNotes, NoteClassId } from './fretka/fretka';
-import { noteSelectionSlice } from './fretka/note-selection';
+import { basicNotes, NoteClassId } from './fretka';
+import { getPropertiesForAllNotes, noteSelectionSlice } from './note-selection';
 
 const store = configureStore({
   reducer: {
@@ -19,6 +19,6 @@ export const noteSelectionSelector = createSelector(
   (state: RootState) => state.noteSelection,
   (noteSelectionState) => ({
     ...noteSelectionState,
-    precomp: Object.keys(basicNotes),
+    notes: getPropertiesForAllNotes(noteSelectionState),
   }),
 );
