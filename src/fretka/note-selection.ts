@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { basicNotesArray, NoteClass, NoteClassId } from './fretka';
+import { createEmptyNoteSelectionLayer, NoteSelectionLayer, NoteSelectionLayerWithIndex } from './note-selection-layers';
+import { getIndexedLayers } from './note-selection-layers';
+import { basicNotesArray, NoteClass, NoteClassId } from './notes';
 
-type NoteSelectionState = {
+export type NoteSelectionState = {
   layers: Array<NoteSelectionLayer>;
 };
 
@@ -26,14 +28,12 @@ export const getPropertiesForNote = (
   sel: NoteSelectionState,
   note: NoteClass,
 ) => {
-  const layers = sel.layers.map((layer, idx) => ({ ...layer, idx }));
+  const layers = getIndexedLayers(sel);
   const properties = {
     ...note,
     isNoteSelected: isNoteSelected(sel, note),
     isNoteRoot: isNoteRoot(sel, note),
-    selectedInLayers: layers.filter(
-      (layer) => layer.selection.selected[note.id],
-    ),
+    selectedInLayers: getSelectedInLayersProperties(sel, layers, note),
     rootInLayers: layers.filter((layer) => layer.selection.root === note.id),
     colors: layers
       .filter(
@@ -48,50 +48,7 @@ export const getPropertiesForNote = (
 
 const initialNoteSelection: NoteSelectionState = {
   layers: [
-    {
-      name: 'Your selection',
-      color: 'black',
-      deletable: false,
-      selection: {
-        selected: {
-          a: true,
-          asharp: false,
-          b: false,
-          c: false,
-          csharp: false,
-          d: false,
-          dsharp: false,
-          e: false,
-          f: false,
-          fsharp: false,
-          g: false,
-          gsharp: false,
-        },
-        root: 'a',
-      },
-    },
-    {
-      name: 'Other selection',
-      color: 'red',
-      deletable: true,
-      selection: {
-        selected: {
-          a: true,
-          asharp: false,
-          b: false,
-          c: false,
-          csharp: false,
-          d: false,
-          dsharp: false,
-          e: false,
-          f: false,
-          fsharp: false,
-          g: false,
-          gsharp: false,
-        },
-        root: 'a',
-      },
-    },
+    createEmptyNoteSelectionLayer(0),
   ],
 };
 
@@ -136,8 +93,19 @@ export const noteSelectionSlice = createSlice({
   name: 'noteSelection',
   initialState: initialNoteSelection,
   reducers: {
+    addLayerAtEnd: (state) => {
+      state.layers.push(createEmptyNoteSelectionLayer(state.layers.length));
+    },
+    deleteLayer: (state, action: LayerAction) => {
+      const layerIdx = action.payload.layerIdx;
+      if (canDeleteLayer(state, layerIdx)) state.layers.splice(layerIdx, 1);
+    },
+    resetSelectionInLayer: (state, action: LayerAction) => {
+      delete state.layers[action.payload.layerIdx].selection.root;
+      const sel = state.layers[action.payload.layerIdx].selection.selected;
+      Object.keys(sel).forEach(k => (((sel[k as NoteClassId] = false))));
+    },
     toggleNoteSelection: (state, action: LayerNoteAction) => {
-      console.log('action', action);
       const noteId = action.payload.noteId;
       const layerIdx = action.payload.layerIdx;
       const wasSelected = state.layers[layerIdx].selection.selected[noteId];
@@ -147,7 +115,6 @@ export const noteSelectionSlice = createSlice({
       state,
       { payload: { layerIdx, noteId } }: LayerNoteAction,
     ) => {
-      console.log('toggling root on layer[' + layerIdx + '] to ' + noteId);
       if (state.layers[layerIdx].selection.root !== noteId) {
         state.layers[layerIdx].selection.root = noteId;
       } else {
@@ -166,10 +133,33 @@ export type NoteSelection = {
   };
 };
 
-export type NoteSelectionLayer = {
-  selection: NoteSelection;
-  name: string;
-  color: string;
-  deletable: boolean;
-};
+
+function getSelectedInLayersProperties(
+  sel: NoteSelectionState,
+  layers: NoteSelectionLayerWithIndex[],
+  note: NoteClass,
+) {
+  let nthSel = 0;
+  let selProps: {
+    layer: NoteSelectionLayerWithIndex;
+    selected: boolean;
+    nthSel: number;
+    nSelMax: number;
+  }[] = [];
+  layers.map((layer) => {
+    if (isNoteSelectedInLayer(sel, note, layer.idx)) {
+      selProps.push({ layer, selected: true, nthSel: nthSel++, nSelMax: 0 });
+    } else {
+      selProps.push({ layer, selected: false, nthSel: nthSel, nSelMax: 0 });
+    }
+  });
+  const nSelMax = Math.max(0, nthSel - 1);
+  selProps.forEach((el) => (el.nSelMax = nSelMax));
+  return selProps;
+}
+
+
+function canDeleteLayer(state: NoteSelectionState, layerIdx: number) {
+  return state.layers[layerIdx]?.deletable;
+}
 

@@ -3,10 +3,11 @@ import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isNoteRoot, isNoteRootInLayer, isNoteSelectedInLayer } from '../../fretka/note-selection';
 
-import * as fretka from '../../fretka/fretka';
+import * as fretka from '../../fretka/notes';
 import styles from './noteselector.module.scss';
 import { noteSelectionSelector } from '../../fretka/store';
 import { actions } from '../../fretka/note-selection';
+import { LayerMenu } from './layer-menu';
 
 export function NoteSelector(props: { layerIdx: any; }) {
   const { layerIdx } = props;
@@ -30,17 +31,24 @@ export function NoteSelector(props: { layerIdx: any; }) {
     });
   };
 
-  const resetSelection = () => {
-    void 0; //updateNoteSelection({});
-  };;
+  function getWrapperClass(): string | undefined {
+    return classNames({
+      [styles.noteSelectorWrapper]: true,
+      layerColor: true,
+      [`layerColor-${noteSelection.layers[layerIdx].color}`]: true,
+    });
+  }
 
   return (
     <div className={getWrapperClass()}>
-      <div className="layerHeader">{ noteSelection.layers[layerIdx].name }</div>
-      <div className={styles.noteSelector}>
+      <div className={styles.layerHeader}>
+        <div className={styles.layerTitle}>{noteSelection.layers[layerIdx].name}</div>
+        <div className={styles.layerMenuContainer}><LayerMenu layerIdx={layerIdx} /></div>
+      </div>
+      <div className={styles.noteButtonWrapper}>
         {/* prettier-ignore */ }
         {notes.map((note, idx) => (
-          <div className={styles.buttonSet} key={idx}>
+          <div className={styles.noteButtonSet} key={idx}>
             <button
               onClick={() =>
                 dispatch(
@@ -71,17 +79,8 @@ export function NoteSelector(props: { layerIdx: any; }) {
             </button>
           </div>
         ))}
-        <button onClick={resetSelection} className={styles.reset}>
-          RESET
-        </button>
+        
       </div>
     </div>
   );
-
-  function getWrapperClass(): string | undefined {
-    return classNames({
-      // [styles.noteSelectorWrapper]: true,
-      [`layerColor-${noteSelection.layers[layerIdx].color}`]: true
-    });
-  }
 }

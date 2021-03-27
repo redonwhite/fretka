@@ -1,10 +1,10 @@
 import React, { useCallback, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import type { Point } from '../../fretka/fretka-svg';
-import { isNoteSelected, NoteSelectionLayer } from '../../fretka/note-selection';
-import type { getPrettyNoteName, NoteAbsolute } from '../../fretka/fretka';
+import type { NoteAbsolute } from '../../fretka/notes';
 import { noteSelectionSelector } from '../../fretka/store';
 import classNames from 'classnames';
+import type { NoteSelectionLayer, NoteSelectionLayerWithIndex } from '../../fretka/note-selection-layers';
 
 export function SvgFretboardCell(props: {
   note: NoteAbsolute;
@@ -15,18 +15,18 @@ export function SvgFretboardCell(props: {
   height: number
 }) {
   const { center, note, fretNumber, width, height } = props;
-
+  const r = 7;
   const noteSelection = useSelector(noteSelectionSelector);
-  console.log(noteSelection);
 
   const baseFretDotClasses : any = {
     fretCellDot: true,
-    selected: isNoteSelected(noteSelection, note),
+    selected: noteSelection.notes[note.id].isNoteSelected
   };
   
-  const getCellDotClass = (layer: NoteSelectionLayer & { idx: number }) => {
+  const getCellDotClass = (layer: NoteSelectionLayerWithIndex) => {
     return classNames({
       ...baseFretDotClasses,
+      layerColor: true,
       [`layerColor-${layer.color}`]: true,
     });
   }
@@ -43,14 +43,18 @@ export function SvgFretboardCell(props: {
         cursor="pointer"
       ></rect>
       {
-        noteSelection.notes[note.id].selectedInLayers.map(layer => 
-          <circle
-            cx={center.x}
-            cy={center.y}
-            r={isNoteSelected(noteSelection, note) ? 5 : 0}
-            className={getCellDotClass(layer)}
-          />
-        )
+        // noteSelection.notes[note.id].selectedInLayers.map(
+        noteSelection.notes[note.id].selectedInLayers 
+          .map((selProps) => (
+            <circle key={selProps.layer.idx}
+              cx={
+                center.x - (selProps.nthSel - selProps.nSelMax / 2) * r * 1.5
+              }
+              cy={center.y}
+              r={selProps.selected ? r : 0}
+              className={getCellDotClass(selProps.layer)}
+            />
+          ))
       }
     </React.Fragment>
   );

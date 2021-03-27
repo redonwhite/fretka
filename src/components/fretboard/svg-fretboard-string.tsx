@@ -1,7 +1,7 @@
 import React from 'react';
-import { notes } from '../../fretka/fretka';
-import type { NoteAbsolute, NoteClass } from '../../fretka/fretka';
-import { Point } from '../../fretka/fretka-svg';
+import { notes } from '../../fretka/notes';
+import type { NoteAbsolute, NoteClass } from '../../fretka/notes';
+import type { Point } from '../../fretka/fretka-svg';
 import { SvgFretboardCell } from './svg-fretboard-cell';
 
 // import styles from './fretboardstring.module.scss';
@@ -50,7 +50,7 @@ export function SvgFretboardString(props: {
           stringTuning={tuning}
           width={cellWidth}
           height={height}
-          center={new Point(fromPoint.x + cellWidth * (idx + 0.5), fromPoint.y)}
+          center={{ x: fromPoint.x + cellWidth * (idx + 0.5), y: fromPoint.y }}
         />
       ))}
     </>

@@ -1,61 +1,144 @@
-:global(.layerColor-red) {
-  --fretka-layer-color: red;
+:global(.layerColor) {
+
+  --fretka-layer-color: gray;
+
+  &:global(.layerColor-red) {
+    --fretka-layer-color: red;
+  }
+
+  &:global(.layerColor-black) {
+    --fretka-layer-color: black;
+  }
+
+  &:global(.layerColor-blue) {
+    --fretka-layer-color: blue;
+  }
+
+  &:global(.layerColor-green) {
+    --fretka-layer-color: green;
+  }
+
 }
 
-:global(.layerColor-black) {
-  --fretka-layer-color: black;
+.emptySelectorActionWrapper {
+  button {
+    background-color: var(--fretka-primary-button-bg);
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 40px;
+    border-radius: 50px;
+  }
 }
 
-.buttonSet {
+.layerHeader {
+  display: flex;
+  align-content: space-between;
+  
+  .layerTitle {
+    flex-grow: 1;
+  }
+  
+  .layerMenuContainer {
+    flex-grow: 0;
+  }
+}
+
+.layerMenu {
+  
+  display: flex;
+  
+  button {
+    height: 20px;
+    border-radius: 10px;
+    background-color: var(--fretka-tertriary-button-bg);
+  }
+
+  &>*{
+    margin-right: 4px;
+    &:last-child {
+      margin-rigth: 0;
+    }
+  }
+}
+
+.noteButtonWrapper {
+  display: flex;
+  margin: 15px 0;
+}
+
+.noteButtonSet {
   display: flex;
   flex-direction: column;
   margin-right: 8px;
-}
+  &:last-of-type {
+    margin-right: 0;
+  }
+  flex-grow: 1;
+  flex-basis: 1px;
 
-.rootButton {
-  margin-top: 8px;
-  font-size: .5rem;
-  text-transform: uppercase;
-  padding: 0;
-  color: transparent
+  .rootButton { 
+    margin-top: 8px;
+    font-size: .5rem;
+    text-transform: uppercase;
+    padding: 2px 0;
+    color: transparent;
+    background-color: var(--fretka-tertriary-button-bg);
+  }
+
+  &:hover, &:focus-within {
+    .rootButton {
+      color: black;
+      background-color: var(--fretka-primary-button-bg);
+        &:hover, &:focus {
+        color: white;
+        background-color: lightskyblue;
+      }
+    }
+  }
 }
 
 .noteButton {
   color: transparent;
   padding-top: 5px;
   padding-bottom: 5px;
-  width: 50px;
+}
+
+.layeredNoteSelectorWrapper {
+
+}
+
+.emptyLayerSlotActionWrapper {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  padding: 10px 0;
+  button {
+    background-color: var(--fretka-secondary-button-bg);
+    padding: 10px 30px;
+    border-radius: 100px;
+    text-align: center;
+  }
 }
 
 button {
+  background-color: var(--fretka-primary-button-bg);
+
   border-radius: 5px;
-  transition: background-color .4s ease-out;
+  transition: background-color var(--fretka-transition-time) ease-out;
   border: none;
-  width: 100%;
-  padding: .2em 15px;
   cursor: pointer;
   position: relative;
 
-  &.selected, &.selected:hover, &.selected:focus {
+
+  &.selected.selected.selected, &.selected.selected.selected:hover, &.selected.selected.selected:focus {
     background-color: var(--fretka-layer-color);
     color: white;
   }
 
   &:hover, &:focus {
     color: white;
-    background-color: gray;
+    background-color: lightskyblue;
   }
 
-}
-
-.reset {
-  width: initial;
-  margin-left: 40px;
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
-.noteSelector {
-  display: flex;
-  margin: 15px 0;
+  
 }

@@ -1,5 +1,5 @@
 import { configureStore, createSelector } from '@reduxjs/toolkit';
-import { basicNotes, NoteClassId } from './fretka';
+import { basicNotes, NoteClassId } from './notes';
 import { getPropertiesForAllNotes, noteSelectionSlice } from './note-selection';
 
 const store = configureStore({
