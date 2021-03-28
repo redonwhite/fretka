@@ -1,7 +1,5 @@
 import React from 'react';
-import type { FretShape } from '../../fretka/fret-shapes';
 
-export function SvgShape(props: { shape: FretShape }) {
-  const { shape: FretShape } = props;
-  return <circle />;
+export function SvgShape(props:any) {
+  return <path d="M 0 100 l 10 10 0 10 30 20 -10 -20 -5 -5 -23 -31" stroke='red' strokeWidth="4"/>
 }

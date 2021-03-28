@@ -1,4 +1,9 @@
-import type { EqTempInterval, NoteClassId } from './notes';
+import {
+  basicNotesArray,
+  EqTempInterval,
+  NoteClass,
+  NoteClassId,
+} from './notes';
 
 export type IntervalQuality =
   | 'minor'
@@ -27,17 +32,6 @@ export type OtherInterval = IntervalBase & {
 };
 
 export type Interval = BasicInterval | OtherInterval;
-
-export type StringSpec =
-  | 'string1'
-  | 'string2'
-  | 'string3'
-  | 'string4'
-  | 'string5'
-  | 'string6'
-  | 'stringUp'
-  | 'stringDown';
-
 export type BasicIntervalId =
   | 'root'
   | 'min2'
@@ -51,8 +45,6 @@ export type BasicIntervalId =
   | 'maj6'
   | 'min7'
   | 'maj7';
-export type FretSpec = 'open' | number | BasicIntervalId;
-export type FretCoord = [StringSpec, FretSpec];
 
 export const root: BasicInterval = {
   id: 'root',
@@ -217,3 +209,12 @@ export const basicIntervals: BasicIntervals = Object.fromEntries(
 ) as BasicIntervals;
 
 export const basicIntervalsBySpan = basicIntervalsArray;
+
+export function addInterval(note: NoteClass, iId: BasicIntervalId): NoteClass {
+  const newIdx = (note.idx + basicIntervals[iId].span + 12) % 12;
+  return basicNotesArray[newIdx];
+}
+
+export function getPositiveSteps(from: NoteClass, to: NoteClass) {
+  return (12 + to.idx - from.idx) % 12;
+}
