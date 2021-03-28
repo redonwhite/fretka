@@ -15,9 +15,22 @@
   }
 
   &:global(.layerColor-green) {
-    --fretka-layer-color: green;
+    --fretka-layer-color: darkturquoise;
   }
 
+}
+
+button:hover .showOnHover, button:focus-within .showOnHover {
+  display: inline-block;
+  overflow: hidden;
+  width: 100%;
+}
+
+.showOnHover {
+  display: inline-block;
+  overflow: hidden;
+  width: 0;
+  transition: width --var(--fretka-transition-time);
 }
 
 .emptySelectorActionWrapper {
@@ -91,7 +104,7 @@
       background-color: var(--fretka-primary-button-bg);
         &:hover, &:focus {
         color: white;
-        background-color: lightskyblue;
+        background-color: var(--fretka-selection-color);
       }
     }
   }
@@ -117,6 +130,7 @@
     padding: 10px 30px;
     border-radius: 100px;
     text-align: center;
+    white-space: nowrap;
   }
 }
 
@@ -137,7 +151,7 @@ button {
 
   &:hover, &:focus {
     color: white;
-    background-color: lightskyblue;
+    background-color: var(--fretka-selection-color);
   }
 
   

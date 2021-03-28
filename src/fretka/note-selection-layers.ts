@@ -15,7 +15,7 @@ export function getIndexedLayers(
   return sel.layers.map((layer, idx) => ({ ...layer, idx }));
 }
 
-const layerColors = ['black', 'red', 'blue', 'green', 'gray'];
+const layerColors = ['black', 'red', 'green', 'blue', 'gray'];
 
 export function createEmptyNoteSelectionLayer(
   targetIdx: number,

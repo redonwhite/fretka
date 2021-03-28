@@ -3,6 +3,7 @@ import type { GuitarTuning } from '../../fretka/notes';
 
 import stylesSvg from './svg-fretboard.module.scss';
 import { SvgFretboardString } from './svg-fretboard-string';
+import { SvgShape } from './svg-shape';
 
 export function Fretboard(props: { tuning: GuitarTuning; fretCount?: number }) {
   const { tuning } = props;
@@ -16,7 +17,7 @@ export function Fretboard(props: { tuning: GuitarTuning; fretCount?: number }) {
 
   const fretWidth = fretboardWidth / fretCount;
 
-  const marginTop = 10;
+  const marginTop = 20;
   const marginBottom = marginTop;
   const marginLeft = 1;
   const marginRight = marginLeft;
@@ -70,6 +71,18 @@ export function Fretboard(props: { tuning: GuitarTuning; fretCount?: number }) {
             />
           ))
       }
+      <SvgShape
+        shape={{
+          segments: [
+            ['string1', 'c'],
+            ['string6', 'c'],
+          ],
+          appearance: {
+            stroke: 'red',
+          },
+        }}
+      />
     </svg>
   );
 }
+

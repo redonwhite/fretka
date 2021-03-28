@@ -1,3 +1,20 @@
+import {
+  root,
+  Interval,
+  maj2,
+  maj3,
+  perf4,
+  perf5,
+  maj6,
+  maj7,
+  min3,
+  min7,
+  min6,
+  min2,
+  aug4,
+  dim5,
+} from './intervals';
+
 export type NoteClassId =
   | 'a'
   | 'asharp'
@@ -11,6 +28,14 @@ export type NoteClassId =
   | 'fsharp'
   | 'g'
   | 'gsharp';
+
+export type NoteClass = {
+  id: NoteClassId;
+  idx: number;
+  sharpOf: NoteClassId;
+  flatOf: NoteClassId;
+  isNatural: boolean;
+};
 
 export type EqTempInterval = number;
 export type ScaleStepIndex = number;
@@ -27,119 +52,6 @@ const step9: ScaleStepIndex = 8;
 const step10: ScaleStepIndex = 9;
 const step11: ScaleStepIndex = 10;
 const step12: ScaleStepIndex = 11;
-
-type IntervalQuality =
-  | 'minor'
-  | 'major'
-  | 'perfect'
-  | 'augmented'
-  | 'diminished';
-
-type Interval = {
-  name: string;
-  step: number;
-  quality: IntervalQuality;
-  span: EqTempInterval;
-};
-
-const root: Interval = {
-  name: 'root',
-  step: 1,
-  quality: 'perfect',
-  span: 0,
-};
-
-const min2: Interval = {
-  name: 'minor second',
-  step: 2,
-  quality: 'minor',
-  span: 1,
-};
-
-const maj2: Interval = {
-  name: 'major second',
-  step: 2,
-  quality: 'major',
-  span: 2,
-};
-
-const min3: Interval = {
-  name: 'minor third',
-  step: 3,
-  quality: 'minor',
-  span: 3,
-};
-
-const maj3: Interval = {
-  name: 'major third',
-  step: 3,
-  quality: 'major',
-  span: 4,
-};
-
-const perf4: Interval = {
-  name: 'perfect fourth',
-  step: 4,
-  quality: 'perfect',
-  span: 5,
-};
-
-const aug4: Interval = {
-  name: 'augmented fourth',
-  step: 4,
-  quality: 'augmented',
-  span: 6,
-};
-
-const dim5: Interval = {
-  name: 'diminished fifth',
-  step: 5,
-  quality: 'diminished',
-  span: 6,
-};
-
-const perf5: Interval = {
-  name: 'perfect fifth',
-  step: 5,
-  quality: 'perfect',
-  span: 7,
-};
-
-const min6: Interval = {
-  name: 'minor sixth',
-  step: 6,
-  quality: 'minor',
-  span: 8,
-};
-
-const maj6: Interval = {
-  name: 'major sixth',
-  step: 6,
-  quality: 'major',
-  span: 9,
-};
-
-const min7: Interval = {
-  name: 'minor seventh',
-  step: 7,
-  quality: 'minor',
-  span: 10,
-};
-
-const maj7: Interval = {
-  name: 'major seventh',
-  step: 7,
-  quality: 'major',
-  span: 11,
-};
-
-export type NoteClass = {
-  id: NoteClassId;
-  idx: number;
-  sharpOf: NoteClassId;
-  flatOf: NoteClassId;
-  isNatural: boolean;
-};
 
 export type NoteAbsolute = NoteClass & {
   absIdx: number;

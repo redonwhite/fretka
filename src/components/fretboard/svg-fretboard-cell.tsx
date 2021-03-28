@@ -4,7 +4,7 @@ import type { Point } from '../../fretka/fretka-svg';
 import type { NoteAbsolute } from '../../fretka/notes';
 import { noteSelectionSelector } from '../../fretka/store';
 import classNames from 'classnames';
-import type { NoteSelectionLayer, NoteSelectionLayerWithIndex } from '../../fretka/note-selection-layers';
+import type { NoteSelectionLayerWithIndex } from '../../fretka/note-selection-layers';
 
 export function SvgFretboardCell(props: {
   note: NoteAbsolute;
@@ -17,16 +17,12 @@ export function SvgFretboardCell(props: {
   const { center, note, fretNumber, width, height } = props;
   const r = 7;
   const noteSelection = useSelector(noteSelectionSelector);
-
-  const baseFretDotClasses : any = {
-    fretCellDot: true,
-    selected: noteSelection.notes[note.id].isNoteSelected
-  };
   
   const getCellDotClass = (layer: NoteSelectionLayerWithIndex) => {
+    const selProps = noteSelection.notes[note.id].selPropsByLayer[layer.idx];
     return classNames({
-      ...baseFretDotClasses,
       layerColor: true,
+      root: selProps.root,
       [`layerColor-${layer.color}`]: true,
     });
   }
@@ -42,19 +38,30 @@ export function SvgFretboardCell(props: {
         fill="transparent"
         cursor="pointer"
       ></rect>
+      {/* prettier-ignore */}
       {
-        // noteSelection.notes[note.id].selectedInLayers.map(
-        noteSelection.notes[note.id].selectedInLayers 
-          .map((selProps) => (
-            <circle key={selProps.layer.idx}
-              cx={
-                center.x - (selProps.nthSel - selProps.nSelMax / 2) * r * 1.5
-              }
-              cy={center.y}
-              r={selProps.selected ? r : 0}
-              className={getCellDotClass(selProps.layer)}
-            />
-          ))
+        noteSelection.notes[note.id].selPropsByLayer.map((selProps, idx) => {
+          const dotx = center.x - (selProps.nthSel - selProps.nSelMax / 2) * r * 1.5;
+          const doty = center.y;
+          return (
+            <React.Fragment key={idx}>
+              <circle
+                key={'root' + selProps.layer.idx}
+                cx={dotx}
+                cy={doty}
+                r={selProps.root && selProps.selected ? r + 1 : 0}
+                className={'fretCellRootDot ' + getCellDotClass(selProps.layer)}
+              />
+              <circle
+                key={selProps.layer.idx}
+                cx={dotx}
+                cy={doty}
+                r={selProps.selected ? (selProps.root ? r - 3 : r) : 0}
+                className={'fretCellDot ' + getCellDotClass(selProps.layer)}
+              />
+            </React.Fragment>
+          );
+        })
       }
     </React.Fragment>
   );

@@ -33,7 +33,7 @@ export const getPropertiesForNote = (
     ...note,
     isNoteSelected: isNoteSelected(sel, note),
     isNoteRoot: isNoteRoot(sel, note),
-    selectedInLayers: getSelectedInLayersProperties(sel, layers, note),
+    selPropsByLayer: getSelPropsByLayer(sel, layers, note),
     rootInLayers: layers.filter((layer) => layer.selection.root === note.id),
     colors: layers
       .filter(
@@ -134,28 +134,33 @@ export type NoteSelection = {
 };
 
 
-function getSelectedInLayersProperties(
+function getSelPropsByLayer(
   sel: NoteSelectionState,
   layers: NoteSelectionLayerWithIndex[],
   note: NoteClass,
 ) {
   let nthSel = 0;
-  let selProps: {
+  let selPropses: {
     layer: NoteSelectionLayerWithIndex;
     selected: boolean;
+    root: boolean;
     nthSel: number;
     nSelMax: number;
   }[] = [];
   layers.map((layer) => {
-    if (isNoteSelectedInLayer(sel, note, layer.idx)) {
-      selProps.push({ layer, selected: true, nthSel: nthSel++, nSelMax: 0 });
-    } else {
-      selProps.push({ layer, selected: false, nthSel: nthSel, nSelMax: 0 });
-    }
+    const root = isNoteRootInLayer(sel, note, layer.idx);
+    const selected = isNoteSelectedInLayer(sel, note, layer.idx);
+    selPropses.push({
+      layer,
+      selected,
+      root,
+      nthSel: selected ? nthSel++ : nthSel,
+      nSelMax: 0,
+    });
   });
   const nSelMax = Math.max(0, nthSel - 1);
-  selProps.forEach((el) => (el.nSelMax = nSelMax));
-  return selProps;
+  selPropses.forEach((el) => (el.nSelMax = nSelMax));
+  return selPropses;
 }
 
 

@@ -7,4 +7,10 @@
     fill: var(--fretka-layer-color);
     transition: all var(--fretka-transition-time);
   }
+  circle:global(.fretCellRootDot) {
+    fill: white;
+    stroke-width: 2px;
+    stroke: var(--fretka-layer-color);
+    transition: all var(--fretka-transition-time);
+  }
 }

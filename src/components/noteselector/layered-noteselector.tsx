@@ -16,24 +16,27 @@ export function LayeredNoteSelector() {
       {noteSelection.layers.map((_layer, idx) => (
         <NoteSelector layerIdx={idx} key={idx} />
       ))}
-      { hasLayers &&
+      {hasLayers && (
         <div className={styles.emptyLayerSlotActionWrapper}>
           <button
             className="addLayerButton secondaryButton"
             onClick={() => dispatch(actions.addLayerAtEnd())}
           >
-            ✚ add layer
-        </button>
-        </div>}
-      { !hasLayers &&
+            <span>✚</span>
+            <span className={styles.showOnHover}>add layer</span>
+          </button>
+        </div>
+      )}
+      {!hasLayers && (
         <div className={styles.emptySelectorActionWrapper}>
           <button
             className="addFirstLayerButton primaryButton"
             onClick={() => dispatch(actions.addLayerAtEnd())}
           >
             select some notes!
-        </button>
-        </div>}
-      </div>
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
