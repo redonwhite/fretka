@@ -1,4 +1,5 @@
 import {
+  basicNotes,
   basicNotesArray,
   EqTempInterval,
   NoteClass,
@@ -210,6 +211,11 @@ export const basicIntervals: BasicIntervals = Object.fromEntries(
 
 export const basicIntervalsBySpan = basicIntervalsArray;
 
+export function addSemitones(note: NoteClass, semitones: number): NoteClass {
+  const newIdx = (note.idx + semitones + 12) % 12;
+  return basicNotesArray[newIdx];
+}
+
 export function addInterval(note: NoteClass, iId: BasicIntervalId): NoteClass {
   const newIdx = (note.idx + basicIntervals[iId].span + 12) % 12;
   return basicNotesArray[newIdx];
@@ -217,4 +223,10 @@ export function addInterval(note: NoteClass, iId: BasicIntervalId): NoteClass {
 
 export function getPositiveSteps(from: NoteClass, to: NoteClass) {
   return (12 + to.idx - from.idx) % 12;
+}
+
+export function getShortestDelta(from: NoteClass, to: NoteClass) {
+  const delta = to.idx - from.idx;
+  if (Math.abs(delta) <= 6) return delta;
+  else return Math.sign(delta) * (delta - 12);
 }
