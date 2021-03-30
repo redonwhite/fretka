@@ -227,6 +227,7 @@ export function getPositiveSteps(from: NoteClass, to: NoteClass) {
 
 export function getShortestDelta(from: NoteClass, to: NoteClass) {
   const delta = to.idx - from.idx;
-  if (Math.abs(delta) <= 6) return delta;
-  else return Math.sign(delta) * (delta - 12);
+  const absdelta = Math.abs(delta);
+  if (absdelta <= 6) return delta;
+  else return Math.sign(delta) * (absdelta - 12);
 }
