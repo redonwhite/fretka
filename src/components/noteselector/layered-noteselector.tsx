@@ -13,9 +13,16 @@ export function LayeredNoteSelector() {
 
   return (
     <div className={styles.layeredNoteSelectorWrapper}>
-      {noteSelection.layers.map((_layer, idx) => (
-        <NoteSelector layerIdx={idx} key={idx} />
-      ))}
+      {noteSelection.layers.map((layer, idx) => {
+        switch (layer.layerType) {
+          case 'noteSelection':
+            return <NoteSelector layerIdx={idx} key={idx} />;
+          case 'shape':
+            return <div>it's a shape!</div>;
+          default:
+            return <div>Unknown layer type!</div>;
+        }
+      })}
       {hasLayers && (
         <div className={styles.emptyLayerSlotActionWrapper}>
           <button

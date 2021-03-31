@@ -1,7 +1,11 @@
 import classNames from 'classnames';
 import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { isNoteRoot, isNoteRootInLayer, isNoteSelectedInLayer } from '../../fretka/note-selection';
+import {
+  isNoteRoot,
+  isNoteRootInLayerByIdx,
+  isNoteSelectedInLayerByIdx,
+} from '../../fretka/note-selection';
 
 import * as fretka from '../../fretka/notes';
 import styles from './noteselector.module.scss';
@@ -19,7 +23,11 @@ export function NoteSelector(props: { layerIdx: any; }) {
   const getButtonClass = (note: fretka.NoteClass) => {
     return classNames({
       [styles.noteButton]: true,
-      [styles.selected]: isNoteSelectedInLayer(noteSelection, note, layerIdx),
+      [styles.selected]: isNoteSelectedInLayerByIdx(
+        noteSelection,
+        note,
+        layerIdx,
+      ),
     });
   };
 
@@ -27,7 +35,7 @@ export function NoteSelector(props: { layerIdx: any; }) {
     return classNames({
       [styles.rootButton]: true,
       [styles.noteButton]: true,
-      [styles.selected]: isNoteRootInLayer(noteSelection, note, layerIdx),
+      [styles.selected]: isNoteRootInLayerByIdx(noteSelection, note, layerIdx),
     });
   };
 

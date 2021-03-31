@@ -1,8 +1,12 @@
+body {
+  background: #333;
+}
 
 .appContainer {
   width: 1400px;
   margin: auto;
   min-height: 100vh;
+  
   
   display: grid;
   justify-content: center;

@@ -1,17 +1,24 @@
-import type { NoteSelection, NoteSelectionState } from './note-selection';
+import type { NoteSelection, FretkaLayersState } from './note-selection';
 
-export type NoteSelectionLayer = {
-  selection: NoteSelection;
+export type FretkaLayerType = 'noteSelection' | 'shape';
+export type FretkaLayerBase = {
   name: string;
   color: string;
   deletable: boolean;
+  layerType: FretkaLayerType;
+};;;
+export type NoteSelectionLayer = FretkaLayerBase & {
+  layerType: 'noteSelection';
+  selection: NoteSelection;
 };
+export type ShapeLayer = FretkaLayerBase & { layerType: 'shape' };
 
+export type FretkaLayer = NoteSelectionLayer | ShapeLayer;
+
+export type FretkaLayerWithIndex = FretkaLayer & { idx: number };
 export type NoteSelectionLayerWithIndex = NoteSelectionLayer & { idx: number };
 
-export function getIndexedLayers(
-  sel: NoteSelectionState,
-): NoteSelectionLayerWithIndex[] {
+export function getIndexedLayers(sel: FretkaLayersState): FretkaLayerWithIndex[] {
   return sel.layers.map((layer, idx) => ({ ...layer, idx }));
 }
 
@@ -22,6 +29,7 @@ export function createEmptyNoteSelectionLayer(
   overrides?: Partial<NoteSelectionLayer>,
 ): NoteSelectionLayer {
   return {
+    layerType: 'noteSelection',
     name: 'My selection layer',
     color: layerColors[targetIdx % layerColors.length],
     deletable: true,

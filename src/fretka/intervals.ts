@@ -226,8 +226,13 @@ export function getPositiveSteps(from: NoteClass, to: NoteClass) {
 }
 
 export function getShortestDelta(from: NoteClass, to: NoteClass) {
+  console.log('calculating interval from: ' + from.id + ' to: ' + to.id);
   const delta = to.idx - from.idx;
+  console.log('to.idx - from.idx delta: ' + delta);
   const absdelta = Math.abs(delta);
+  console.log('abs delta: ' + absdelta);
   if (absdelta <= 6) return delta;
-  else return Math.sign(delta) * (absdelta - 12);
+  let c = Math.sign(delta) * (absdelta - 12);
+  console.log('abs delta > 6, so using this instead: ' + c);
+  return c;
 }
