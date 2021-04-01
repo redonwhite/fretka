@@ -176,11 +176,7 @@ export function convertFromFretSpace(
     if (!shapeTail) return;
 
     let [fromStringIdx, fromFretIdx] = coordSet[0];
-    console.log(
-      ';',
-      [fromStringIdx, fromFretIdx],
-      tuning.stringTunings[fromStringIdx],
-    );
+
     let fromNote = addSemitones(
       tuning.stringTunings[fromStringIdx],
       fromFretIdx,
