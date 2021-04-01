@@ -16,16 +16,23 @@ export const layerSlice = createSlice({
   name: 'layers',
   initialState: initialLayerState,
   reducers: {
-    addLayerAtEnd: (state, action) => {
+    addLayerAtEnd: (
+      state,
+      action: { payload: { layerType: FretkaLayerType } },
+    ) => {
       const layerType: FretkaLayerType = action.payload.layerType;
+      console.log(action);
       switch (layerType) {
         case 'noteSelection':
+          console.log('creating new selection layer');
           state.layers.push(createEmptyNoteSelectionLayer(state.layers.length));
-          break;
+          return;
         case 'shape':
+          console.log('creating new shape layer');
           state.layers.push(createEmptyNoteSelectionLayer(state.layers.length));
-          break;
+          return;
       }
+      throw new Error('Unknown layer type!');
     },
     deleteLayer: (state, action: LayerAction) => {
       const layerIdx = action.payload.layerIdx;

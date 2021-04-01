@@ -1,4 +1,5 @@
 import type { NoteSelection, FretkaLayersState } from './note-selection';
+import type { FretShape } from './shapes';
 
 export type FretkaLayerType = 'noteSelection' | 'shape';
 export type FretkaLayerBase = {
@@ -7,11 +8,16 @@ export type FretkaLayerBase = {
   deletable: boolean;
   layerType: FretkaLayerType;
 };
+
 export type NoteSelectionLayer = FretkaLayerBase & {
   layerType: 'noteSelection';
   selection: NoteSelection;
 };
-export type ShapeLayer = FretkaLayerBase & { layerType: 'shape' };
+
+export type ShapeLayer = FretkaLayerBase & {
+  layerType: 'shape';
+  shape: FretShape;
+};
 
 export type FretkaLayer = NoteSelectionLayer | ShapeLayer;
 
@@ -49,6 +55,34 @@ export function createEmptyNoteSelectionLayer(
         gsharp: false,
       },
       root: 'a',
+    },
+    ...overrides,
+  };
+}
+
+export function createEmptyShapeLayer(
+  targetIdx: number,
+  overrides?: Partial<ShapeLayer>,
+): ShapeLayer {
+  return {
+    layerType: 'shape',
+    name: 'My selection layer',
+    color: layerColors[targetIdx % layerColors.length],
+    deletable: true,
+    shape: {
+      appearance: {
+        stroke: '2',
+      },
+      type: 'sequence of intervals',
+      segments: [
+        ['string1', 'g'],
+        ['1up', 'perf4'],
+        ['1up', 'perf4'],
+        ['1up', 'perf4'],
+        ['1up', 'maj3'],
+        ['1up', 'perf4'],
+        ['same', 'maj3'],
+      ],
     },
     ...overrides,
   };

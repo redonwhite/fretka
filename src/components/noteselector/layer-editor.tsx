@@ -28,28 +28,20 @@ export function LayerEditor() {
         <button
           className="addLayerButton secondaryButton"
           onClick={() =>
-           
-           
-           
-           
-           
-            dispatch(actions.addLayerAtEnd({ type: 'noteSelection' }))
-          
-          
-          
-          
-          
+            dispatch(actions.addLayerAtEnd({ layerType: 'noteSelection' }))
           }
         >
           <span>✚</span>
-          <span className={styles.showOnHover}>add layer</span>
+          <span>add layer</span>
         </button>
         <button
           className="addLayerButton secondaryButton"
-          onClick={() => dispatch(actions.addLayerAtEnd({ type: 'shape' }))}
+          onClick={() =>
+            dispatch(actions.addLayerAtEnd({ layerType: 'shape' }))
+          }
         >
           <span>✚</span>
-          <span className={styles.showOnHover}>add shape</span>
+          <span>add shape</span>
         </button>
       </div>
     </div>
