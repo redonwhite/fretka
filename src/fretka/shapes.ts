@@ -136,14 +136,9 @@ export function getFretIndexAndNoteFromRelSpec(
   tuning: GuitarTuning,
 ): [toFretIdx: number, toNote: NoteClass] {
   const toStringNote = tuning.stringTunings[toStringIdx];
-  console.log('t', toStringNote, toStringIdx);
   const fromNoteSameFretOnToString = addSemitones(toStringNote, fromFretIdx);
-  console.log('s', fromNoteSameFretOnToString);
   const toNote = addInterval(fromNote, relFretSpec);
-  console.log('sd', toNote);
   const deltaFrets = getShortestDelta(fromNoteSameFretOnToString, toNote);
-  console.log('df', deltaFrets);
-
   return [fromFretIdx + deltaFrets, toNote];
 }
 
