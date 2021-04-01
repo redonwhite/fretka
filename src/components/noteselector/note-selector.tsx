@@ -10,8 +10,8 @@ import {
 import * as fretka from '../../fretka/notes';
 import styles from './note-selector.module.scss';
 import { noteStateSelector } from '../../fretka/store';
-import { actions } from '../../fretka/note-selection';
 import { LayerMenu } from './layer-menu';
+import { actions } from '../../fretka/layers-slice';
 
 export function NoteSelector(props: { layerIdx: any }) {
   const { layerIdx } = props;

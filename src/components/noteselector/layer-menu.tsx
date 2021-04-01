@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { actions } from '../../fretka/note-selection';
+import { actions } from '../../fretka/layers-slice';
 
 import styles from './note-selector.module.scss';
 

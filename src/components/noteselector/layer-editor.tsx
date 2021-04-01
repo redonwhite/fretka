@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions } from '../../fretka/note-selection';
+import { actions } from '../../fretka/layers-slice';
 import { noteStateSelector } from '../../fretka/store';
 import { NoteSelector } from './note-selector';
 import styles from './note-selector.module.scss';
@@ -24,27 +24,34 @@ export function LayerEditor() {
             return <div>Unknown layer type!</div>;
         }
       })}
-      {hasLayers && (
-        <div className={styles.emptyLayerSlotActionWrapper}>
-          <button
-            className="addLayerButton secondaryButton"
-            onClick={() => dispatch(actions.addLayerAtEnd())}
-          >
-            <span>✚</span>
-            <span className={styles.showOnHover}>add layer</span>
-          </button>
-        </div>
-      )}
-      {!hasLayers && (
-        <div className={styles.emptySelectorActionWrapper}>
-          <button
-            className="addFirstLayerButton primaryButton"
-            onClick={() => dispatch(actions.addLayerAtEnd())}
-          >
-            select some notes!
-          </button>
-        </div>
-      )}
+      <div className={styles.emptyLayerSlotActionWrapper}>
+        <button
+          className="addLayerButton secondaryButton"
+          onClick={() =>
+           
+           
+           
+           
+           
+            dispatch(actions.addLayerAtEnd({ type: 'noteSelection' }))
+          
+          
+          
+          
+          
+          }
+        >
+          <span>✚</span>
+          <span className={styles.showOnHover}>add layer</span>
+        </button>
+        <button
+          className="addLayerButton secondaryButton"
+          onClick={() => dispatch(actions.addLayerAtEnd({ type: 'shape' }))}
+        >
+          <span>✚</span>
+          <span className={styles.showOnHover}>add shape</span>
+        </button>
+      </div>
     </div>
   );
 }

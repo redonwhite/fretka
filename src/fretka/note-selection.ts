@@ -1,6 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
-import {
-  createEmptyNoteSelectionLayer,
+import type {
   FretkaLayer,
   FretkaLayerWithIndex,
   NoteSelectionLayerWithIndex,
@@ -29,33 +27,40 @@ export const getPropertiesForAllNotes: (
 
 type NoteProperties = ReturnType<typeof getPropertiesForNote>;
 
-export const getPropertiesForNote = (layerState: FretkaLayersState, note: NoteClass) => {
+export const getPropertiesForNote = (
+  layerState: FretkaLayersState,
+  note: NoteClass,
+) => {
   const layers = getIndexedLayers(layerState);
   const properties = {
     ...note,
     isNoteSelected: isNoteSelected(layerState, note),
     isNoteRoot: isNoteRoot(layerState, note),
     selPropsByLayer: getSelPropsByLayer(layerState, layers, note),
-    rootInLayers: layers.filter((layer) => layer.layerType === 'noteSelection' && layer.selection.root === note.id),
+    rootInLayers: layers.filter(
+      (layer) =>
+        layer.layerType === 'noteSelection' && layer.selection.root === note.id,
+    ),
     colors: layers
       .filter(
         (layer) =>
-          layer.layerType === 'noteSelection' && (
-            layer.selection.selected[note.id] || layer.selection.root === note.id
-          )
+          layer.layerType === 'noteSelection' &&
+          (layer.selection.selected[note.id] ||
+            layer.selection.root === note.id),
       )
       .map((layer) => ({ layer: layer, color: layer.color })),
   };
   return properties;
 };
 
-
-const initialLayerState: FretkaLayersState = {
-  layers: [createEmptyNoteSelectionLayer(0)],
-};
-
-export const isNoteSelected = (layerState: FretkaLayersState, note: NoteClass) => {
-  return layerState.layers.some((layer) => layer.layerType === 'noteSelection' && layer.selection.selected[note.id]);
+export const isNoteSelected = (
+  layerState: FretkaLayersState,
+  note: NoteClass,
+) => {
+  return layerState.layers.some(
+    (layer) =>
+      layer.layerType === 'noteSelection' && layer.selection.selected[note.id],
+  );
 };
 
 export const isNoteSelectedInLayerByIdx = (
@@ -65,12 +70,9 @@ export const isNoteSelectedInLayerByIdx = (
 ) => {
   const layer = layerState.layers[layerIdx];
   return isNoteSelectedInLayer(note, layer);
-}
+};
 
-export const isNoteSelectedInLayer = (
-  note: NoteClass,
-  layer: FretkaLayer,
-) => {
+export const isNoteSelectedInLayer = (note: NoteClass, layer: FretkaLayer) => {
   if (layer.layerType !== 'noteSelection') return false;
   return layer.selection.selected[note.id];
 };
@@ -82,17 +84,18 @@ export const isNoteRootInLayerByIdx = (
 ) => {
   const layer = layerState.layers[layerIdx];
   return isNoteRootInLayer(note, layer);
-}
+};
 
-export const isNoteRootInLayer = (
-  note: NoteClass,
-  layer: FretkaLayer,
-) => {
-  return layer.layerType === 'noteSelection' && layer.selection.root === note.id;
+export const isNoteRootInLayer = (note: NoteClass, layer: FretkaLayer) => {
+  return (
+    layer.layerType === 'noteSelection' && layer.selection.root === note.id
+  );
 };
 
 export const isNoteRoot = (layerState: FretkaLayersState, note: NoteClass) => {
-  return layerState.layers.some((_layer, layerIdx) => isNoteRootInLayerByIdx(layerState, note, layerIdx));
+  return layerState.layers.some((_layer, layerIdx) =>
+    isNoteRootInLayerByIdx(layerState, note, layerIdx),
+  );
 };
 
 export type LayerAction = {
@@ -109,56 +112,12 @@ export type NoteAction = {
 
 export type LayerNoteAction = LayerAction & NoteAction;
 
-export const layerSlice = createSlice({
-  name: 'layers',
-  initialState: initialLayerState,
-  reducers: {
-    addLayerAtEnd: (state) => {
-      state.layers.push(createEmptyNoteSelectionLayer(state.layers.length));
-    },
-    deleteLayer: (state, action: LayerAction) => {
-      const layerIdx = action.payload.layerIdx;
-      if (canDeleteLayer(state, layerIdx)) state.layers.splice(layerIdx, 1);
-    },
-    resetSelectionInLayer: (state, action: LayerAction) => {
-      const layer = state.layers[action.payload.layerIdx];
-      if (layer.layerType !== 'noteSelection') return;
-      delete layer.selection.root;
-      const sel = layer.selection.selected;
-      Object.keys(sel).forEach(k => (((sel[k as NoteClassId] = false))));
-    },
-    toggleNoteSelection: (state, action: LayerNoteAction) => {
-      const layer = state.layers[action.payload.layerIdx];
-      if (layer.layerType !== 'noteSelection') return;
-      const noteId = action.payload.noteId;
-      const layerIdx = action.payload.layerIdx;
-      const wasSelected = layer.selection.selected[noteId];
-      layer.selection.selected[noteId] = !wasSelected;
-    },
-    toggleRootSelection: (
-      state,
-      { payload: { layerIdx, noteId } }: LayerNoteAction,
-    ) => {
-      const layer = state.layers[layerIdx];
-      if (layer.layerType !== 'noteSelection') return;
-      if (layer.selection.root !== noteId) {
-        layer.selection.root = noteId;
-      } else {
-        delete layer.selection.root;
-      }
-    },
-  },
-});
-
-export const actions = layerSlice.actions;
-
 export type NoteSelection = {
   root?: NoteClassId;
   selected: {
     [key in NoteClassId]: boolean;
   };
 };
-
 
 function getSelPropsByLayer(
   layerState: FretkaLayersState,
@@ -192,8 +151,9 @@ function getSelPropsByLayer(
   return selPropses;
 }
 
-
-function canDeleteLayer(layerState: FretkaLayersState, layerIdx: number) {
+export function canDeleteLayer(
+  layerState: FretkaLayersState,
+  layerIdx: number,
+) {
   return layerState.layers[layerIdx]?.deletable;
 }
-

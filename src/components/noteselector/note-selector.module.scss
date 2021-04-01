@@ -69,7 +69,7 @@ button:hover .showOnHover, button:focus-within .showOnHover {
   &>*{
     margin-right: 4px;
     &:last-child {
-      margin-rigth: 0;
+      margin-right: 0;
     }
   }
 }
@@ -116,9 +116,9 @@ button:hover .showOnHover, button:focus-within .showOnHover {
   padding-bottom: 5px;
 }
 
-.layeredNoteSelectorWrapper {
+// .layeredNoteSelectorWrapper {
 
-}
+// }
 
 .emptyLayerSlotActionWrapper {
   display: flex;

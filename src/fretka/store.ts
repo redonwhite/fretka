@@ -1,6 +1,6 @@
 import { configureStore, createSelector } from '@reduxjs/toolkit';
-import { basicNotes, NoteClassId } from './notes';
-import { getPropertiesForAllNotes, layerSlice } from './note-selection';
+import { layerSlice } from './layers-slice';
+import { getPropertiesForAllNotes } from './note-selection';
 
 const store = configureStore({
   reducer: {
