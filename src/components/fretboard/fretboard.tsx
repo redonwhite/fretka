@@ -1,91 +1,14 @@
 import React, { useMemo } from 'react';
 import type { GuitarTuning, guitarTunings } from '../../fretka/notes';
-
 import stylesSvg from './svg-fretboard.module.scss';
 import { SvgFretboardString } from './svg-fretboard-string';
-import type {
-  GridSpaceCoordSet,
-  XyCoordSet,
-} from '../../fretka/shapes';
+import { FretboardContext, useFretboard } from '../../fretka/fretboard';
 
 
-export const FretboardContext = React.createContext<FretboardDef|null>(null);
-
-export type FretboardDef = ReturnType<typeof useFretboard>;
-
-export function useFretboard(tuning: GuitarTuning, fretCount: number = 24) {
-  const fretboard = useMemo(() => {
-    const stringDistance = 25;
-    const fretboardWidth = 1398;
-    const marginTop = 20;
-    const marginLeft = 1;
-    const stringStrokeWidth = 2;
-    const fretStrokeWidth = 2;
-
-    const marginBottom = marginTop;
-    const marginRight = marginLeft;
-    const stringCount = tuning.stringTunings.length;
-    const fretboardHeight = (stringCount - 1) * stringDistance - 1;
-    const fretWidth = fretboardWidth / fretCount;
-
-    const svgWidth = marginLeft + fretboardWidth + marginRight;
-    const svgHeight = marginTop + fretboardHeight + marginBottom;
-    const stringPosX = Math.round(marginLeft);
-    
-    function getFretCenterPosX(fretIdx: number) {
-      return Math.round(marginLeft + (0.5 + fretIdx) * fretWidth);
-    }
-
-    function getFretPosX(fretIdx: number) {
-      return Math.round(marginLeft + fretIdx * fretWidth);
-    }
-
-    function getStringPosY(idx: number): number {
-      return Math.round(
-        marginTop + (tuning.stringTunings.length - 1 - idx) * stringDistance,
-      );
-    }
-
-    const fretTopY = getStringPosY(tuning.stringTunings.length - 1);
-    const fretBottomY = getStringPosY(0);
-
-    function gridSpaceToXySpace(coordSet: GridSpaceCoordSet): XyCoordSet {
-      return coordSet.map((coord) => [
-        getFretCenterPosX(coord[1]),
-        getStringPosY(coord[0]),
-      ]);
-    }
-
-    return {
-      gridSpaceToXySpace,
-      getFretCenterPosX,
-      getFretPosX,
-      getStringPosY,
-      svgHeight,
-      svgWidth,
-      fretCount,
-      fretTopY,
-      fretBottomY,
-      fretStrokeWidth,
-      stringDistance,
-      stringStrokeWidth,
-      stringPosX,
-      fretboardWidth,
-      fretboardHeight,
-    }
-  }, [fretCount, tuning]);
-  return fretboard;
-}
 
 export function Fretboard(props: { tuning: GuitarTuning; fretCount?: number }) {
   const { tuning } = props;
   const f = useFretboard(tuning, props.fretCount);
-
-  // const shapes = specSpaceToGridSpace(
-  //   testShapeSpec, tuning, fretCount
-  // ).map(
-  //   gridCoordSet => gridSpaceToXySpace(gridCoordSet)
-  // );
 
   return (
     <FretboardContext.Provider value={f}>
@@ -119,7 +42,7 @@ export function Fretboard(props: { tuning: GuitarTuning; fretCount?: number }) {
           ))
         }
         {
-          // strings:
+          // strings, including note selections:
           Array.from(tuning.stringTunings).map((tuning, idx) => (
             <SvgFretboardString
               key={'string' + idx}
