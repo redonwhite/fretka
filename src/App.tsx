@@ -4,7 +4,7 @@ import { Fretboard } from './components/fretboard/fretboard';
 import { guitarTunings } from './fretka/notes';
 import store from './fretka/store';
 import { Provider } from 'react-redux';
-import { LayeredNoteSelector } from './components/noteselector/layered-noteselector';
+import { LayerEditor } from './components/noteselector/layer-editor';
 
 import styles from './App.module.scss';
 
@@ -19,7 +19,7 @@ function App({ }: AppProps) {
           <Fretboard tuning={guitarTunings.standard} />
         </div>
         <div className={styles.noteSelectorArea}>
-          <LayeredNoteSelector />
+          <LayerEditor />
         </div>
       </div>
     </Provider>

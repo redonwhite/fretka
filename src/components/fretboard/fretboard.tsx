@@ -9,7 +9,7 @@ import {
   GridSpaceCoord,
   GridSpaceCoordSet,
   XyCoordSet,
-} from '../../fretka/fret-shapes';
+} from '../../fretka/shapes';
 
 export function Fretboard(props: { tuning: GuitarTuning; fretCount?: number }) {
   const { tuning } = props;

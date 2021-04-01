@@ -1,10 +1,10 @@
 import React, { useCallback, useContext } from 'react';
 import { useSelector } from 'react-redux';
-import type { Point } from '../../fretka/fretka-svg';
+import type { Point } from '../../fretka/svg';
 import type { NoteAbsolute } from '../../fretka/notes';
-import { noteSelectionSelector } from '../../fretka/store';
+import { noteStateSelector } from '../../fretka/store';
 import classNames from 'classnames';
-import type { NoteSelectionLayerWithIndex } from '../../fretka/note-selection-layers';
+import type { NoteSelectionLayerWithIndex } from '../../fretka/layers';
 
 export function SvgFretboardCell(props: {
   note: NoteAbsolute;
@@ -16,7 +16,7 @@ export function SvgFretboardCell(props: {
 }) {
   const { center, note, fretNumber, width, height } = props;
   const r = 7;
-  const noteSelection = useSelector(noteSelectionSelector);
+  const noteSelection = useSelector(noteStateSelector);
   
   const getCellDotClass = (layer: NoteSelectionLayerWithIndex) => {
     const selProps = noteSelection.notes[note.id].selPropsByLayer[layer.idx];

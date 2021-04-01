@@ -8,15 +8,15 @@ import {
 } from '../../fretka/note-selection';
 
 import * as fretka from '../../fretka/notes';
-import styles from './noteselector.module.scss';
-import { noteSelectionSelector } from '../../fretka/store';
+import styles from './note-selector.module.scss';
+import { noteStateSelector } from '../../fretka/store';
 import { actions } from '../../fretka/note-selection';
 import { LayerMenu } from './layer-menu';
 
-export function NoteSelector(props: { layerIdx: any; }) {
+export function NoteSelector(props: { layerIdx: any }) {
   const { layerIdx } = props;
 
-  const noteSelection = useSelector(noteSelectionSelector);
+  const noteSelection = useSelector(noteStateSelector);
   const notes = fretka.notes.basicNotesArray;
   const dispatch = useDispatch();
 
@@ -50,8 +50,12 @@ export function NoteSelector(props: { layerIdx: any; }) {
   return (
     <div className={getWrapperClass()}>
       <div className={styles.layerHeader}>
-        <div className={styles.layerTitle}>{noteSelection.layers[layerIdx].name}</div>
-        <div className={styles.layerMenuContainer}><LayerMenu layerIdx={layerIdx} /></div>
+        <div className={styles.layerTitle}>
+          {noteSelection.layers[layerIdx].name}
+        </div>
+        <div className={styles.layerMenuContainer}>
+          <LayerMenu layerIdx={layerIdx} />
+        </div>
       </div>
       <div className={styles.noteButtonWrapper}>
         {/* prettier-ignore */ }
@@ -87,7 +91,6 @@ export function NoteSelector(props: { layerIdx: any; }) {
             </button>
           </div>
         ))}
-        
       </div>
     </div>
   );

@@ -59,9 +59,13 @@ function getStringIndexFromRelSpec(
   }
 }
 
+export type RootRelativeFretSpec = number;
+
 export type StringSpec = AbsoluteStringSpec | RelativeStringSpec;
 
-export type AbsoluteFretSpec = NoteClassId | number;
+export type AbsoluteFretNumberSpec = number;
+export type AbsoluteFretSpec = NoteClassId | AbsoluteFretNumberSpec;
+
 export type RelativeFretSpec = BasicIntervalId;
 export type FretSpec = AbsoluteFretSpec | RelativeFretSpec;
 
@@ -75,6 +79,7 @@ export type FretShapeAppearance = {
 };
 
 export type FretShape = {
+  type: 'sequence of intervals';
   segments: FretShapeCoords;
   appearance: FretShapeAppearance;
 };
@@ -128,7 +133,7 @@ export function getFretIndexAndNoteFromRelSpec(
   fromFretIdx: number,
   fromNote: NoteClass,
   toStringIdx: number,
-  tuning: GuitarTuning
+  tuning: GuitarTuning,
 ): [toFretIdx: number, toNote: NoteClass] {
   const toStringNote = tuning.stringTunings[toStringIdx];
   console.log('t', toStringNote, toStringIdx);
@@ -145,8 +150,6 @@ export function getFretIndexAndNoteFromRelSpec(
 export type GridSpaceCoord = [stringIdx: number, fretIdx: number];
 export type GridSpaceCoordSet = Array<GridSpaceCoord>;
 export type GridSpaceCoordSets = Array<GridSpaceCoordSet>;
-
-
 
 export function convertFromFretSpace(
   shape: FretShapeCoords,
@@ -165,7 +168,7 @@ export function convertFromFretSpace(
     const startingFretIdxs = getFretIndexesFromAbsoluteFretSpec(
       tuning.stringTunings[stringIdx],
       headFretSpec,
-      fretCount
+      fretCount,
     );
 
     startingFretIdxs.forEach((fretIdx) =>
@@ -202,7 +205,7 @@ export function convertFromFretSpace(
         fromFretIdx,
         fromNote,
         toStringIdx,
-        tuning
+        tuning,
       );
 
       coordSet.push([toStringIdx, toFretIdx]);

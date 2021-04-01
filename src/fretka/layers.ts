@@ -6,7 +6,7 @@ export type FretkaLayerBase = {
   color: string;
   deletable: boolean;
   layerType: FretkaLayerType;
-};;;
+};
 export type NoteSelectionLayer = FretkaLayerBase & {
   layerType: 'noteSelection';
   selection: NoteSelection;
