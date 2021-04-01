@@ -81,16 +81,12 @@ export function Fretboard(props: { tuning: GuitarTuning; fretCount?: number }) {
   const { tuning } = props;
   const f = useFretboard(tuning, props.fretCount);
 
-  function xyCoordSetToPathD(xyCoordSet: XyCoordSet): string {
-    return 'M ' + xyCoordSet.map(coord => coord[0] + ' ' + coord[1] + ' ');
-  }
-
   // const shapes = specSpaceToGridSpace(
   //   testShapeSpec, tuning, fretCount
   // ).map(
   //   gridCoordSet => gridSpaceToXySpace(gridCoordSet)
   // );
-  
+
   return (
     <FretboardContext.Provider value={f}>
       <svg
