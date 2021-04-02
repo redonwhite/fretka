@@ -3,12 +3,17 @@ import type { GuitarTuning, guitarTunings } from '../../fretka/notes';
 import stylesSvg from './svg-fretboard.module.scss';
 import { SvgFretboardString } from './svg-fretboard-string';
 import { FretboardContext, useFretboard } from '../../fretka/fretboard';
+import { useSelector } from 'react-redux';
+import { noteStateSelector } from '../../fretka/store';
+import { FretSpaceShape } from './fret-space-shape';
+import type { ShapeLayer } from '../../fretka/layers';
 
 
 
 export function Fretboard(props: { tuning: GuitarTuning; fretCount?: number }) {
   const { tuning } = props;
   const f = useFretboard(tuning, props.fretCount);
+  const noteState = useSelector(noteStateSelector);
 
   return (
     <FretboardContext.Provider value={f}>
@@ -16,15 +21,18 @@ export function Fretboard(props: { tuning: GuitarTuning; fretCount?: number }) {
         className={stylesSvg.fretSvg}
         style={{ width: f.svgWidth + 'px', height: f.svgHeight + 'px' }}
       >
-        {/* {shapes.map((shape, idx) => (
-          <path
-            stroke="red"
-            strokeWidth="4"
-            fill="none"
-            d={xyCoordSetToPathD(shape)}
-            key={idx}
-          />
-        ))} */}
+        {noteState.layers
+          .filter((layer) => layer.layerType === 'shape')
+          .map((layer, layerIdx) => {
+            console.log(layer);
+            return (
+              <FretSpaceShape
+                shape={(layer as ShapeLayer).shape}
+                key={'shape_' + layerIdx}
+              />
+            );
+          })
+        }
         {
           // frets:
           Array.from(Array(f.fretCount + 1).keys()).map((_, idx) => (

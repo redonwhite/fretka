@@ -19,5 +19,17 @@ export function FretSpaceShape(props: { shape: FretShape }) {
   const xyCoordSets = gridSpaceCoordSets.map(f.gridSpaceToXySpace);
   const pathDs = xyCoordSets.map(xyCoordSetToPathD);
       
-  return pathDs.map((d) => <path d={d} />);
+  return (
+    <>
+      {pathDs.map((d, idx) => (
+        <path
+          d={d}
+          stroke="pink"
+          strokeWidth="4"
+          fill="transparent"
+          key={idx}
+        />
+      ))}
+    </>
+  );
 }

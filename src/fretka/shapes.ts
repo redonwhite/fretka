@@ -75,7 +75,7 @@ export type FretCoord = [StringSpec, FretSpec];
 
 export type FretShapeCoords = [AbsoluteFretCoord, ...RelativeFretCoord[]];
 export type FretShapeAppearance = {
-  stroke: string;
+  strokeWidth: number;
 };
 
 export type FretShape = {

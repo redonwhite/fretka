@@ -71,7 +71,7 @@ export function createEmptyShapeLayer(
     deletable: true,
     shape: {
       appearance: {
-        stroke: '2',
+        strokeWidth: 4,
       },
       type: 'sequence of intervals',
       segments: [
@@ -81,7 +81,7 @@ export function createEmptyShapeLayer(
         ['1up', 'perf4'],
         ['1up', 'maj3'],
         ['1up', 'perf4'],
-        ['same', 'maj3'],
+        ['same', 'min3'],
       ],
     },
     ...overrides,
