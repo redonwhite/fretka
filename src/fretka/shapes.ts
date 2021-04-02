@@ -74,14 +74,16 @@ export type RelativeFretCoord = [RelativeStringSpec, RelativeFretSpec];
 export type FretCoord = [StringSpec, FretSpec];
 
 export type FretShapeCoords = [AbsoluteFretCoord, ...RelativeFretCoord[]];
-export type FretShapeAppearance = {
-  strokeWidth: number;
+export type ShapeAppearance = {
+  strokeWidth?: number;
+  stroke?: string;
+  fill?: string;
 };
 
 export type FretShape = {
   type: 'sequence of intervals';
   segments: FretShapeCoords;
-  appearance: FretShapeAppearance;
+  appearance: ShapeAppearance;
 };
 
 export function getStringIndexesFromAbsSpec(

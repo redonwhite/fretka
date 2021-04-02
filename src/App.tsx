@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.module.scss';
-import { Fretboard } from './components/fretboard/fretboard';
+import { SvgFretboard } from './components/fretboard/svg-fretboard';
 import { guitarTunings } from './fretka/notes';
 import store from './fretka/store';
 import { Provider } from 'react-redux';
@@ -16,7 +16,7 @@ function App({ }: AppProps) {
     <Provider store={store}>
       <div className={styles.appContainer}>
         <div className={styles.fretboardArea}>
-          <Fretboard tuning={guitarTunings.standard} />
+          <SvgFretboard tuning={guitarTunings.standard} />
         </div>
         <div className={styles.noteSelectorArea}>
           <LayerEditor />

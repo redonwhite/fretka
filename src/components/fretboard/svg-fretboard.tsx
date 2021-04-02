@@ -5,12 +5,15 @@ import { SvgFretboardString } from './svg-fretboard-string';
 import { FretboardContext, useFretboard } from '../../fretka/fretboard';
 import { useSelector } from 'react-redux';
 import { noteStateSelector } from '../../fretka/store';
-import { FretSpaceShape } from './fret-space-shape';
+import { SvgFretSpaceShape } from './svg-fret-space-shape';
 import type { ShapeLayer } from '../../fretka/layers';
 
 
 
-export function Fretboard(props: { tuning: GuitarTuning; fretCount?: number }) {
+export function SvgFretboard(props: {
+  tuning: GuitarTuning;
+  fretCount?: number;
+}) {
   const { tuning } = props;
   const f = useFretboard(tuning, props.fretCount);
   const noteState = useSelector(noteStateSelector);
@@ -26,13 +29,12 @@ export function Fretboard(props: { tuning: GuitarTuning; fretCount?: number }) {
           .map((layer, layerIdx) => {
             console.log(layer);
             return (
-              <FretSpaceShape
+              <SvgFretSpaceShape
                 shape={(layer as ShapeLayer).shape}
                 key={'shape_' + layerIdx}
               />
             );
-          })
-        }
+          })}
         {
           // frets:
           Array.from(Array(f.fretCount + 1).keys()).map((_, idx) => (
