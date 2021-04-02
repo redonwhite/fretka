@@ -15,7 +15,7 @@ type AllNoteProperties = {
 };
 
 export const getPropertiesForAllNotes: (
-  sel: FretkaLayersState,
+  layerState: FretkaLayersState,
 ) => AllNoteProperties = (layerState: FretkaLayersState) => {
   const entries = basicNotesArray.map((note) => [
     note.id,
@@ -126,26 +126,26 @@ function getSelPropsByLayer(
 ) {
   let nthSel = 0;
   let selPropses: {
-    layer: NoteSelectionLayerWithIndex;
+    layer: FretkaLayerWithIndex;
     selected: boolean;
     root: boolean;
     nthSel: number;
     nSelMax: number;
   }[] = [];
   layers.map((layer) => {
-    if (layer.layerType == 'noteSelection') {
-      const root = isNoteRootInLayer(note, layer);
-      const selected = isNoteSelectedInLayer(note, layer);
 
-      selPropses.push({
-        layer,
-        selected,
-        root,
-        nthSel: selected ? nthSel++ : nthSel,
-        nSelMax: 0,
-      });
-    }
+    const root = isNoteRootInLayer(note, layer);
+    const selected = isNoteSelectedInLayer(note, layer);
+
+    selPropses.push({
+      layer,
+      selected,
+      root,
+      nthSel: selected ? nthSel++ : nthSel,
+      nSelMax: 0,
+    });
   });
+
   const nSelMax = Math.max(0, nthSel - 1);
   selPropses.forEach((el) => (el.nSelMax = nSelMax));
   return selPropses;

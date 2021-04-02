@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { FretkaLayerType, createEmptyNoteSelectionLayer } from './layers';
+import {
+  FretkaLayerType,
+  createEmptyNoteSelectionLayer,
+  createEmptyShapeLayer,
+} from './layers';
 import {
   canDeleteLayer,
   FretkaLayersState,
@@ -29,7 +33,7 @@ export const layerSlice = createSlice({
           return;
         case 'shape':
           console.log('creating new shape layer');
-          state.layers.push(createEmptyNoteSelectionLayer(state.layers.length));
+          state.layers.push(createEmptyShapeLayer(state.layers.length));
           return;
       }
       throw new Error('Unknown layer type!');

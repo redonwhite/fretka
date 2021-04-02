@@ -4,7 +4,7 @@ import type { Point } from '../../fretka/svg';
 import type { NoteAbsolute } from '../../fretka/notes';
 import { noteStateSelector } from '../../fretka/store';
 import classNames from 'classnames';
-import type { NoteSelectionLayerWithIndex } from '../../fretka/layers';
+import type { FretkaLayerWithIndex, NoteSelectionLayerWithIndex } from '../../fretka/layers';
 
 export function SvgFretboardCell(props: {
   note: NoteAbsolute;
@@ -18,14 +18,15 @@ export function SvgFretboardCell(props: {
   const r = 7;
   const noteSelection = useSelector(noteStateSelector);
   
-  const getCellDotClass = (layer: NoteSelectionLayerWithIndex) => {
+  const getCellDotClass = (layer: FretkaLayerWithIndex) => {
+    
     const selProps = noteSelection.notes[note.id].selPropsByLayer[layer.idx];
     return classNames({
       layerColor: true,
       root: selProps.root,
       [`layerColor-${layer.color}`]: true,
     });
-  }
+  };
 
   return (
     <React.Fragment>
