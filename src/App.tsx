@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 import { LayerEditor } from './components/noteselector/layer-editor';
 
 import styles from './App.module.scss';
+import { SvgPatterns } from './components/svg-patterns/svg-patterns';
+import { SvgPatternPreview } from './components/svg-patterns/svg-pattern-preview';
 
 interface AppProps {}
 
@@ -14,8 +16,10 @@ function App({ }: AppProps) {
   
   return (
     <Provider store={store}>
+      <SvgPatterns />
       <div className={styles.appContainer}>
         <div className={styles.fretboardArea}>
+          <SvgPatternPreview />
           <SvgFretboard tuning={guitarTunings.standard} />
         </div>
         <div className={styles.noteSelectorArea}>

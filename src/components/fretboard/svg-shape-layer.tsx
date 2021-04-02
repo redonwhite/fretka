@@ -8,6 +8,7 @@ export function SvgShapeLayer(props: { layer: ShapeLayer }) {
 
   const groupClasseNames = classNames({
     shapeLayer: true,
+    layerColor: true,
     [`layerColor-${layer.color}`]: true,
   });
 

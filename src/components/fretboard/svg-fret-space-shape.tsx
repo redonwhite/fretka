@@ -6,6 +6,11 @@ import { ShapeEditor } from '../noteselector/shape-editor';
 
 export function SvgFretSpaceShape(props: { shape: FretShape }) {
   const { shape } = props;
+
+  const fillColor = shape.appearance.fill;
+  const strokeColor = shape.appearance.stroke;
+  const strokeWidth = shape.appearance.strokeWidth;
+  
   const f = useContext(FretboardContext);
 
   if (!f) return null;
@@ -21,13 +26,7 @@ export function SvgFretSpaceShape(props: { shape: FretShape }) {
   return (
     <>
       {pathDs.map((d, idx) => (
-        <path
-          d={d}
-          stroke="pink"
-          strokeWidth="4"
-          fill="transparent"
-          key={idx}
-        />
+        <path className="fretkaShape" d={d} key={idx} />
       ))}
     </>
   );

@@ -1,7 +1,7 @@
 :global(.layerColor) {
 
   --fretka-layer-color: gray;
-
+  
   &:global(.layerColor-red) {
     --fretka-layer-color: red;
   }
@@ -17,7 +17,6 @@
   &:global(.layerColor-green) {
     --fretka-layer-color: darkturquoise;
   }
-
 }
 
 button:hover .showOnHover, button:focus-within .showOnHover {
