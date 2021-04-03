@@ -159,7 +159,7 @@ export type GridSpaceCoord = [stringIdx: number, fretIdx: number];
 export type GridSpaceCoordSet = Array<GridSpaceCoord>;
 export type GridSpaceCoordSets = Array<GridSpaceCoordSet>;
 
-export function convertFromFretSpace(
+export function fretSpaceShapeToGridSpace(
   shape: FretShapeCoords,
   tuning: GuitarTuning,
   fretCount: number,
@@ -169,8 +169,7 @@ export function convertFromFretSpace(
   let headFretSpec = shapeHead[1];
 
   let stringIndexes = getStringIndexesFromAbsSpec(headStringSpec, tuning);
-
-  const gridCoordSets: GridSpaceCoordSets = [];
+  const rootCoords: GridSpaceCoord[] = [];
 
   stringIndexes.map((stringIdx) => {
     const startingFretIdxs = getFretIndexesFromAbsoluteFretSpec(
@@ -180,22 +179,24 @@ export function convertFromFretSpace(
     );
 
     startingFretIdxs.forEach((fretIdx) =>
-      gridCoordSets.push([[stringIdx, fretIdx]]),
+      rootCoords.push([stringIdx, fretIdx]),
     );
   });
 
   const [_, ...shapeTail] = shape;
-
-  gridCoordSets.forEach((coordSet) => {
+  const allResults: GridSpaceCoordSets = [];
+  
+  rootCoords.forEach((rootCoord) => {
     if (!shapeTail) return;
+    const result: GridSpaceCoordSet = [];
 
-    let [fromStringIdx, fromFretIdx] = coordSet[0];
+    let [fromStringIdx, fromFretIdx] = rootCoord;
 
     let fromNote = addSemitones(
       tuning.stringTunings[fromStringIdx],
       fromFretIdx,
     );
-
+    
     for (const [relStringSpec, ...relIntervalSpec] of shapeTail) {
       const toStringIdx = getStringIndexFromRelSpec(
         relStringSpec,
@@ -214,15 +215,16 @@ export function convertFromFretSpace(
         tuning,
       );
 
-      coordSet.push([toStringIdx, toFretIdx]);
+      result.push([toStringIdx, toFretIdx]);
 
       fromNote = toNote;
       fromStringIdx = toStringIdx;
       fromFretIdx = toFretIdx;
     }
+    if (result.length > 0) allResults.push(result);
   });
 
-  return gridCoordSets;
+  return allResults;
 }
 
 export type XyCoord = [x: number, y: number];

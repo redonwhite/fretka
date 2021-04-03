@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { FretboardContext } from '../../fretka/fretboard';
-import { convertFromFretSpace, FretShapeSpec } from '../../fretka/shapes';
+import { fretSpaceShapeToGridSpace, FretShapeSpec } from '../../fretka/shapes';
 import { xyCoordSetToPathD } from '../../fretka/svg';
 import { ShapeEditor } from '../noteselector/shape-editor';
 
@@ -15,7 +15,7 @@ export function SvgFretSpaceShape(props: { shape: FretShapeSpec }) {
 
   if (!f) return null;
 
-  const gridSpaceCoordSets = convertFromFretSpace(
+  const gridSpaceCoordSets = fretSpaceShapeToGridSpace(
     shape.segments,
     f.tuning,
     f.fretCount,
