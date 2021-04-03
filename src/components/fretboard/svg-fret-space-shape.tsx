@@ -1,16 +1,16 @@
 import React, { useContext } from 'react';
 import { FretboardContext } from '../../fretka/fretboard';
-import { convertFromFretSpace, FretShape } from '../../fretka/shapes';
+import { convertFromFretSpace, FretShapeSpec } from '../../fretka/shapes';
 import { xyCoordSetToPathD } from '../../fretka/svg';
 import { ShapeEditor } from '../noteselector/shape-editor';
 
-export function SvgFretSpaceShape(props: { shape: FretShape }) {
+export function SvgFretSpaceShape(props: { shape: FretShapeSpec }) {
   const { shape } = props;
 
   const fillColor = shape.appearance.fill;
   const strokeColor = shape.appearance.stroke;
   const strokeWidth = shape.appearance.strokeWidth;
-  
+
   const f = useContext(FretboardContext);
 
   if (!f) return null;

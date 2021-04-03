@@ -1,5 +1,5 @@
 import type { NoteSelection, FretkaLayersState } from './note-selection';
-import type { FretShape } from './shapes';
+import type { FretShapeSpec } from './shapes';
 
 export type FretkaLayerType = 'noteSelection' | 'shape';
 export type FretkaLayerBase = {
@@ -16,7 +16,7 @@ export type NoteSelectionLayer = FretkaLayerBase & {
 
 export type ShapeLayer = FretkaLayerBase & {
   layerType: 'shape';
-  shape: FretShape;
+  shape: FretShapeSpec;
 };
 
 export type FretkaLayer = NoteSelectionLayer | ShapeLayer;
@@ -76,12 +76,12 @@ export function createEmptyShapeLayer(
       type: 'sequence of intervals',
       segments: [
         ['string1', 'g'],
-        ['1up', 'perf4'],
-        ['1up', 'perf4'],
-        ['1up', 'perf4'],
-        ['1up', 'maj3'],
-        ['1up', 'perf4'],
-        ['same', 'min3'],
+        ['1up', 'perf4', 'up'],
+        ['1up', 'perf4', 'up'],
+        ['1up', 'perf4', 'up'],
+        ['1up', 'maj3', 'up'],
+        ['1up', 'perf4', 'up'],
+        ['same', 'min3', 'up'],
       ],
     },
     ...overrides,

@@ -4,8 +4,15 @@ import {
   BasicIntervalId,
   getPositiveSteps,
   getShortestDelta,
+  IntervalDirection,
 } from './intervals';
-import { basicNotes, GuitarTuning, NoteClass, NoteClassId } from './notes';
+import {
+  basicNotes,
+  GuitarTuning,
+  NoteAbsolute,
+  NoteClass,
+  NoteClassId,
+} from './notes';
 
 export type AbsoluteStringSpec =
   | 'allStrings'
@@ -66,12 +73,16 @@ export type StringSpec = AbsoluteStringSpec | RelativeStringSpec;
 export type AbsoluteFretNumberSpec = number;
 export type AbsoluteFretSpec = NoteClassId | AbsoluteFretNumberSpec;
 
-export type RelativeFretSpec = BasicIntervalId;
-export type FretSpec = AbsoluteFretSpec | RelativeFretSpec;
+export type RelativeIntervalSpec = [
+  interval: BasicIntervalId,
+  dir: IntervalDirection,
+];
 
 export type AbsoluteFretCoord = [AbsoluteStringSpec, AbsoluteFretSpec];
-export type RelativeFretCoord = [RelativeStringSpec, RelativeFretSpec];
-export type FretCoord = [StringSpec, FretSpec];
+export type RelativeFretCoord = [
+  stringSpec: RelativeStringSpec,
+  ...fretSpec: RelativeIntervalSpec
+];
 
 export type FretShapeCoords = [AbsoluteFretCoord, ...RelativeFretCoord[]];
 export type ShapeAppearance = {
@@ -80,7 +91,7 @@ export type ShapeAppearance = {
   fill?: string;
 };
 
-export type FretShape = {
+export type FretShapeSpec = {
   type: 'sequence of intervals';
   segments: FretShapeCoords;
   appearance: ShapeAppearance;
@@ -131,15 +142,15 @@ function getFretIndexesFromAbsoluteFretSpec(
 }
 
 export function getFretIndexAndNoteFromRelSpec(
-  relFretSpec: RelativeFretSpec,
+  relIntervalSpec: RelativeIntervalSpec,
   fromFretIdx: number,
-  fromNote: NoteClass,
+  fromNote: NoteAbsolute,
   toStringIdx: number,
   tuning: GuitarTuning,
-): [toFretIdx: number, toNote: NoteClass] {
+): [toFretIdx: number, toNote: NoteAbsolute] {
   const toStringNote = tuning.stringTunings[toStringIdx];
   const fromNoteSameFretOnToString = addSemitones(toStringNote, fromFretIdx);
-  const toNote = addInterval(fromNote, relFretSpec);
+  const toNote = addInterval(fromNote, ...relIntervalSpec);
   const deltaFrets = getShortestDelta(fromNoteSameFretOnToString, toNote);
   return [fromFretIdx + deltaFrets, toNote];
 }
@@ -173,8 +184,9 @@ export function convertFromFretSpace(
     );
   });
 
+  const [_, ...shapeTail] = shape;
+
   gridCoordSets.forEach((coordSet) => {
-    const [_, ...shapeTail] = shape;
     if (!shapeTail) return;
 
     let [fromStringIdx, fromFretIdx] = coordSet[0];
@@ -184,17 +196,18 @@ export function convertFromFretSpace(
       fromFretIdx,
     );
 
-    for (const [relStringSpec, relFretSpec] of shapeTail) {
+    for (const [relStringSpec, ...relIntervalSpec] of shapeTail) {
       const toStringIdx = getStringIndexFromRelSpec(
         relStringSpec,
         fromStringIdx,
       );
+
       if (toStringIdx < 0 || toStringIdx >= tuning.stringTunings.length) {
-        break;
+        break; // out of fretboard bounds
       }
 
       const [toFretIdx, toNote] = getFretIndexAndNoteFromRelSpec(
-        relFretSpec,
+        relIntervalSpec,
         fromFretIdx,
         fromNote,
         toStringIdx,

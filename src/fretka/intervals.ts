@@ -2,9 +2,11 @@ import {
   basicNotes,
   basicNotesArray,
   EqTempInterval,
+  NoteAbsolute,
   NoteClass,
   NoteClassId,
 } from './notes';
+import type { RelativeIntervalSpec } from './shapes';
 
 export type IntervalQuality =
   | 'minor'
@@ -33,6 +35,7 @@ export type OtherInterval = IntervalBase & {
 };
 
 export type Interval = BasicInterval | OtherInterval;
+
 export type BasicIntervalId =
   | 'root'
   | 'min2'
@@ -46,6 +49,26 @@ export type BasicIntervalId =
   | 'maj6'
   | 'min7'
   | 'maj7';
+
+// export type ExtendedIntervalId =
+//   | BasicIntervalId
+//   | 'perf8'
+//   | 'min9'
+//   | 'maj9'
+//   | 'min10'
+//   | 'maj10'
+//   | 'perf11'
+//   | 'compTt'
+//   | 'perf12'
+//   | 'min13'
+//   | 'maj13'
+//   | 'min14'
+//   | 'maj14'
+//   | 'perf15';
+
+// export type IntervalId = BasicIntervalId | ExtendedIntervalId;
+export type IntervalId = BasicIntervalId;
+export type IntervalDirection = 'up' | 'down';
 
 export const root: BasicInterval = {
   id: 'root',
@@ -211,14 +234,58 @@ export const basicIntervals: BasicIntervals = Object.fromEntries(
 
 export const basicIntervalsBySpan = basicIntervalsArray;
 
-export function addSemitones(note: NoteClass, semitones: number): NoteClass {
+export function addSemitonesOld(note: NoteClass, semitones: number): NoteClass {
   const newIdx = (note.idx + semitones + 12) % 12;
   return basicNotesArray[newIdx];
 }
 
-export function addInterval(note: NoteClass, iId: BasicIntervalId): NoteClass {
-  const newIdx = (note.idx + basicIntervals[iId].span + 12) % 12;
-  return basicNotesArray[newIdx];
+export function addSemitones(
+  note: NoteAbsolute,
+  semitones: number,
+): NoteAbsolute {
+  const newNote_AbsIdx = note.absIdx + semitones;
+  const newNoteClass_Idx = (newNote_AbsIdx + 12) % 12;
+  const newNoteClass = basicNotesArray[newNoteClass_Idx];
+
+  const newNote: NoteAbsolute = {
+    ...newNoteClass,
+    absIdx: newNote_AbsIdx,
+  };
+
+  return newNote;
+}
+
+export function addInterval(
+  note: NoteAbsolute,
+  intervalId: IntervalId,
+  direction: IntervalDirection = 'up',
+) {
+  const semitones = getSemitones(intervalId, direction);
+  return addSemitones(note, semitones);
+}
+
+export function getSemitones(
+  intervalId: IntervalId,
+  direction: IntervalDirection = 'up',
+) {
+  const dirMultiplier = direction === 'up' ? 1 : -1;
+  return dirMultiplier * basicIntervals[intervalId].span;
+}
+
+export function addIntervalOld(
+  note: NoteClass,
+  iId: BasicIntervalId,
+): NoteClass {
+  const intervalSpan = basicIntervals[iId].span;
+  const newBaseIdx = (note.idx + intervalSpan + 12) % 12;
+  const newNoteBase = basicNotesArray[newBaseIdx];
+
+  const newNote = {
+    ...newNoteBase,
+    idx: note.idx + intervalSpan,
+  };
+
+  return newNote;
 }
 
 export function getPositiveSteps(from: NoteClass, to: NoteClass) {

@@ -19,7 +19,7 @@ function App({ }: AppProps) {
       <SvgPatterns />
       <div className={styles.appContainer}>
         <div className={styles.fretboardArea}>
-          <SvgPatternPreview />
+          {/* <SvgPatternPreview /> */}
           <SvgFretboard tuning={guitarTunings.standard} />
         </div>
         <div className={styles.noteSelectorArea}>
