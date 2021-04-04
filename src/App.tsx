@@ -4,7 +4,7 @@ import { SvgFretboard } from './components/fretboard/svg-fretboard';
 import { guitarTunings } from './fretka/notes';
 import store from './fretka/store';
 import { Provider } from 'react-redux';
-import { LayerEditor } from './components/noteselector/layer-editor';
+import { LayerStackEditor } from './components/layer-editors/layer-stack-editor';
 
 import styles from './App.module.scss';
 import { SvgPatterns } from './components/svg-patterns/svg-patterns';
@@ -23,7 +23,7 @@ function App({ }: AppProps) {
           <SvgFretboard tuning={guitarTunings.standard} />
         </div>
         <div className={styles.noteSelectorArea}>
-          <LayerEditor />
+          <LayerStackEditor />
         </div>
       </div>
     </Provider>

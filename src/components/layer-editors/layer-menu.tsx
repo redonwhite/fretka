@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { actions } from '../../fretka/layers-slice';
 
-import styles from './note-selector.module.scss';
+import styles from './layer-editor.module.scss';
 
 export function LayerMenu(props: { layerIdx: number }) {
   const { layerIdx } = props;

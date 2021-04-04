@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import type { ShapeLayer } from '../../fretka/layers';
+import type { ShapeLayer, ShapeLayerWithIndex } from '../../fretka/layers';
 
-export function ShapeEditor(props: { layer: ShapeLayer; layerIdx: number }) {
+export function ShapeLayerEditor(props: { layer: ShapeLayerWithIndex }) {
   const dispatch = useDispatch();
-  
+
   return <div> this is a shape editor</div>;
 }

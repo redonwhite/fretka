@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { FretboardContext } from '../../fretka/fretboard';
 import { fretSpaceShapeToGridSpace, FretShapeSpec } from '../../fretka/shapes';
 import { xyCoordSetToPathD } from '../../fretka/svg';
-import { ShapeEditor } from '../noteselector/shape-editor';
+import { ShapeLayerEditor } from '../layer-editors/shape-layer-editor';
 
 export function SvgFretSpaceShape(props: { shape: FretShapeSpec }) {
   const { shape } = props;

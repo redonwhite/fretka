@@ -3,6 +3,7 @@ import {
   FretkaLayerType,
   createEmptyNoteSelectionLayer,
   createEmptyShapeLayer,
+  FretkaLayer,
 } from './layers';
 import {
   canDeleteLayer,
@@ -44,10 +45,13 @@ export const layerSlice = createSlice({
     },
     resetSelectionInLayer: (state, action: LayerAction) => {
       const layer = state.layers[action.payload.layerIdx];
-      if (layer.layerType !== 'noteSelection') return;
-      delete layer.selection.root;
-      const sel = layer.selection.selected;
-      Object.keys(sel).forEach((k) => (sel[k as NoteClassId] = false));
+      if (layer.originalState) {
+        const restoredLayer = {
+          ...layer.originalState,
+          originalState: layer.originalState,
+        };
+        state.layers[action.payload.layerIdx] = restoredLayer as FretkaLayer;
+      }
     },
     toggleNoteSelection: (state, action: LayerNoteAction) => {
       const layer = state.layers[action.payload.layerIdx];
