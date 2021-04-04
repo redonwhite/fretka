@@ -9,7 +9,7 @@ export function useFretboard(tuning: GuitarTuning, fretCount: number = 24) {
   const fretboard = useMemo(() => {
     const stringDistance = 25;
     const fretboardWidth = 1398;
-    const marginTop = 20;
+    const marginTop = 50;
     const marginLeft = 1;
     const stringStrokeWidth = 2;
     const fretStrokeWidth = 2;

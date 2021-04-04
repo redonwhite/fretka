@@ -1,5 +1,11 @@
 import type { NoteSelection, FretkaLayersState } from './note-selection';
-import { pentatonicMinorPos1, pentatonicMinorPos2 } from './shape-library';
+import {
+  pentatonicMinorPos1,
+  pentatonicMinorPos2,
+  pentatonicMinorPos3,
+  pentatonicMinorPos4,
+  pentatonicMinorPos5,
+} from './shape-library';
 import type { FretShapeSpec } from './shapes';
 
 export type FretkaLayerType = 'noteSelection' | 'shape';
@@ -71,7 +77,7 @@ export function createEmptyShapeLayer(
     name: 'My selection layer',
     color: layerColors[targetIdx % layerColors.length],
     deletable: true,
-    shape: pentatonicMinorPos2,
+    shape: pentatonicMinorPos5,
     ...overrides,
   };
 }
