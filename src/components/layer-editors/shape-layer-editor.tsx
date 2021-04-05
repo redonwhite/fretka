@@ -1,9 +1,15 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import type { ShapeLayer, ShapeLayerWithIndex } from '../../fretka/layers';
+import type { ShapeLayerWithIndex } from '../../fretka/layers';
+import { NoteSelector } from './note-selector';
+
 
 export function ShapeLayerEditor(props: { layer: ShapeLayerWithIndex }) {
-  const dispatch = useDispatch();
+  
 
-  return <div> this is a shape editor</div>;
+  return (
+    <div>
+      This is a shape editor.
+      <NoteSelector ></NoteSelector>
+    </div>
+  );
 }

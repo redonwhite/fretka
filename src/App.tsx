@@ -6,8 +6,10 @@ import store from './fretka/store';
 import { Provider } from 'react-redux';
 import { LayerStackEditor } from './components/layer-editors/layer-stack-editor';
 
+import "./vars.scss";
 import styles from './App.module.scss';
-import { SvgPatterns } from './components/svg-patterns/svg-patterns';
+
+import { SvgPatterns } from "./components/svg-patterns/svg-patterns";
 import { SvgPatternPreview } from './components/svg-patterns/svg-pattern-preview';
 
 interface AppProps {}

@@ -1,8 +1,6 @@
 import classNames from 'classnames';
-import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  isNoteRoot,
   isNoteRootInLayerByIdx,
   isNoteSelectedInLayerByIdx,
 } from '../../fretka/note-selection';
@@ -10,9 +8,7 @@ import {
 import * as fretka from '../../fretka/notes';
 import styles from './layer-editor.module.scss';
 import { noteStateSelector } from '../../fretka/store';
-import { LayerMenu } from './layer-menu';
 import { actions } from '../../fretka/layers-slice';
-import { LayerHeader } from './layer-header';
 
 export function SelectionLayerEditor(props: { layerIdx: any }) {
   const { layerIdx } = props;

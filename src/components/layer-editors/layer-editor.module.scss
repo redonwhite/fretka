@@ -78,6 +78,10 @@ button:hover .showOnHover, button:focus-within .showOnHover {
   margin: 15px 0;
 }
 
+.selectorPopover {
+  background-color: var(--fretka-popover-bg);
+}
+
 .noteButtonSet {
   display: flex;
   flex-direction: column;

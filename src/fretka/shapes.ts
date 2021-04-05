@@ -171,19 +171,17 @@ export function fretSpaceShapeToGridSpace(
   let stringIndexes = getStringIndexesFromAbsSpec(headStringSpec, tuning);
   const rootCoords: GridSpaceCoord[] = [];
 
-  stringIndexes.map((stringIdx) => {
+  stringIndexes.forEach(stringIdx => {
     const startingFretIdxs = getFretIndexesFromAbsoluteFretSpec(
       tuning.stringTunings[stringIdx],
       headFretSpec,
-      fretCount,
+      fretCount
     );
 
-    startingFretIdxs.forEach((fretIdx) =>
-      rootCoords.push([stringIdx, fretIdx]),
-    );
+    startingFretIdxs.forEach(fretIdx => rootCoords.push([stringIdx, fretIdx]));
   });
 
-  const [_, ...shapeTail] = shape;
+  const [_shapeHead, ...shapeTail] = shape;
   const allResults: GridSpaceCoordSets = [];
   
   rootCoords.forEach((rootCoord) => {
