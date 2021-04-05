@@ -79,7 +79,9 @@ button:hover .showOnHover, button:focus-within .showOnHover {
 }
 
 .selectorPopover {
+  border-radius: var(--fretka-base-border-radius);
   background-color: var(--fretka-popover-bg);
+  padding: 10px;
 }
 
 .noteButtonSet {
@@ -131,7 +133,7 @@ button:hover .showOnHover, button:focus-within .showOnHover {
   button {
     background-color: var(--fretka-secondary-button-bg);
     padding: 10px 30px;
-    border-radius: 100px;
+    border-radius: calc(var(--fretka-base-border-radius) * 10);
     text-align: center;
     white-space: nowrap;
   }
@@ -139,8 +141,7 @@ button:hover .showOnHover, button:focus-within .showOnHover {
 
 button {
   background-color: var(--fretka-primary-button-bg);
-
-  border-radius: 5px;
+  border-radius: var(--fretka-base-border-radius);
   transition: background-color var(--fretka-transition-time) ease-out;
   border: none;
   cursor: pointer;

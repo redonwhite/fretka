@@ -19,13 +19,16 @@ export function NoteSelector() {
     });
   };
 
+  const closePopover = () => setIsRootPopoverOpen(false);
+
   return (
     <Popover
+      containerClassName={styles.selectorPopover}
+      onClickOutside={closePopover}
+      positions={['right']}
       isOpen={isRootPopoverOpen}
-      positions={["top", "bottom", "left", "right"]} // preferred positions by priority
       content={
-        <div className={styles.selectorPopover}>
-          asdf
+        <>
           <div className={styles.noteButtonWrapper}>
             {notes.map((note, idx) => (
               <div className={styles.noteButtonSet} key={idx}>
@@ -35,7 +38,7 @@ export function NoteSelector() {
               </div>
             ))}
           </div>
-        </div>
+        </>
       }
     >
       <button
