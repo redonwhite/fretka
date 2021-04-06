@@ -19,11 +19,12 @@ export function SelectionLayerEditor(props: { layerIdx: any }) {
 
   const getButtonClass = (note: fretka.NoteClass) => {
     return classNames({
+      [styles.shy]: true,
       [styles.noteButton]: true,
       [styles.selected]: isNoteSelectedInLayerByIdx(
         noteSelection,
         note,
-        layerIdx,
+        layerIdx
       ),
     });
   };

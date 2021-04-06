@@ -76,6 +76,9 @@ button:hover .showOnHover, button:focus-within .showOnHover {
 .noteButtonWrapper {
   display: flex;
   margin: 15px 0;
+  &.compact {
+    margin: 0;
+  }
 }
 
 .selectorPopover {
@@ -93,6 +96,8 @@ button:hover .showOnHover, button:focus-within .showOnHover {
   }
   flex-grow: 1;
   flex-basis: 1px;
+  min-width: 30px;
+  text-align: center;
 
   .rootButton { 
     margin-top: 8px;
@@ -116,7 +121,9 @@ button:hover .showOnHover, button:focus-within .showOnHover {
 }
 
 .noteButton {
-  color: transparent;
+  &.shy {
+    color: transparent;
+  }
   padding-top: 5px;
   padding-bottom: 5px;
 }

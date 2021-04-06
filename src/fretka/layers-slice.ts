@@ -4,6 +4,7 @@ import {
   createEmptyNoteSelectionLayer,
   createEmptyShapeLayer,
   FretkaLayer,
+  ShapeLayer,
 } from './layers';
 import {
   canDeleteLayer,
@@ -73,7 +74,13 @@ export const layerSlice = createSlice({
         delete layer.selection.root;
       }
     },
-  },
+    setShapeRootFretSpec: (state, action: LayerNoteAction) => {
+      const { payload } = action;
+      const { layerIdx, noteId } = payload;
+      const layer = state.layers[layerIdx] as ShapeLayer;
+      layer.shape.segments[0][1] = noteId;
+    },
+  }
 });
 
 export const actions = layerSlice.actions;
