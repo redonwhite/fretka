@@ -13,9 +13,4 @@
     stroke: var(--fretka-layer-color);
     transition: all var(--fretka-transition-time);
   }
-
-  path:global(.fretkaShape) {
-    fill: url(#lightStripePattern);
-  }
-
 }

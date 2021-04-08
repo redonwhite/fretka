@@ -4,7 +4,7 @@ import {
   BasicIntervalId,
   getPositiveSteps,
   getShortestDelta,
-  IntervalDirection,
+  IntervalDirectionId,
 } from './intervals';
 import {
   basicNotes,
@@ -14,73 +14,180 @@ import {
   NoteClassId,
 } from './notes';
 
-export type AbsoluteStringSpec =
-  | 'allStrings'
-  | 'string1'
-  | 'string2'
-  | 'string3'
-  | 'string4'
-  | 'string5'
-  | 'string6';
+export type AbsoluteStringSpec = {
+  id: AbsoluteStringSpecId;
+  name: string;
+  stringIdx?: number;
+};
 
-export type RelativeStringSpec =
-  | 'same'
-  | '1up'
-  | '2up'
-  | '3up'
-  | '4up'
-  | '5up'
-  | '1down'
-  | '2down'
-  | '3down'
-  | '4down'
-  | '5down';
+export const absoluteStringSpecArray: Array<AbsoluteStringSpec> = [
+  {
+    id: "allStrings",
+    name: "on every string",
+  },
+  {
+    id: "string1",
+    name: "string 1",
+    stringIdx: 0,
+  },
+  {
+    id: "string2",
+    name: "string 2",
+    stringIdx: 1,
+  },
+  {
+    id: "string3",
+    name: "string 3",
+    stringIdx: 2,
+  },
+  {
+    id: "string4",
+    name: "string 4",
+    stringIdx: 3,
+  },
+  {
+    id: "string5",
+    name: "string 5",
+    stringIdx: 4,
+  },
+  {
+    id: "string6",
+    name: "string 6",
+    stringIdx: 5,
+  },
+];
+
+export type AbsoluteStringSpecId =
+  | "allStrings"
+  | "string1"
+  | "string2"
+  | "string3"
+  | "string4"
+  | "string5"
+  | "string6";
+
+export type RelativeStringSpec = {
+  id: RelativeStringSpecId;
+  stringOffset?: number;
+  name: string;
+};
+
+export const relativeStringSpecArray: Array<RelativeStringSpec> = [
+  {
+    id: "same",
+    stringOffset: 0,
+    name: "same string",
+  },
+  {
+    id: "1up",
+    stringOffset: 1,
+    name: "1 string up",
+  },
+  {
+    id: "2up",
+    stringOffset: 2,
+    name: "2 strings up",
+  },
+  {
+    id: "3up",
+    stringOffset: 3,
+    name: "3 strings up",
+  },
+  {
+    id: "4up",
+    stringOffset: 4,
+    name: "4 strings up",
+  },
+  {
+    id: "5up",
+    stringOffset: 5,
+    name: "5 strings up",
+  },
+  {
+    id: "1down",
+    stringOffset: -1,
+    name: "1 string down",
+  },
+  {
+    id: "2down",
+    stringOffset: -2,
+    name: "2 string down",
+  },
+  {
+    id: "3down",
+    stringOffset: -3,
+    name: "3 string down",
+  },
+  {
+    id: "4down",
+    stringOffset: -4,
+    name: "4 string down",
+  },
+  {
+    id: "5down",
+    stringOffset: -5,
+    name: "5 string down",
+  },
+];
+
+export type RelativeStringSpecId =
+  | "same"
+  | "1up"
+  | "2up"
+  | "3up"
+  | "4up"
+  | "5up"
+  | "1down"
+  | "2down"
+  | "3down"
+  | "4down"
+  | "5down";
 
 function getStringIndexFromRelSpec(
-  relStringSpec: RelativeStringSpec,
-  fromStringIdx: number,
+  relStringSpec: RelativeStringSpecId,
+  fromStringIdx: number
 ): number {
   switch (relStringSpec) {
-    case 'same':
+    case "same":
       return fromStringIdx;
-    case '1up':
+    case "1up":
       return fromStringIdx + 1;
-    case '2up':
+    case "2up":
       return fromStringIdx + 2;
-    case '3up':
+    case "3up":
       return fromStringIdx + 3;
-    case '4up':
+    case "4up":
       return fromStringIdx + 4;
-    case '5up':
+    case "5up":
       return fromStringIdx + 5;
-    case '1down':
+    case "1down":
       return fromStringIdx - 1;
-    case '2down':
+    case "2down":
       return fromStringIdx - 2;
-    case '3down':
+    case "3down":
       return fromStringIdx - 3;
-    case '4down':
+    case "4down":
       return fromStringIdx - 4;
-    case '5down':
+    case "5down":
       return fromStringIdx - 5;
   }
 }
 
 export type RootRelativeFretSpec = number;
 
-export type StringSpec = AbsoluteStringSpec | RelativeStringSpec;
+export type StringSpec = AbsoluteStringSpecId | RelativeStringSpecId;
 
 export type AbsoluteFretNumberSpec = number;
 export type AbsoluteFretSpec = NoteClassId | AbsoluteFretNumberSpec;
 
 export type RelativeIntervalSpec = [
   interval: BasicIntervalId,
-  dir: IntervalDirection,
+  dir: IntervalDirectionId,
 ];
 
-export type AbsoluteFretCoord = [AbsoluteStringSpec, AbsoluteFretSpec];
+export type AbsoluteFretCoord = [AbsoluteStringSpecId, AbsoluteFretSpec];
 export type RelativeFretCoord = [
-  stringSpec: RelativeStringSpec,
+  stringSpec: RelativeStringSpecId,
   ...fretSpec: RelativeIntervalSpec
 ];
 
@@ -98,30 +205,30 @@ export type FretShapeSpec = {
 };
 
 export function getStringIndexesFromAbsSpec(
-  stringSpec: AbsoluteStringSpec,
-  tuning: GuitarTuning,
+  stringSpec: AbsoluteStringSpecId,
+  tuning: GuitarTuning
 ): Array<number> {
   switch (stringSpec) {
-    case 'allStrings':
+    case "allStrings":
       const r = Object.keys(tuning.stringTunings)
         .map((_, idx) => idx)
         .reverse();
       console.log(r);
       return r;
-    case 'string1':
+    case "string1":
       return [0];
-    case 'string2':
+    case "string2":
       return [1];
-    case 'string3':
+    case "string3":
       return [2];
-    case 'string4':
+    case "string4":
       return [3];
-    case 'string5':
+    case "string5":
       return [4];
-    case 'string6':
+    case "string6":
       return [5];
   }
-  throw new Error('unknown stirng specifier');
+  throw new Error("unknown stirng specifier");
 }
 
 function getFretIndexesFromAbsoluteFretSpec(

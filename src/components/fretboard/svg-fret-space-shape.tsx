@@ -26,7 +26,7 @@ export function SvgFretSpaceShape(props: { shape: FretShapeSpec }) {
   return (
     <>
       {pathDs.map((d, idx) => (
-        <path className="fretkaShape" d={d} key={idx} />
+        <path className="fretkaShape" d={d} key={idx} {...shape.appearance} />
       ))}
     </>
   );

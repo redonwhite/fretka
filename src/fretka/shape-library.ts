@@ -2,7 +2,7 @@ import type { FretShapeSpec } from "./shapes";
 
 export const pentatonicMinorPos1: FretShapeSpec = {
   appearance: {
-    fill: "url(#graphpaper)",
+    fill: "url(#lightStripePattern)",
   },
   type: "sequence of intervals",
   segments: [

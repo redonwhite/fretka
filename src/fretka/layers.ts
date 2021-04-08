@@ -80,11 +80,11 @@ export function createEmptyShapeLayer(
   overrides?: Partial<ShapeLayer>,
 ): ShapeLayer {
   const layer: ShapeLayer = {
-    layerType: 'shape',
-    name: 'My shape layer',
+    layerType: "shape",
+    name: "My shape layer",
     color: layerColors[targetIdx % layerColors.length],
     deletable: true,
-    shape: pentatonicMinorPos5,
+    shape: pentatonicMinorPos1,
     ...overrides,
   };
   layer.originalState = { ...layer };

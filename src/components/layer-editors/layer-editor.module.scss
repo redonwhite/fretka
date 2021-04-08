@@ -81,10 +81,14 @@ button:hover .showOnHover, button:focus-within .showOnHover {
   }
 }
 
-.selectorPopover {
-  border-radius: var(--fretka-base-border-radius);
-  background-color: var(--fretka-popover-bg);
-  padding: 10px;
+.shapeStep {
+  display: inline-flex;
+  margin: 2px 0;
+  &:not(:last-child):after {
+    content: "➔";
+    display: inline-block;
+    padding: 0 10px;
+  }
 }
 
 .noteButtonSet {
@@ -164,6 +168,27 @@ button {
     color: white;
     background-color: var(--fretka-selection-color);
   }
+}
 
-  
+.shapeEditor {
+  display: grid;
+  grid-template-columns: 90px auto;
+  grid-template-rows: 50px auto;
+  grid-template-areas: 
+    'sample head'
+    '. tail';
+  margin: 15px 0;
+  gap: 5px 5px;
+}
+
+.shapeSample {
+  grid-area: sample;
+
+}
+.shapeEditorHead {
+  grid-area: head;
+}
+
+.shapeEditorTail {
+  grid-area: tail;
 }

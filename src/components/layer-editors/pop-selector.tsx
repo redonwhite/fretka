@@ -1,28 +1,24 @@
+import React, { PropsWithChildren, useState } from "react";
 import classNames from "classnames";
-import React, { FC, FunctionComponent, PropsWithChildren, useState } from "react";
 import { Popover } from "react-tiny-popover";
-import {
-  basicNotesArray,
-  getPrettyNoteName,
-  NoteClass,
-} from "../../fretka/notes";
 
-import styles from "./layer-editor.module.scss";
+import styles from "./pop-selector.module.scss";
 
 type PopSelectorProps<Tvalue extends string | number> = PropsWithChildren<{
   sel: Tvalue;
   setSel: (_sel: Tvalue) => any;
-  options: Array<{ value: Tvalue, label: string }>;
+  options: Array<{ value: Tvalue; label: string }>;
 }>;
 
-export function PopSelector<Tvalue extends string | number>(props : PopSelectorProps<Tvalue>) {
-  
+export function PopSelector<Tvalue extends string | number>(
+  props: PopSelectorProps<Tvalue>
+) {
   const { sel, setSel, options } = props;
   const [isRootPopoverOpen, setIsRootPopoverOpen] = useState(false);
-    
+
   const currentLabel = options.find(opt => opt.value === sel)?.label;
 
-  const getButtonClass = (_value : string | number) => {
+  const getButtonClass = (_value: string | number) => {
     return classNames({
       [styles.noteButton]: true,
     });
@@ -40,8 +36,7 @@ export function PopSelector<Tvalue extends string | number>(props : PopSelectorP
   const pick = (value: Tvalue) => {
     flip();
     setSel(value);
-  }
-
+  };
 
   return (
     <Popover
@@ -53,22 +48,20 @@ export function PopSelector<Tvalue extends string | number>(props : PopSelectorP
       isOpen={isRootPopoverOpen}
       content={
         <>
-          <div className={buttonWrapperClasses}>
-            {options.map((option, idx) => (
-              <div className={styles.noteButtonSet} key={idx}>
-                <button
-                  className={getButtonClass(option.value)}
-                  onClick={() => pick(option.value)}
-                >
-                  {option.label}
-                </button>
-              </div>
-            ))}
-          </div>
+          {options.map((option, idx) => (
+            <button
+              className={getButtonClass(option.value)}
+              onClick={() => pick(option.value)}
+            >
+              {option.label}
+            </button>
+          ))}
         </>
       }
     >
-      <button onClick={flip}>{currentLabel}</button>
+      <button className={styles.popSelButton} onClick={flip}>
+        <span className={styles.label}>{currentLabel}</span>
+      </button>
     </Popover>
   );
 }

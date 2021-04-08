@@ -68,14 +68,29 @@ export type BasicIntervalId =
 
 // export type IntervalId = BasicIntervalId | ExtendedIntervalId;
 export type IntervalId = BasicIntervalId;
-export type IntervalDirection = 'up' | 'down';
+export type IntervalDirectionId = "up" | "down";
+export type IntervalDirection = {
+  id: IntervalDirectionId;
+  name: string;
+};
+
+export const intervalDirectionArray = [
+  {
+    id: "up",
+    name: "up",
+  },
+  {
+    id: "down",
+    name: "down",
+  },
+];
 
 export const root: BasicInterval = {
-  id: 'root',
-  abbr: 'R',
-  name: 'root',
+  id: "root",
+  abbr: "♮R",
+  name: "root",
   step: 1,
-  quality: 'perfect',
+  quality: "perfect",
   span: 0,
   isBasic: true,
 };
@@ -91,11 +106,11 @@ export const min2: BasicInterval = {
 };
 
 export const maj2: BasicInterval = {
-  id: 'maj2',
-  abbr: '2',
-  name: 'major second',
+  id: "maj2",
+  abbr: "♮2",
+  name: "major second",
   step: 2,
-  quality: 'major',
+  quality: "major",
   span: 2,
   isBasic: true,
 };
@@ -111,21 +126,21 @@ export const min3: BasicInterval = {
 };
 
 export const maj3: BasicInterval = {
-  id: 'maj3',
-  name: 'major third',
-  abbr: '3',
+  id: "maj3",
+  name: "major third",
+  abbr: "♮3",
   step: 3,
-  quality: 'major',
+  quality: "major",
   span: 4,
   isBasic: true,
 };
 
 export const perf4: BasicInterval = {
-  id: 'perf4',
-  name: 'perfect fourth',
-  abbr: '4',
+  id: "perf4",
+  name: "perfect fourth",
+  abbr: "♮4",
   step: 4,
-  quality: 'perfect',
+  quality: "perfect",
   span: 5,
   isBasic: true,
 };
@@ -162,11 +177,11 @@ export const dim5: Interval = {
 };
 
 export const perf5: BasicInterval = {
-  id: 'perf5',
-  name: 'perfect fifth',
-  abbr: '5',
+  id: "perf5",
+  name: "perfect fifth",
+  abbr: "♮5",
   step: 5,
-  quality: 'perfect',
+  quality: "perfect",
   span: 7,
   isBasic: true,
 };
@@ -182,11 +197,11 @@ export const min6: BasicInterval = {
 };
 
 export const maj6: BasicInterval = {
-  id: 'maj6',
-  name: 'major sixth',
-  abbr: '6',
+  id: "maj6",
+  name: "major sixth",
+  abbr: "♮6",
   step: 6,
-  quality: 'major',
+  quality: "major",
   span: 9,
   isBasic: true,
 };
@@ -202,11 +217,11 @@ export const min7: BasicInterval = {
 };
 
 export const maj7: BasicInterval = {
-  id: 'maj7',
-  name: 'major seventh',
-  abbr: '7',
+  id: "maj7",
+  name: "major seventh",
+  abbr: "♮7",
   step: 7,
-  quality: 'major',
+  quality: "major",
   span: 11,
   isBasic: true,
 };
@@ -258,7 +273,7 @@ export function addSemitones(
 export function addInterval(
   note: NoteAbsolute,
   intervalId: IntervalId,
-  direction: IntervalDirection = 'up',
+  direction: IntervalDirectionId = "up"
 ) {
   const semitones = getSemitones(intervalId, direction);
   return addSemitones(note, semitones);
@@ -266,9 +281,9 @@ export function addInterval(
 
 export function getSemitones(
   intervalId: IntervalId,
-  direction: IntervalDirection = 'up',
+  direction: IntervalDirectionId = "up"
 ) {
-  const dirMultiplier = direction === 'up' ? 1 : -1;
+  const dirMultiplier = direction === "up" ? 1 : -1;
   return dirMultiplier * basicIntervals[intervalId].span;
 }
 
