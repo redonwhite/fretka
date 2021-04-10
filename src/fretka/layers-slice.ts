@@ -19,30 +19,38 @@ const initialLayerState: FretkaLayersState = {
 };
 
 export const layerSlice = createSlice({
-  name: 'layers',
+  name: "layers",
   initialState: initialLayerState,
   reducers: {
     addLayerAtEnd: (
       state,
-      action: { payload: { layerType: FretkaLayerType } },
+      action: { payload: { layerType: FretkaLayerType } }
     ) => {
       const layerType: FretkaLayerType = action.payload.layerType;
       console.log(action);
       switch (layerType) {
-        case 'noteSelection':
-          console.log('creating new selection layer');
+        case "noteSelection":
+          console.log("creating new selection layer");
           state.layers.push(createEmptyNoteSelectionLayer(state.layers.length));
           return;
-        case 'shape':
-          console.log('creating new shape layer');
+        case "shape":
+          console.log("creating new shape layer");
           state.layers.push(createEmptyShapeLayer(state.layers.length));
           return;
       }
-      throw new Error('Unknown layer type!');
+      throw new Error("Unknown layer type!");
     },
     deleteLayer: (state, action: LayerAction) => {
       const layerIdx = action.payload.layerIdx;
       if (canDeleteLayer(state, layerIdx)) state.layers.splice(layerIdx, 1);
+    },
+    renameLayer: (
+      state,
+      action: LayerAction & { payload: { layerName: string } }
+    ) => {
+      const layerName = action.payload.layerName;
+      const layer = state.layers[action.payload.layerIdx];
+      layer.name = layerName;
     },
     resetSelectionInLayer: (state, action: LayerAction) => {
       const layer = state.layers[action.payload.layerIdx];
@@ -56,7 +64,7 @@ export const layerSlice = createSlice({
     },
     toggleNoteSelection: (state, action: LayerNoteAction) => {
       const layer = state.layers[action.payload.layerIdx];
-      if (layer.layerType !== 'noteSelection') return;
+      if (layer.layerType !== "noteSelection") return;
       const noteId = action.payload.noteId;
       const layerIdx = action.payload.layerIdx;
       const wasSelected = layer.selection.selected[noteId];
@@ -64,10 +72,10 @@ export const layerSlice = createSlice({
     },
     toggleRootSelection: (
       state,
-      { payload: { layerIdx, noteId } }: LayerNoteAction,
+      { payload: { layerIdx, noteId } }: LayerNoteAction
     ) => {
       const layer = state.layers[layerIdx];
-      if (layer.layerType !== 'noteSelection') return;
+      if (layer.layerType !== "noteSelection") return;
       if (layer.selection.root !== noteId) {
         layer.selection.root = noteId;
       } else {
@@ -80,7 +88,7 @@ export const layerSlice = createSlice({
       const layer = state.layers[layerIdx] as ShapeLayer;
       layer.shape.segments[0][1] = noteId;
     },
-  }
+  },
 });
 
 export const actions = layerSlice.actions;

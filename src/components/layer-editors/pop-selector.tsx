@@ -5,9 +5,15 @@ import { Popover } from "react-tiny-popover";
 import styles from "./pop-selector.module.scss";
 
 type PopSelectorProps<Tvalue extends string | number> = PropsWithChildren<{
+  className?: string;
   sel: Tvalue;
   setSel: (_sel: Tvalue) => any;
-  options: Array<{ value: Tvalue; label: string }>;
+  options: Array<{
+    value: Tvalue;
+    label: string | React.ReactElement;
+    choiceLabel?: string | React.ReactElement;
+    buttonLabel?: string | React.ReactElement;
+  }>;
 }>;
 
 export function PopSelector<Tvalue extends string | number>(
@@ -16,20 +22,16 @@ export function PopSelector<Tvalue extends string | number>(
   const { sel, setSel, options } = props;
   const [isRootPopoverOpen, setIsRootPopoverOpen] = useState(false);
 
-  const currentLabel = options.find(opt => opt.value === sel)?.label;
+  const currentOption = options.find(opt => opt.value === sel);
 
-  const getButtonClass = (_value: string | number) => {
+  const getChoiceButtonClass = (_value: string | number) => {
     return classNames({
       [styles.noteButton]: true,
+      [styles.compact]: true,
     });
   };
 
   const closePopover = () => setIsRootPopoverOpen(false);
-
-  const buttonWrapperClasses = classNames({
-    [styles.noteButtonWrapper]: true,
-    [styles.compact]: true,
-  });
 
   const flip = () => setIsRootPopoverOpen(!isRootPopoverOpen);
 
@@ -42,7 +44,7 @@ export function PopSelector<Tvalue extends string | number>(
     <Popover
       containerClassName={styles.selectorPopover}
       onClickOutside={closePopover}
-      positions={["top", "bottom", "right", "left"]}
+      positions={["right", "left"]}
       align="center"
       // contentLocation={{ top: 200, left: 100 }}
       isOpen={isRootPopoverOpen}
@@ -50,18 +52,22 @@ export function PopSelector<Tvalue extends string | number>(
         <>
           {options.map((option, idx) => (
             <button
-              className={getButtonClass(option.value)}
+              className={getChoiceButtonClass(option.value)}
               onClick={() => pick(option.value)}
             >
-              {option.label}
+              {option.choiceLabel ?? option.label}
             </button>
           ))}
         </>
       }
     >
-      <button className={styles.popSelButton} onClick={flip}>
-        <span className={styles.label}>{currentLabel}</span>
+      <button className={getMainButtonClass()} onClick={flip}>
+        <span className={styles.label}>{currentOption?.buttonLabel ?? currentOption?.label ?? 'select one'}</span>
       </button>
     </Popover>
   );
+
+  function getMainButtonClass(): string | undefined {
+    return styles.popSelButton + ' ' + props.className;
+  }
 }

@@ -1,6 +1,6 @@
 .popSelButton {
 
-  height: 2em;
+  // height: 2em;
   vertical-align: baseline;
 
   .label {
@@ -17,6 +17,11 @@
     border-end-end-radius: 0;
     border-start-end-radius: 0;
   }
+
+  // background-color: var(--fretka-layer-color);
+  // color: white;
+
+  min-height: 26px;
 }
 
 .selectorPopover {

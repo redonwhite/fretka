@@ -1,3 +1,6 @@
+import React from "react";
+import styles from "./symbols.module.scss";
+
 import {
   addInterval,
   addSemitones,
@@ -5,14 +8,14 @@ import {
   getPositiveSteps,
   getShortestDelta,
   IntervalDirectionId,
-} from './intervals';
+} from "./intervals";
 import {
   basicNotes,
   GuitarTuning,
   NoteAbsolute,
   NoteClass,
   NoteClassId,
-} from './notes';
+} from "./notes";
 
 export type AbsoluteStringSpec = {
   id: AbsoluteStringSpecId;
@@ -70,61 +73,82 @@ export type RelativeStringSpec = {
   id: RelativeStringSpecId;
   stringOffset?: number;
   name: string;
+  symbol: string | React.ReactElement;
 };
 
+// 𝄖	One-line Staff	U + 1D116;	&#119062;
+// 𝄗	Two-line Staff	U + 1D117;	&#119063;
+// 𝄘	Three-line Staff	U + 1D118;	&#119064;
+// 𝄙	Four-line Staff	U + 1D119;	&#119065;
+// 𝄚	Five-line Staff	U + 1D11A;	&#119066;
+// 𝄛	Six-line Staff	U + 1D11B;	&#119067;
+// 𝄜	Six-string Fretboard	U + 1D11C;	&#119068;
+// 𝄝	Four - string Fretboar
+// <span className="arrowSymbol">🠕🠗</span>▲
 export const relativeStringSpecArray: Array<RelativeStringSpec> = [
   {
-    id: "same",
-    stringOffset: 0,
-    name: "same string",
-  },
-  {
-    id: "1up",
-    stringOffset: 1,
-    name: "1 string up",
-  },
-  {
-    id: "2up",
-    stringOffset: 2,
-    name: "2 strings up",
-  },
-  {
-    id: "3up",
-    stringOffset: 3,
-    name: "3 strings up",
-  },
-  {
-    id: "4up",
-    stringOffset: 4,
-    name: "4 strings up",
-  },
-  {
     id: "5up",
+    symbol: "🠕🠕🠕🠕🠕",
     stringOffset: 5,
     name: "5 strings up",
   },
   {
+    id: "4up",
+    symbol: "🠕🠕🠕🠕",
+    stringOffset: 4,
+    name: "4 strings up",
+  },
+  {
+    id: "3up",
+    symbol: "🠕🠕🠕",
+    stringOffset: 3,
+    name: "3 strings up",
+  },
+  {
+    id: "2up",
+    symbol: "🠕🠕",
+    stringOffset: 2,
+    name: "2 strings up",
+  },
+  {
+    id: "1up",
+    symbol: "🠕",
+    stringOffset: 1,
+    name: "1 string up",
+  },
+  {
+    id: "same",
+    symbol: "-",
+    stringOffset: 0,
+    name: "same string",
+  },
+  {
     id: "1down",
+    symbol: "🠗",
     stringOffset: -1,
     name: "1 string down",
   },
   {
     id: "2down",
+    symbol: "🠗🠗",
     stringOffset: -2,
     name: "2 string down",
   },
   {
     id: "3down",
+    symbol: "🠗🠗🠗",
     stringOffset: -3,
     name: "3 string down",
   },
   {
     id: "4down",
+    symbol: "🠗🠗🠗🠗",
     stringOffset: -4,
     name: "4 string down",
   },
   {
     id: "5down",
+    symbol: "🠗🠗🠗🠗🠗",
     stringOffset: -5,
     name: "5 string down",
   },
@@ -182,7 +206,7 @@ export type AbsoluteFretSpec = NoteClassId | AbsoluteFretNumberSpec;
 
 export type RelativeIntervalSpec = [
   interval: BasicIntervalId,
-  dir: IntervalDirectionId,
+  dir: IntervalDirectionId
 ];
 
 export type AbsoluteFretCoord = [AbsoluteStringSpecId, AbsoluteFretSpec];
@@ -198,8 +222,22 @@ export type ShapeAppearance = {
   fill?: string;
 };
 
+export type FretShapeSpecTypeId = "sequence of intervals";
+
+export type FretShapeSpecType = {
+  id: FretShapeSpecTypeId;
+  name: string;
+};
+
+export const fretShapeTypeArray: FretShapeSpecType[] = [
+  {
+    id: "sequence of intervals",
+    name: "sequence of intervals",
+  },
+];
+
 export type FretShapeSpec = {
-  type: 'sequence of intervals';
+  type: FretShapeSpecTypeId;
   segments: FretShapeCoords;
   appearance: ShapeAppearance;
 };
@@ -234,9 +272,9 @@ export function getStringIndexesFromAbsSpec(
 function getFretIndexesFromAbsoluteFretSpec(
   stringNote: NoteClass,
   fret: AbsoluteFretSpec,
-  fretCount: number,
+  fretCount: number
 ): number[] {
-  if (typeof fret === 'number') {
+  if (typeof fret === "number") {
     return [fret];
   }
   let currentFretIdx = getPositiveSteps(stringNote, basicNotes[fret]);
@@ -253,7 +291,7 @@ export function getFretIndexAndNoteFromRelSpec(
   fromFretIdx: number,
   fromNote: NoteAbsolute,
   toStringIdx: number,
-  tuning: GuitarTuning,
+  tuning: GuitarTuning
 ): [toFretIdx: number, toNote: NoteAbsolute] {
   const toStringNote = tuning.stringTunings[toStringIdx];
   const fromNoteSameFretOnToString = addSemitones(toStringNote, fromFretIdx);
@@ -269,7 +307,7 @@ export type GridSpaceCoordSets = Array<GridSpaceCoordSet>;
 export function fretSpaceShapeToGridSpace(
   shape: FretShapeCoords,
   tuning: GuitarTuning,
-  fretCount: number,
+  fretCount: number
 ): GridSpaceCoordSets {
   let shapeHead = shape[0];
   let headStringSpec = shapeHead[0];
@@ -290,8 +328,8 @@ export function fretSpaceShapeToGridSpace(
 
   const [_shapeHead, ...shapeTail] = shape;
   const allResults: GridSpaceCoordSets = [];
-  
-  rootCoords.forEach((rootCoord) => {
+
+  rootCoords.forEach(rootCoord => {
     if (!shapeTail) return;
     const result: GridSpaceCoordSet = [];
 
@@ -299,13 +337,13 @@ export function fretSpaceShapeToGridSpace(
 
     let fromNote = addSemitones(
       tuning.stringTunings[fromStringIdx],
-      fromFretIdx,
+      fromFretIdx
     );
-    
+
     for (const [relStringSpec, ...relIntervalSpec] of shapeTail) {
       const toStringIdx = getStringIndexFromRelSpec(
         relStringSpec,
-        fromStringIdx,
+        fromStringIdx
       );
 
       if (toStringIdx < 0 || toStringIdx >= tuning.stringTunings.length) {
@@ -317,7 +355,7 @@ export function fretSpaceShapeToGridSpace(
         fromFretIdx,
         fromNote,
         toStringIdx,
-        tuning,
+        tuning
       );
 
       result.push([toStringIdx, toFretIdx]);

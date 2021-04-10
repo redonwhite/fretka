@@ -1,47 +1,15 @@
 import { useDispatch } from "react-redux";
-import {
-  basicIntervalsArray,
-  intervalDirectionArray,
-} from "../../fretka/intervals";
 import type { ShapeLayerWithIndex } from "../../fretka/layers";
 import { actions } from "../../fretka/layers-slice";
 import {
-  basicNotesArray,
-  getPrettyNoteName,
   NoteClassId,
 } from "../../fretka/notes";
-import {
-  absoluteStringSpecArray,
-  relativeStringSpecArray,
-} from "../../fretka/shapes";
-
 import { PopSelector } from "./pop-selector";
 import styles from './layer-editor.module.scss';
+import { basicNoteOptions, absoluteStringSpecOptions, shapeTypeOptions } from "./pop-selector-options";
+import { ShapeCoordEditor } from "./shape-coord-editor";
 
-const basicNoteOptions = basicNotesArray.map(n => ({
-  value: n.id,
-  label: getPrettyNoteName(n).toUpperCase(),
-}));
 
-const basicIntervalOptions = basicIntervalsArray.map(i => ({
-  value: i.id,
-  label: i.abbr,
-}));
-
-const absoluteStringSpecOptions = absoluteStringSpecArray.map(s => ({
-  value: s.id,
-  label: s.name,
-}));
-
-const relativeStringSpecOptions = relativeStringSpecArray.map(s => ({
-  value: s.id,
-  label: s.name,
-}));
-
-const intervalDirectionOptions = intervalDirectionArray.map(d => ({
-  value: d.id,
-  label: d.name,
-}));
 
 export function ShapeLayerEditor(props: { layer: ShapeLayerWithIndex }) {
   const { layer } = props;
@@ -56,7 +24,7 @@ export function ShapeLayerEditor(props: { layer: ShapeLayerWithIndex }) {
       })
     );
 
-  const [shapeRoot, shapeStart, ...shapeTail] = shape.segments;
+  const [shapeRoot, ...shapeCoords] = shape.segments;
 
   
   return (
@@ -69,10 +37,8 @@ export function ShapeLayerEditor(props: { layer: ShapeLayerWithIndex }) {
       </div>
       <div className={styles.shapeEditorHead}>
         <div className={styles.inner}>
-          <span className={styles.fieldLabel}>Type:</span>
-          <span className={styles.fieldValue}>{shape.type}</span>
-          <div>
-            Root:
+          <span className={styles.fieldLabel}>Root:</span>
+          <span className={styles.compositeButton}>
             <PopSelector
               sel={shapeRoot[1]}
               setSel={setShapeRoot}
@@ -83,45 +49,20 @@ export function ShapeLayerEditor(props: { layer: ShapeLayerWithIndex }) {
               setSel={() => {}}
               options={absoluteStringSpecOptions}
             />
-            Shape start:
+          </span>
+          <br />
+          <span className={styles.fieldLabel}>Type:</span>
+          <span className={styles.compositeButton}>
             <PopSelector
-              sel={shapeStart[0]}
+              sel={shape.type}
               setSel={() => {}}
-              options={relativeStringSpecOptions}
+              options={shapeTypeOptions}
             />
-            <PopSelector
-              sel={shapeStart[1]}
-              setSel={() => {}}
-              options={basicIntervalOptions}
-            />
-            <PopSelector
-              sel={shapeStart[2]}
-              setSel={() => {}}
-              options={intervalDirectionOptions}
-            />
-          </div>
+          </span>
         </div>
       </div>
       <div className={styles.shapeEditorTail}>
-        {shapeTail.map(([relStringSpec, interval, direction]) => (
-          <span className={styles.shapeStep}>
-            <PopSelector
-              sel={relStringSpec}
-              setSel={() => {}}
-              options={relativeStringSpecOptions}
-            />
-            <PopSelector
-              sel={interval}
-              setSel={() => {}}
-              options={basicIntervalOptions}
-            />
-            <PopSelector
-              sel={direction}
-              setSel={() => {}}
-              options={intervalDirectionOptions}
-            />
-          </span>
-        ))}
+        {shapeCoords.map(coord => <ShapeCoordEditor shapeCoord={coord} />)}
       </div>
     </div>
   );
