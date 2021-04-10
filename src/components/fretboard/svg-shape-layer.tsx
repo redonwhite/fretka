@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
-import type { ShapeLayer } from '../../fretka/layers';
+import type { ShapeLayer, ShapeLayerWithIndex } from "../../fretka/layers";
 import { SvgFretSpaceShape } from './svg-fret-space-shape';
 
-export function SvgShapeLayer(props: { layer: ShapeLayer }) {
+export function SvgShapeLayer(props: { layer: ShapeLayerWithIndex }) {
   const { layer } = props;
 
   const groupClasseNames = classNames({
@@ -14,7 +14,7 @@ export function SvgShapeLayer(props: { layer: ShapeLayer }) {
 
   return (
     <g className={groupClasseNames}>
-      <SvgFretSpaceShape shape={layer.shape} />
+      <SvgFretSpaceShape shape={layer.shape} layer={layer} />
     </g>
   );
 }

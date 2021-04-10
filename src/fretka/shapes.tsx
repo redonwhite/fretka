@@ -16,6 +16,7 @@ import {
   NoteClass,
   NoteClassId,
 } from "./notes";
+import { layerColors, layerColorsArray, ShapeLayer } from "./layers";
 
 export type AbsoluteStringSpec = {
   id: AbsoluteStringSpecId;
@@ -219,7 +220,7 @@ export type FretShapeCoords = [AbsoluteFretCoord, ...RelativeFretCoord[]];
 export type ShapeAppearance = {
   strokeWidth?: number;
   stroke?: string;
-  fill?: string;
+  pattern?: string;
 };
 
 export type FretShapeSpecTypeId = "sequence of intervals";
@@ -235,6 +236,7 @@ export const fretShapeTypeArray: FretShapeSpecType[] = [
     name: "sequence of intervals",
   },
 ];
+
 
 export type FretShapeSpec = {
   type: FretShapeSpecTypeId;
@@ -373,3 +375,17 @@ export function fretSpaceShapeToGridSpace(
 export type XyCoord = [x: number, y: number];
 export type XyCoordSet = XyCoord[];
 export type XyXoordSets = XyCoordSet[];
+
+
+export function getShapeAppearance(shape: FretShapeSpec, layer: ShapeLayer) {
+  const layerColor = layerColors[layer.color];
+  const { pattern, ...otherShapeAppearance } = shape.appearance;
+  const fill = pattern
+    ? `url(#${shape.appearance.pattern}_${layerColor.id})`
+    : undefined;
+
+  return {
+    ...otherShapeAppearance,
+    fill,
+  };
+}

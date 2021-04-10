@@ -12,7 +12,7 @@ export type FretkaLayerType = 'noteSelection' | 'shape';
 
 export type FretkaLayerBase = {
   name: string;
-  color: string;
+  color: LayerColorId;
   deletable: boolean;
   layerType: FretkaLayerType;
 };
@@ -39,7 +39,29 @@ export function getIndexedLayers(sel: FretkaLayersState): FretkaLayerWithIndex[]
   return sel.layers.map((layer, idx) => ({ ...layer, idx }));
 }
 
-const layerColors = ['black', 'red', 'green', 'blue', 'gray'];
+export type LayerColorId = "black" | "red" | "green" | "blue" | "gray";
+export type LayerColor = {
+  id: LayerColorId;
+  value: string;
+};
+
+export const layerColors: {
+  [key in LayerColorId]: { id: key } & LayerColor;
+} = {
+  black: { id: "black", value: "black" },
+  blue: { id: "blue", value: "blue" },
+  gray: { id: "gray", value: "gray" },
+  red: { id: "red", value: "red" },
+  green: { id: "green", value: "darkturquoise" },
+};
+export const layerColorsArray = Object.values(layerColors);
+export const layerColorRotation: LayerColorId[] = [
+  "black",
+  "red",
+  "green",
+  "blue",
+  "gray",
+];
 
 const defaultNoteSelection: NoteSelection = {
   selected: {
@@ -64,9 +86,9 @@ export function createEmptyNoteSelectionLayer(
   overrides?: Partial<NoteSelectionLayer>,
 ): NoteSelectionLayer {
   const layer: NoteSelectionLayer = {
-    layerType: 'noteSelection',
-    name: 'My selection layer',
-    color: layerColors[targetIdx % layerColors.length],
+    layerType: "noteSelection",
+    name: "My selection layer",
+    color: layerColorRotation[targetIdx % layerColorRotation.length],
     deletable: true,
     selection: defaultNoteSelection,
     ...overrides,
@@ -82,7 +104,7 @@ export function createEmptyShapeLayer(
   const layer: ShapeLayer = {
     layerType: "shape",
     name: "My shape layer",
-    color: layerColors[targetIdx % layerColors.length],
+    color: layerColorRotation[targetIdx % layerColorRotation.length],
     deletable: true,
     shape: pentatonicMinorPos1,
     ...overrides,

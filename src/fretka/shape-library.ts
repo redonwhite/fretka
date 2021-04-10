@@ -2,7 +2,7 @@ import type { FretShapeSpec } from "./shapes";
 
 export const pentatonicMinorPos1: FretShapeSpec = {
   appearance: {
-    fill: "url(#lightStripePattern)",
+    pattern: "lightStripePattern",
   },
   type: "sequence of intervals",
   segments: [
@@ -24,7 +24,7 @@ export const pentatonicMinorPos1: FretShapeSpec = {
 
 export const pentatonicMinorPos2: FretShapeSpec = {
   appearance: {
-    fill: "url(#pj1)",
+    pattern: "url(#pj1)",
   },
   type: "sequence of intervals",
   segments: [
@@ -46,7 +46,7 @@ export const pentatonicMinorPos2: FretShapeSpec = {
 
 export const pentatonicMinorPos3: FretShapeSpec = {
   appearance: {
-    fill: "url(#pj1)",
+    pattern: "url(#pj1)",
   },
   type: "sequence of intervals",
   segments: [
@@ -69,7 +69,7 @@ export const pentatonicMinorPos3: FretShapeSpec = {
 
 export const pentatonicMinorPos4: FretShapeSpec = {
   appearance: {
-    fill: "url(#pj1)",
+    pattern: "url(#pj1)",
   },
   type: "sequence of intervals",
   segments: [
@@ -92,7 +92,7 @@ export const pentatonicMinorPos4: FretShapeSpec = {
 
 export const pentatonicMinorPos5: FretShapeSpec = {
   appearance: {
-    fill: "url(#pj1)",
+    pattern: "url(#pj1)",
   },
   type: "sequence of intervals",
   segments: [

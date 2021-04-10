@@ -1,18 +1,16 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { FretboardContext } from '../../fretka/fretboard';
-import { fretSpaceShapeToGridSpace, FretShapeSpec } from '../../fretka/shapes';
+import { layerColorsArray, ShapeLayerWithIndex } from '../../fretka/layers';
+import { fretSpaceShapeToGridSpace, FretShapeSpec, getShapeAppearance } from '../../fretka/shapes';
 import { xyCoordSetToPathD } from '../../fretka/svg';
-import { ShapeLayerEditor } from '../layer-editors/shape-layer-editor';
 
-export function SvgFretSpaceShape(props: { shape: FretShapeSpec }) {
-  const { shape } = props;
 
-  const fillColor = shape.appearance.fill;
-  const strokeColor = shape.appearance.stroke;
-  const strokeWidth = shape.appearance.strokeWidth;
 
+export function SvgFretSpaceShape(props: { shape: FretShapeSpec, layer: ShapeLayerWithIndex }) {
+
+  const { shape, layer } = props;
+  const shapeAppearance = getShapeAppearance(shape, layer);
   const f = useContext(FretboardContext);
-
   if (!f) return null;
 
   const gridSpaceCoordSets = fretSpaceShapeToGridSpace(
@@ -20,13 +18,14 @@ export function SvgFretSpaceShape(props: { shape: FretShapeSpec }) {
     f.tuning,
     f.fretCount,
   );
+  
   const xyCoordSets = gridSpaceCoordSets.map(f.gridSpaceToXySpace);
   const pathDs = xyCoordSets.map(xyCoordSetToPathD);
 
   return (
     <>
       {pathDs.map((d, idx) => (
-        <path className="fretkaShape" d={d} key={idx} {...shape.appearance} />
+        <path className="fretkaShape" d={d} key={idx} {...shapeAppearance} />
       ))}
     </>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import { RelativeFretCoord } from "../../fretka/shapes";
 import styles from "./layer-editor.module.scss";
 import { PopSelector } from "./pop-selector";
 import {
@@ -7,7 +8,9 @@ import {
   intervalDirectionOptions,
 } from "./pop-selector-options";
 
-export function ShapeCoordEditor(props: any) {
+export function RelativeFretCoordEditor(props: {
+  shapeCoord: RelativeFretCoord;
+}) {
   const { shapeCoord } = props;
   const [relStringSpec, interval, direction] = shapeCoord;
 

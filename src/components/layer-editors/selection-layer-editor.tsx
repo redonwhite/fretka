@@ -38,7 +38,7 @@ export function SelectionLayerEditor(props: { layerIdx: any }) {
   };
 
   return (
-    <div className={styles.noteButtonWrapper}>
+    <div className={styles.selectionLayerEditor}>
       {/* prettier-ignore */ }
       {notes.map((note, idx) => (
         <div className={styles.noteButtonSet} key={idx}>
@@ -48,7 +48,7 @@ export function SelectionLayerEditor(props: { layerIdx: any }) {
                 actions.toggleNoteSelection({
                   layerIdx: layerIdx,
                   noteId: note.id,
-                }),
+                })
               )
             }
             className={getButtonClass(note)}
@@ -62,11 +62,11 @@ export function SelectionLayerEditor(props: { layerIdx: any }) {
                 actions.toggleRootSelection({
                   layerIdx: layerIdx,
                   noteId: note.id,
-                }),
+                })
               )
             }
             className={getRootButtonClass(note)}
-            key={'root' + idx}
+            key={"root" + idx}
           >
             root
           </button>

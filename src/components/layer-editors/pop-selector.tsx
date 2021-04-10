@@ -2,7 +2,7 @@ import React, { PropsWithChildren, useState } from "react";
 import classNames from "classnames";
 import { Popover } from "react-tiny-popover";
 
-import styles from "./pop-selector.module.scss";
+import styles from "./layer-editor.module.scss";
 
 type PopSelectorProps<Tvalue extends string | number> = PropsWithChildren<{
   className?: string;

@@ -6,7 +6,7 @@ import { FretboardContext, useFretboard } from '../../fretka/fretboard';
 import { useSelector } from 'react-redux';
 import { noteStateSelector } from '../../fretka/store';
 import { SvgFretSpaceShape } from './svg-fret-space-shape';
-import type { ShapeLayer } from '../../fretka/layers';
+import type { ShapeLayer, ShapeLayerWithIndex } from "../../fretka/layers";
 import { SvgShapeLayer } from './svg-shape-layer';
 
 
@@ -28,7 +28,7 @@ export function SvgFretboard(props: {
         {noteState.layers
           .filter((layer) => layer.layerType === 'shape')
           .map((layer, layerIdx) => {
-            const layerAsShape = layer as ShapeLayer;
+            const layerAsShape = layer as ShapeLayerWithIndex;
             return (
               <SvgShapeLayer
                 layer={layerAsShape}
