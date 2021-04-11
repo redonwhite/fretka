@@ -5,7 +5,8 @@ import {
   createEmptyShapeLayer,
   FretkaLayer,
   ShapeLayer,
-} from './layers';
+  LayerColorId,
+} from "./layers";
 import {
   canDeleteLayer,
   FretkaLayersState,
@@ -51,6 +52,16 @@ export const layerSlice = createSlice({
       const layerName = action.payload.layerName;
       const layer = state.layers[action.payload.layerIdx];
       layer.name = layerName;
+    },
+    colorLayer: (
+      state,
+      action: LayerAction & {
+        payload: { color: LayerColorId };
+      }
+    ) => {
+      const color = action.payload.color;
+      const layer = state.layers[action.payload.layerIdx];
+      layer.color = color;
     },
     resetSelectionInLayer: (state, action: LayerAction) => {
       const layer = state.layers[action.payload.layerIdx];

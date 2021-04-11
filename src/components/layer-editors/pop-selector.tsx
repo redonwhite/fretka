@@ -1,14 +1,19 @@
-import React, { PropsWithChildren, useState } from "react";
+import React, { PropsWithChildren, ReactElement, useState } from "react";
 import classNames from "classnames";
 import { Popover } from "react-tiny-popover";
 
 import styles from "./layer-editor.module.scss";
+export type PickFunction<Tvalue extends string | number> = (_selection: Tvalue) => void;
 
-type PopSelectorProps<Tvalue extends string | number> = PropsWithChildren<{
+
+type OptionValue = string | number;
+
+type PopSelectorProps<Tvalue extends OptionValue> = PropsWithChildren<{
   className?: string;
-  sel: Tvalue;
-  setSel: (_sel: Tvalue) => any;
-  options: Array<{
+  selection: Tvalue;
+  setSelection: PickFunction<Tvalue>;
+  contentFactory?: (_pickFunction: PickFunction<Tvalue>) => ReactElement;
+  options?: Array<{
     value: Tvalue;
     label: string | React.ReactElement;
     choiceLabel?: string | React.ReactElement;
@@ -16,13 +21,16 @@ type PopSelectorProps<Tvalue extends string | number> = PropsWithChildren<{
   }>;
 }>;
 
+
 export function PopSelector<Tvalue extends string | number>(
   props: PopSelectorProps<Tvalue>
 ) {
-  const { sel, setSel, options } = props;
+  
+  const { selection: sel, setSelection: setSel, options } = props;
   const [isRootPopoverOpen, setIsRootPopoverOpen] = useState(false);
+  const hasChildren = props.children !== undefined;
 
-  const currentOption = options.find(opt => opt.value === sel);
+  const currentOption = options ? options.find(opt => opt.value === sel) : undefined;
 
   const getChoiceButtonClass = (_value: string | number) => {
     return classNames({
@@ -40,34 +48,44 @@ export function PopSelector<Tvalue extends string | number>(
     setSel(value);
   };
 
+  const getContentFromOptions = () => options && options.map((option, idx) => (
+    <button
+      key={idx}
+      className={getChoiceButtonClass(option.value)}
+      onClick={() => pick(option.value)}
+    >
+      {option.choiceLabel ?? option.label}
+    </button>
+  ));
+
+  const usesOptions = props.options !== undefined;
+  const getContentFromFactory = () => props.contentFactory && props.contentFactory(pick);
+  const content = usesOptions ? getContentFromOptions() : getContentFromFactory();
+
   return (
-    <Popover
+    <Popover 
       containerClassName={styles.selectorPopover}
       onClickOutside={closePopover}
       positions={["right", "left"]}
       align="center"
       // contentLocation={{ top: 200, left: 100 }}
       isOpen={isRootPopoverOpen}
-      content={
-        <>
-          {options.map((option, idx) => (
-            <button
-              className={getChoiceButtonClass(option.value)}
-              onClick={() => pick(option.value)}
-            >
-              {option.choiceLabel ?? option.label}
-            </button>
-          ))}
-        </>
-      }
+      content={<>{content}</>}
     >
-      <button className={getMainButtonClass()} onClick={flip}>
-        <span className={styles.label}>{currentOption?.buttonLabel ?? currentOption?.label ?? 'select one'}</span>
-      </button>
+      <span>
+        {hasChildren && <button className={props.className} onClick={flip}>{props.children}</button>}
+        { !hasChildren &&
+          <button className={getMainButtonClass()} onClick={flip}>
+            <span className={styles.label}>
+              {currentOption?.buttonLabel ?? currentOption?.label ?? "select one"}
+            </span>
+          </button>
+        }
+      </span>
     </Popover>
   );
 
   function getMainButtonClass(): string | undefined {
-    return styles.popSelButton + ' ' + props.className;
+    return styles.popSelButton + " " + props.className;
   }
 }

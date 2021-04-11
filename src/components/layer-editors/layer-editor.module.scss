@@ -19,6 +19,19 @@
   }
 }
 
+:global(.layerColorButton),
+button:global(.layerColorButton),
+.selectorPopover button:global(.layerColorButton) {
+  background-color: var(--fretka-layer-color);
+
+  &:hover, &:focus {
+    outline-width: 2px;
+    color: white;
+    background-color: var(--fretka-layer-color);
+    // box-shadow: inset 0 0 5px 5px #fff;
+  }
+}
+
 button:hover .showOnHover, button:focus-within .showOnHover {
   display: inline-block;
   overflow: hidden;
@@ -43,13 +56,14 @@ button:hover .showOnHover, button:focus-within .showOnHover {
 }
 
 .layerEditor {
-  background: palegoldenrod;
+  margin-bottom: 25px;
   display: grid;
-  grid-template-columns: 30px auto;
+  gap: 3px 5px;
+  grid-template-columns: fit-content(30px) auto;
   grid-template-rows: fit-content(1px) auto;
   grid-template-areas: 
     'bullet header'
-    'bullet content';
+    '. content';
 }
 
 .layerHeader {
@@ -92,13 +106,13 @@ button:hover .showOnHover, button:focus-within .showOnHover {
     }
   }
 }
+
 .layerContentEditor {
   grid-area: content;
 }
 
 .selectionLayerEditor {
   display: flex;
-  margin: 15px 0 25px 0;
   &.compact {
     margin: 0;
   }
@@ -185,8 +199,6 @@ button {
 }
 
 .shapeEditor {
-  margin-top: 15px;
-  margin-bottom: 25px;
   display: grid;
   grid-template-columns: fit-content(90px) auto;
   grid-template-rows: fit-content(40px) auto;
@@ -220,6 +232,12 @@ button {
   @at-root * + .fieldLabel {
     margin-left: 30px;
   }
+}
+
+.layerColorSelectorButton,
+button.layerColorSelectorButton.layerColorSelectorButton {
+  width: 25px;
+  height: 25px;
 }
 
 .shapeRootButton {
@@ -317,6 +335,7 @@ button {
   padding: 5px;
 
   button {
+    background: var(--fretka-secondary-button-bg);
     padding: 2px;
     display: block;
     width: 100%;

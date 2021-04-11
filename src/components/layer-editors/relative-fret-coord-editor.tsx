@@ -17,19 +17,22 @@ export function RelativeFretCoordEditor(props: {
   return (
     <span className={styles.compositeButton + " " + styles.sequenceButton}>
       <PopSelector
+        key="string selector"
         className={styles.stringSelector}
-        sel={relStringSpec}
-        setSel={() => {}}
+        selection={relStringSpec}
+        setSelection={() => {}}
         options={relativeStringSpecOptions}
       />
       <PopSelector
-        sel={interval}
-        setSel={() => {}}
+        key="interval selector"
+        selection={interval}
+        setSelection={() => {}}
         options={basicIntervalOptions}
       />
       <PopSelector
-        sel={direction}
-        setSel={() => {}}
+        key="dir selector"
+        selection={direction}
+        setSelection={() => {}}
         options={intervalDirectionOptions}
       />
     </span>

@@ -11,14 +11,12 @@ import { RelativeFretCoordEditor } from "./relative-fret-coord-editor";
 import React, { useState } from "react";
 import { ShapeAppearanceSample } from "./shape-appearance-sample";
 
-
-
 export function ShapeLayerEditor(props: { layer: ShapeLayerWithIndex }) {
   const { layer } = props;
   const { shape } = layer;
   const dispatch = useDispatch();
   const [showTailEditor, setShowTailEditor] = useState(false);
-  
+
   const setShapeRoot = (noteId: NoteClassId | number) =>
     dispatch(
       actions.setShapeRootFretSpec({
@@ -28,8 +26,7 @@ export function ShapeLayerEditor(props: { layer: ShapeLayerWithIndex }) {
     );
 
   const [shapeRoot, ...shapeCoords] = shape.segments;
-  
-  
+
   return (
     <div className={styles.shapeEditor + " " + styles.layerContentEditor}>
       {/* prettier-ignore */}
@@ -42,14 +39,14 @@ export function ShapeLayerEditor(props: { layer: ShapeLayerWithIndex }) {
           <span className={styles.shapeRootButton}>
             <PopSelector
               className={styles.prominentButton}
-              sel={shapeRoot[1]}
-              setSel={setShapeRoot}
+              selection={shapeRoot[1]}
+              setSelection={setShapeRoot}
               options={basicNoteOptions}
             />
             <PopSelector
               className={styles.prominentButton}
-              sel={shapeRoot[0]}
-              setSel={() => {}}
+              selection={shapeRoot[0]}
+              setSelection={() => {}}
               options={absoluteStringSpecOptions}
             />
           </span>
@@ -57,8 +54,8 @@ export function ShapeLayerEditor(props: { layer: ShapeLayerWithIndex }) {
           <span className={styles.fieldLabel}>Type:</span>
           <span className={styles.compositeButton}>
             <PopSelector
-              sel={shape.type}
-              setSel={() => {}}
+              selection={shape.type}
+              setSelection={() => {}}
               options={shapeTypeOptions}
             />
             <button
@@ -72,8 +69,8 @@ export function ShapeLayerEditor(props: { layer: ShapeLayerWithIndex }) {
       </div>
       {showTailEditor && (
         <div className={styles.shapeEditorTail}>
-          {shapeCoords.map(coord => (
-            <RelativeFretCoordEditor shapeCoord={coord} />
+          {shapeCoords.map((coord, idx) => (
+            <RelativeFretCoordEditor key={idx} shapeCoord={coord} />
           ))}
         </div>
       )}
