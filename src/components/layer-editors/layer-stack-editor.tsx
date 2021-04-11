@@ -1,11 +1,7 @@
-import classNames from 'classnames';
-import React, { useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../../fretka/layers-slice';
 import { noteStateSelector } from '../../fretka/store';
-import { SelectionLayerEditor } from './selection-layer-editor';
 import styles from './layer-editor.module.scss';
-import { ShapeLayerEditor } from './shape-layer-editor';
 import { LayerEditor } from './layer-editor';
 
 export function LayerStackEditor() {

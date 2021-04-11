@@ -31,7 +31,7 @@ export function ShapeLayerEditor(props: { layer: ShapeLayerWithIndex }) {
   
   
   return (
-    <div className={styles.shapeEditor}>
+    <div className={styles.shapeEditor + " " + styles.layerContentEditor}>
       {/* prettier-ignore */}
       <div className={styles.shapeSample}>
         <ShapeAppearanceSample shape={shape} layer={layer} />

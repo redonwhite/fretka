@@ -42,8 +42,20 @@ button:hover .showOnHover, button:focus-within .showOnHover {
   }
 }
 
+.layerEditor {
+  background: palegoldenrod;
+  display: grid;
+  grid-template-columns: 30px auto;
+  grid-template-rows: fit-content(1px) auto;
+  grid-template-areas: 
+    'bullet header'
+    'bullet content';
+}
+
 .layerHeader {
   display: flex;
+  grid-area: header;
+  
   align-content: space-between;
   
   .layerTitle {
@@ -79,6 +91,9 @@ button:hover .showOnHover, button:focus-within .showOnHover {
       margin-right: 0;
     }
   }
+}
+.layerContentEditor {
+  grid-area: content;
 }
 
 .selectionLayerEditor {
@@ -177,7 +192,7 @@ button {
   grid-template-rows: fit-content(40px) auto;
   grid-template-areas: 
     'sample head'
-    '. tail';
+    'tail tail';
   //margin: 15px 0;
   gap: 5px 5px;
 }

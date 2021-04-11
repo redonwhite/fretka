@@ -38,7 +38,9 @@ export function SelectionLayerEditor(props: { layerIdx: any }) {
   };
 
   return (
-    <div className={styles.selectionLayerEditor}>
+    <div
+      className={styles.selectionLayerEditor + " " + styles.layerContentEditor}
+    >
       {/* prettier-ignore */ }
       {notes.map((note, idx) => (
         <div className={styles.noteButtonSet} key={idx}>

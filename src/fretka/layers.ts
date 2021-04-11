@@ -31,6 +31,8 @@ export type ShapeLayer = FretkaLayerBase & {
 
 export type FretkaLayer = NoteSelectionLayer | ShapeLayer;
 
+export type WithLayerIndex = { idx: number };
+
 export type FretkaLayerWithIndex = FretkaLayer & { idx: number };
 export type NoteSelectionLayerWithIndex = NoteSelectionLayer & { idx: number };
 export type ShapeLayerWithIndex = ShapeLayer & { idx: number };
@@ -48,11 +50,26 @@ export type LayerColor = {
 export const layerColors: {
   [key in LayerColorId]: { id: key } & LayerColor;
 } = {
-  black: { id: "black", value: "black" },
-  blue: { id: "blue", value: "blue" },
-  gray: { id: "gray", value: "gray" },
-  red: { id: "red", value: "red" },
-  green: { id: "green", value: "darkturquoise" },
+  black: {
+    id: "black",
+    value: "black",
+  },
+  blue: {
+    id: "blue",
+    value: "blue",
+  },
+  gray: {
+    id: "gray",
+    value: "gray",
+  },
+  red: {
+    id: "red",
+    value: "red",
+  },
+  green: {
+    id: "green",
+    value: "darkturquoise",
+  },
 };
 export const layerColorsArray = Object.values(layerColors);
 export const layerColorRotation: LayerColorId[] = [
