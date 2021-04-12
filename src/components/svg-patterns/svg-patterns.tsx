@@ -7,18 +7,6 @@ export function SvgPatterns() {
     <svg style={{ position: "absolute" }} width="0" height="0">
       {/* prettier-ignore */}
       <defs>
-        <pattern
-          id="pj1"
-          x="0"
-          y="0"
-          width="10"
-          height="10"
-          patternUnits="userSpaceOnUse"
-          patternTransform="rotate(20) scale(2)"
-        >
-          <rect x="0" y="0" width="10" height="8" fill="red" opacity=".2" />
-          <rect x="0" y="0" width="8" height="10" fill="red" opacity=".2" />
-        </pattern>
         {layerColorsArray.map((color, idx) => (
           <pattern
             key={idx}
@@ -37,7 +25,7 @@ export function SvgPatterns() {
         {layerColorsArray.map((color, idx) => (
           <pattern
             key={idx}
-            id={`fanPattern_${color.id}`}
+            id={`fansPattern_${color.id}`}
             x="0"
             y="0"
             width="10"
@@ -55,7 +43,7 @@ export function SvgPatterns() {
         {layerColorsArray.map((color, idx) => (
           <pattern
             key={idx}
-            id={`wideAndNarrowStripePattern_${color.id}`}
+            id={`wanStripesPattern_${color.id}`}
             x="0"
             y="0"
             width="10"
@@ -72,7 +60,7 @@ export function SvgPatterns() {
         {layerColorsArray.map((color, idx) => (
           <pattern
             key={idx}
-            id={`thickStripePattern_${color.id}`}
+            id={`thickStripesPattern_${color.id}`}
             x="0"
             y="0"
             width="10"
@@ -86,7 +74,7 @@ export function SvgPatterns() {
         {layerColorsArray.map((color, idx) => (
           <pattern
             key={idx}
-            id={`lightStripePattern_${color.id}`}
+            id={`lightStripesPattern_${color.id}`}
             x="0"
             y="0"
             width="10"

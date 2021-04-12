@@ -16,7 +16,12 @@ import {
   NoteClass,
   NoteClassId,
 } from "./notes";
-import { layerColors, layerColorsArray, ShapeLayer } from "./layers";
+import {
+  LayerColorId,
+  layerColors,
+  layerColorsArray,
+  ShapeLayer,
+} from "./layers";
 
 export type AbsoluteStringSpec = {
   id: AbsoluteStringSpecId;
@@ -220,7 +225,7 @@ export type FretShapeCoords = [AbsoluteFretCoord, ...RelativeFretCoord[]];
 export type ShapeAppearance = {
   strokeWidth?: number;
   stroke?: string;
-  pattern?: string;
+  pattern?: SvgPatternId;
 };
 
 export type FretShapeSpecTypeId = "sequence of intervals";
@@ -377,11 +382,37 @@ export type XyCoordSet = XyCoord[];
 export type XyXoordSets = XyCoordSet[];
 
 
+export type SvgPatternId =
+  | "beads"
+  | "fans"
+  | "wanStripes"
+  | "thickStripes"
+  | "lightStripes";
+
+export type SvgPattern = {
+  id: SvgPatternId;
+  name: string;
+};
+
+export const svgPatterns: {
+  [key in SvgPatternId]: { id: key } & SvgPattern;
+} = {
+  beads: { id: "beads", name: "beads" },
+  fans: { id: "fans", name: "fans" },
+  wanStripes: { id: "wanStripes", name: "wide and narrow stripes" },
+  thickStripes: { id: "thickStripes", name: "thick stripes" },
+  lightStripes: { id: "lightStripes", name: "light stripes" },
+};
+export const svgPatternsArray: SvgPattern[] = Object.values(svgPatterns);
+
+export function getDomPatternId(pattern: SvgPatternId, color: LayerColorId) {
+  return `${pattern}Pattern_${color}`;
+}
+
 export function getShapeAppearance(shape: FretShapeSpec, layer: ShapeLayer) {
-  const layerColor = layerColors[layer.color];
   const { pattern, ...otherShapeAppearance } = shape.appearance;
   const fill = pattern
-    ? `url(#${shape.appearance.pattern}_${layerColor.id})`
+    ? `url(#${getDomPatternId(pattern, layer.color)})`
     : undefined;
 
   return {

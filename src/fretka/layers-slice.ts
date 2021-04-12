@@ -14,6 +14,7 @@ import {
   LayerNoteAction,
 } from './note-selection';
 import type { NoteClassId } from './notes';
+import { SvgPatternId } from "./shapes";
 
 const initialLayerState: FretkaLayersState = {
   layers: [createEmptyNoteSelectionLayer(0)],
@@ -53,7 +54,7 @@ export const layerSlice = createSlice({
       const layer = state.layers[action.payload.layerIdx];
       layer.name = layerName;
     },
-    colorLayer: (
+    setLayerColor: (
       state,
       action: LayerAction & {
         payload: { color: LayerColorId };
@@ -62,6 +63,15 @@ export const layerSlice = createSlice({
       const color = action.payload.color;
       const layer = state.layers[action.payload.layerIdx];
       layer.color = color;
+    },
+    setLayerPattern: (
+      state,
+      action: LayerAction & {
+        payload: { pattern: SvgPatternId | undefined };
+      }
+    ) => {
+      const layer = state.layers[action.payload.layerIdx] as ShapeLayer;
+      layer.shape.appearance.pattern = action.payload.pattern;
     },
     resetSelectionInLayer: (state, action: LayerAction) => {
       const layer = state.layers[action.payload.layerIdx];

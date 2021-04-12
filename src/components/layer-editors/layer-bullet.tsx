@@ -47,10 +47,14 @@ export function LayerColorPicker(props: { layer: FretkaLayerWithIndex }) {
   const { color } = layer;
   const dispatch = useDispatch();
 
-  return <ColorPicker
-    color={color}
-    setColor={newColor =>
-      dispatch(actions.colorLayer({ layerIdx: layer.idx, color: newColor }))
-    }
-  />;
+  return (
+    <ColorPicker
+      color={color}
+      setColor={newColor =>
+        dispatch(
+          actions.setLayerColor({ layerIdx: layer.idx, color: newColor })
+        )
+      }
+    />
+  );
 }
