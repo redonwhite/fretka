@@ -21,12 +21,10 @@ export const noteStateSelector = createSelector(
   (state: RootState) => state.layerState,
   (noteSelectionState) => {
     const indexedLayers = getIndexedLayers(noteSelectionState);
-    
     return {
       ...noteSelectionState,
       layers: indexedLayers,
       notes: getPropertiesForAllNotes(noteSelectionState),
     };
-
-  },
+  }
 );

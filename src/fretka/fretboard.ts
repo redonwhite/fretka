@@ -34,7 +34,7 @@ export function useFretboard(tuning: GuitarTuning, fretCount: number = 24) {
 
     function getStringPosY(idx: number): number {
       return Math.round(
-        marginTop + (tuning.stringTunings.length - 1 - idx) * stringDistance,
+        marginTop + (tuning.stringTunings.length - 1 - idx) * stringDistance
       );
     }
 
@@ -42,7 +42,7 @@ export function useFretboard(tuning: GuitarTuning, fretCount: number = 24) {
     const fretBottomY = getStringPosY(0);
 
     function gridSpaceToXySpace(coordSet: GridSpaceCoordSet): XyCoordSet {
-      return coordSet.map((coord) => [
+      return coordSet.map(coord => [
         getFretCenterPosX(coord[1]),
         getStringPosY(coord[0]),
       ]);

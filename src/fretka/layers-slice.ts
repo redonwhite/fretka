@@ -29,14 +29,11 @@ export const layerSlice = createSlice({
       action: { payload: { layerType: FretkaLayerType } }
     ) => {
       const layerType: FretkaLayerType = action.payload.layerType;
-      console.log(action);
       switch (layerType) {
         case "noteSelection":
-          console.log("creating new selection layer");
           state.layers.push(createEmptyNoteSelectionLayer(state.layers.length));
           return;
         case "shape":
-          console.log("creating new shape layer");
           state.layers.push(createEmptyShapeLayer(state.layers.length));
           return;
       }

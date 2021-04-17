@@ -18,21 +18,21 @@ export function SvgFretboard(props: {
   const { tuning } = props;
   const f = useFretboard(tuning, props.fretCount);
   const noteState = useSelector(noteStateSelector);
-
+  console.log("RE-RENDERING FRETBOARD");
   return (
     <FretboardContext.Provider value={f}>
       <svg
         className={stylesSvg.fretSvg}
-        style={{ width: f.svgWidth + 'px', height: f.svgHeight + 'px' }}
+        style={{ width: f.svgWidth + "px", height: f.svgHeight + "px" }}
       >
         {noteState.layers
-          .filter((layer) => layer.layerType === 'shape')
+          .filter(layer => layer.layerType === "shape")
           .map((layer, layerIdx) => {
             const layerAsShape = layer as ShapeLayerWithIndex;
             return (
               <SvgShapeLayer
                 layer={layerAsShape}
-                key={'shapelayer_' + layerIdx}
+                key={"shapelayer_" + layerIdx}
               />
             );
           })}
@@ -40,8 +40,8 @@ export function SvgFretboard(props: {
           // frets:
           Array.from(Array(f.fretCount + 1).keys()).map((_, idx) => (
             <line
-              key={'fret' + idx}
-              id={'fret' + idx}
+              key={"fret" + idx}
+              id={"fret" + idx}
               stroke="black"
               strokeWidth={f.fretStrokeWidth}
               x1={f.getFretPosX(idx)}
@@ -56,15 +56,12 @@ export function SvgFretboard(props: {
           // strings, including note selections:
           Array.from(tuning.stringTunings).map((tuning, idx) => (
             <SvgFretboardString
-              key={'string' + idx}
-              fromPoint={{
-                x: f.stringPosX,
-                y: f.getStringPosY(idx),
-              }}
-              toPoint={{
-                x: f.stringPosX + f.fretboardWidth,
-                y: f.getStringPosY(idx),
-              }}
+              key={"string" + idx}
+              fromX={f.stringPosX}
+              fromY={f.getStringPosY(idx)}
+              toX={f.stringPosX + f.fretboardWidth}
+              toY={f.getStringPosY(idx)}
+              
               height={f.stringDistance}
               tuning={tuning}
               fretCount={f.fretCount}

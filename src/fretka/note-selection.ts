@@ -22,6 +22,7 @@ export const getPropertiesForAllNotes: (
     getPropertiesForNote(layerState, note),
   ]);
   const properties = Object.fromEntries(entries);
+  console.log("finished running getPropertiesForAllNotes");
   return properties;
 };
 

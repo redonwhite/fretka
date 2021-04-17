@@ -9,17 +9,37 @@ import { SvgFretboardCell } from './svg-fretboard-cell';
 export function SvgFretboardString(props: {
   tuning: NoteAbsolute;
   fretCount: number;
-  fromPoint: Point;
-  toPoint: Point;
+  fromX: number;
+  toX: number;
+  fromY: number;
+  toY: number;
   strokeWidth: number;
   height: number;
 }) {
-  const { tuning, fretCount, fromPoint, toPoint, strokeWidth, height } = props;
+  const {
+
+       tuning,
+
+       fretCount,
+
+       strokeWidth,
+
+       height,
+   
+    fromX,
+   
+    fromY,
+   
+    toX,
+   
+    toY,
+
+  } = props;
 
   const fretNotes: Array<NoteAbsolute> = Array.from(
     { length: fretCount },
-    (_, idx) => tuning.absIdx + idx,
-  ).map((absIdx) => {
+    (_, idx) => tuning.absIdx + idx
+  ).map(absIdx => {
     const idx = absIdx % 12;
     const note = notes.basicNotesArray[idx];
     return {
@@ -28,17 +48,17 @@ export function SvgFretboardString(props: {
     };
   });
 
-  const cellWidth = (toPoint.x - fromPoint.x) / fretCount;
+  const cellWidth = (toX - fromX) / fretCount;
 
   return (
     <>
       <line
         stroke="black"
         strokeWidth={strokeWidth}
-        x1={fromPoint.x}
-        x2={toPoint.x}
-        y1={fromPoint.y}
-        y2={toPoint.y}
+        x1={fromX}
+        x2={toX}
+        y1={fromY}
+        y2={toY}
         className="string"
         shapeRendering="crispEdges"
       />
@@ -50,7 +70,7 @@ export function SvgFretboardString(props: {
           stringTuning={tuning}
           width={cellWidth}
           height={height}
-          center={{ x: fromPoint.x + cellWidth * (idx + 0.5), y: fromPoint.y }}
+          center={{ x: fromX + cellWidth * (idx + 0.5), y: fromY }}
         />
       ))}
     </>

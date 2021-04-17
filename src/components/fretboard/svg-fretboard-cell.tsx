@@ -6,6 +6,15 @@ import { noteStateSelector } from '../../fretka/store';
 import classNames from 'classnames';
 import type { FretkaLayerWithIndex, NoteSelectionLayerWithIndex } from '../../fretka/layers';
 
+const getCellDotClass = (selProps: any) => {
+  const layer = selProps.layer;
+  return classNames({
+    layerColor: true,
+    root: selProps.root,
+    [`layerColor-${layer.color}`]: true,
+  });
+};
+
 export function SvgFretboardCell(props: {
   note: NoteAbsolute;
   stringTuning: NoteAbsolute;
@@ -15,18 +24,11 @@ export function SvgFretboardCell(props: {
   height: number
 }) {
   const { center, note, fretNumber, width, height } = props;
+  // console.log('rendering cell');
   const r = 7;
   const noteSelection = useSelector(noteStateSelector);
   
-  const getCellDotClass = (layer: FretkaLayerWithIndex) => {
-    
-    const selProps = noteSelection.notes[note.id].selPropsByLayer[layer.idx];
-    return classNames({
-      layerColor: true,
-      root: selProps.root,
-      [`layerColor-${layer.color}`]: true,
-    });
-  };
+
 
   return (
     <React.Fragment>
@@ -51,14 +53,14 @@ export function SvgFretboardCell(props: {
                 cx={dotx}
                 cy={doty}
                 r={selProps.root && selProps.selected ? r + 1 : 0}
-                className={'fretCellRootDot ' + getCellDotClass(selProps.layer)}
+                className={'fretCellRootDot ' + getCellDotClass(selProps)}
               />
               <circle
                 key={selProps.layer.idx}
                 cx={dotx}
                 cy={doty}
                 r={selProps.selected ? (selProps.root ? r - 3 : r) : 0}
-                className={'fretCellDot ' + getCellDotClass(selProps.layer)}
+                className={'fretCellDot ' + getCellDotClass(selProps)}
               />
             </React.Fragment>
           );
