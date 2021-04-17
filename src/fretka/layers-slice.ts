@@ -8,7 +8,6 @@ import {
   LayerColorId,
 } from "./layers";
 import {
-  canDeleteLayer,
   FretkaLayersState,
   LayerAction,
   LayerNoteAction,
@@ -40,15 +39,20 @@ export const layerSlice = createSlice({
       throw new Error("Unknown layer type!");
     },
     deleteLayer: (state, action: LayerAction) => {
-      const layerIdx = action.payload.layerIdx;
-      if (canDeleteLayer(state, layerIdx)) state.layers.splice(layerIdx, 1);
+      const layerId = action.payload.layerId;
+      const layerIdx = state.layers.findIndex(l => l.id === layerId);
+      if (layerIdx < 0) return;
+
+      const layer = state.layers[layerIdx];
+      if (layer.deletable) state.layers.splice(layerIdx, 1);
     },
     renameLayer: (
       state,
       action: LayerAction & { payload: { layerName: string } }
     ) => {
       const layerName = action.payload.layerName;
-      const layer = state.layers[action.payload.layerIdx];
+      const layer = state.layers.find(l => l.id === action.payload.layerId);
+      if (!layer) return;
       layer.name = layerName;
     },
     setLayerColor: (
@@ -58,7 +62,8 @@ export const layerSlice = createSlice({
       }
     ) => {
       const color = action.payload.color;
-      const layer = state.layers[action.payload.layerIdx];
+      const layer = state.layers.find(l => l.id === action.payload.layerId);
+      if (!layer) return;
       layer.color = color;
     },
     setLayerPattern: (
@@ -67,33 +72,45 @@ export const layerSlice = createSlice({
         payload: { pattern: SvgPatternId | undefined };
       }
     ) => {
-      const layer = state.layers[action.payload.layerIdx] as ShapeLayer;
+      const layer = state.layers.find(
+        
+        l => l.id === action.payload.layerId
+      
+      ) as ShapeLayer;
+      if (!layer?.shape?.appearance) return;
       layer.shape.appearance.pattern = action.payload.pattern;
     },
     resetSelectionInLayer: (state, action: LayerAction) => {
-      const layer = state.layers[action.payload.layerIdx];
+      const layerIdx = state.layers.findIndex(
+        
+        l => l.id === action.payload.layerId
+      
+      );
+      const layer = state.layers[layerIdx];
+      if (!layer) return;
       if (layer.originalState) {
         const restoredLayer = {
           ...layer.originalState,
           originalState: layer.originalState,
+          id: layer.id,
         };
-        state.layers[action.payload.layerIdx] = restoredLayer as FretkaLayer;
+        state.layers[layerIdx] = restoredLayer as FretkaLayer;
       }
     },
     toggleNoteSelection: (state, action: LayerNoteAction) => {
-      const layer = state.layers[action.payload.layerIdx];
-      if (layer.layerType !== "noteSelection") return;
+      const layer = state.layers.find(l => l.id === action.payload.layerId);
+      if (layer?.layerType !== "noteSelection") {
+        console.log('shit');
+        return;
+      }
       const noteId = action.payload.noteId;
-      const layerIdx = action.payload.layerIdx;
       const wasSelected = layer.selection.selected[noteId];
       layer.selection.selected[noteId] = !wasSelected;
     },
-    toggleRootSelection: (
-      state,
-      { payload: { layerIdx, noteId } }: LayerNoteAction
-    ) => {
-      const layer = state.layers[layerIdx];
-      if (layer.layerType !== "noteSelection") return;
+    toggleRootSelection: (state, action: LayerNoteAction) => {
+      const layer = state.layers.find(l => l.id === action.payload.layerId);
+      if (layer?.layerType !== "noteSelection") return;
+      const noteId = action.payload.noteId;
       if (layer.selection.root !== noteId) {
         layer.selection.root = noteId;
       } else {
@@ -102,8 +119,9 @@ export const layerSlice = createSlice({
     },
     setShapeRootFretSpec: (state, action: LayerNoteAction) => {
       const { payload } = action;
-      const { layerIdx, noteId } = payload;
-      const layer = state.layers[layerIdx] as ShapeLayer;
+      const { layerId, noteId } = payload;
+      const layer = state.layers.find(l => l.id === layerId);
+      if (layer?.layerType !== "shape") return;
       layer.shape.segments[0][1] = noteId;
     },
   },

@@ -1,14 +1,18 @@
-import { useDispatch } from "react-redux";
-import { ShapeLayerWithIndex } from "../../fretka/layers";
+import { useDispatch, useSelector } from "react-redux";
+import { ShapeLayer } from "../../fretka/layers";
 import { actions } from "../../fretka/layers-slice";
-import { FretShapeSpec, getShapeAppearance, SvgPatternId, svgPatternsArray } from "../../fretka/shapes";
+import { getShapeAppearance, SvgPatternId, svgPatternsArray } from "../../fretka/shapes";
+import { noteStateSelector } from "../../fretka/store";
 import { ContentFactory, PopSelector } from "./pop-selector";
 
 export function ShapeAppearanceSample(props: {
-  shape: FretShapeSpec;
-  layer: ShapeLayerWithIndex;
+  layerId: string;
 }) {
-  const { shape, layer } = props;
+  const { layerId } = props;
+  const noteSelection = useSelector(noteStateSelector);
+  const layer = noteSelection.layers.find(l => l.id === layerId) as ShapeLayer;
+  const shape = layer.shape;
+
   const shapeAppearance = getShapeAppearance(shape, layer);
 
   const pattern = shape.appearance.pattern;
@@ -25,7 +29,7 @@ export function ShapeAppearanceSample(props: {
       selection={pattern}
       setSelection={selPattern =>
         dispatch(
-          actions.setLayerPattern({ layerIdx: layer.idx, pattern: selPattern })
+          actions.setLayerPattern({ layerId: layer.id, pattern: selPattern })
         )
       }
       contentFactory={patternPickFactory}

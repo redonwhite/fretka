@@ -1,31 +1,30 @@
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  isNoteRootInLayerByIdx,
-  isNoteSelectedInLayerByIdx,
-} from '../../fretka/note-selection';
+import { isNoteRootInLayerByIdx } from "../../fretka/note-selection";
 
 import * as fretka from '../../fretka/notes';
 import styles from './layer-editor.module.scss';
 import { noteStateSelector } from '../../fretka/store';
 import { actions } from '../../fretka/layers-slice';
+import { NoteSelectionLayer } from "../../fretka/layers";
 
-export function SelectionLayerEditor(props: { layerIdx: any }) {
-  const { layerIdx } = props;
+export function SelectionLayerEditor(props: { layerId: string }) {
+  const { layerId } = props;
 
   const noteSelection = useSelector(noteStateSelector);
   const notes = fretka.notes.basicNotesArray;
+  const layer = noteSelection.layers.find(
+    
+    l => l.id === layerId
+  
+  ) as NoteSelectionLayer;
   const dispatch = useDispatch();
 
   const getButtonClass = (note: fretka.NoteClass) => {
     return classNames({
       [styles.shy]: true,
       [styles.noteButton]: true,
-      [styles.selected]: isNoteSelectedInLayerByIdx(
-        noteSelection,
-        note,
-        layerIdx
-      ),
+      [styles.selected]: layer.selection.selected[note.id],
     });
   };
 
@@ -33,7 +32,7 @@ export function SelectionLayerEditor(props: { layerIdx: any }) {
     return classNames({
       [styles.rootButton]: true,
       [styles.noteButton]: true,
-      [styles.selected]: isNoteRootInLayerByIdx(noteSelection, note, layerIdx),
+      [styles.selected]: layer.selection.root === note.id,
     });
   };
 
@@ -48,7 +47,7 @@ export function SelectionLayerEditor(props: { layerIdx: any }) {
             onClick={() =>
               dispatch(
                 actions.toggleNoteSelection({
-                  layerIdx: layerIdx,
+                  layerId: layerId,
                   noteId: note.id,
                 })
               )
@@ -62,7 +61,7 @@ export function SelectionLayerEditor(props: { layerIdx: any }) {
             onClick={() =>
               dispatch(
                 actions.toggleRootSelection({
-                  layerIdx: layerIdx,
+                  layerId: layerId,
                   noteId: note.id,
                 })
               )

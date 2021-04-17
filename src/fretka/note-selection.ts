@@ -64,14 +64,6 @@ export const isNoteSelected = (
   );
 };
 
-export const isNoteSelectedInLayerByIdx = (
-  layerState: FretkaLayersState,
-  note: NoteClass,
-  layerIdx: number,
-) => {
-  const layer = layerState.layers[layerIdx];
-  return isNoteSelectedInLayer(note, layer);
-};
 
 export const isNoteSelectedInLayer = (note: NoteClass, layer: FretkaLayer) => {
   if (layer.layerType !== 'noteSelection') return false;
@@ -101,7 +93,7 @@ export const isNoteRoot = (layerState: FretkaLayersState, note: NoteClass) => {
 
 export type LayerAction = {
   payload: {
-    layerIdx: number;
+    layerId: string;
   };
 };
 
@@ -150,11 +142,4 @@ function getSelPropsByLayer(
   const nSelMax = Math.max(0, nthSel - 1);
   selPropses.forEach((el) => (el.nSelMax = nSelMax));
   return selPropses;
-}
-
-export function canDeleteLayer(
-  layerState: FretkaLayersState,
-  layerIdx: number,
-) {
-  return layerState.layers[layerIdx]?.deletable;
 }

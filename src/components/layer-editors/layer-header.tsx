@@ -15,16 +15,21 @@ export function LayerHeader(props: { layer: FretkaLayerWithIndex }) {
   return (
     <div className={styles.layerHeader}>
       <div className={styles.layerTitle}>
-        <input className={styles.layerNameInput}
+        <input
+          className={styles.layerNameInput}
           value={layer.name}
-          onChange={(event) =>
-            dispatch(actions.renameLayer({
-              layerIdx: layer.idx,
-              layerName: event.target.value
-            }))} />
+          onChange={event =>
+            dispatch(
+              actions.renameLayer({
+                layerId: layer.id,
+                layerName: event.target.value,
+              })
+            )
+          }
+        />
       </div>
       <div className={styles.layerMenuContainer}>
-        <LayerMenu layerIdx={layer.idx} />
+        <LayerMenu layerId={layer.id} />
       </div>
     </div>
   );

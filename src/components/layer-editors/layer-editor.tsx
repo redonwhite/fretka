@@ -29,8 +29,8 @@ export function LayerEditor(props: { layer: FretkaLayerWithIndex }) {
     <div className={getWrapperClass()}>
       <LayerBullet layer={layer} />
       <LayerHeader layer={layer} />
-      {isSelection && <SelectionLayerEditor layerIdx={layer.idx} />}
-      {isShape && <ShapeLayerEditor layer={layer as ShapeLayerWithIndex} />}
+      {isSelection && <SelectionLayerEditor layerId={layer.id} />}
+      {isShape && <ShapeLayerEditor layerId={layer.id} />}
     </div>
   );
 }

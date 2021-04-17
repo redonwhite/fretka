@@ -8,9 +8,12 @@ import {
 } from './shape-library';
 import type { FretShapeSpec } from './shapes';
 
+import { nanoid } from "nanoid";
+
 export type FretkaLayerType = 'noteSelection' | 'shape';
 
 export type FretkaLayerBase = {
+  id: string;
   name: string;
   color: LayerColorId;
   deletable: boolean;
@@ -29,8 +32,8 @@ export type ShapeLayer = FretkaLayerBase & {
   shape: FretShapeSpec;
 };
 
-export type FretkaLayer = NoteSelectionLayer | ShapeLayer;
 
+export type FretkaLayer = NoteSelectionLayer | ShapeLayer;
 export type WithLayerIndex = { idx: number };
 
 export type FretkaLayerWithIndex = FretkaLayer & { idx: number };
@@ -103,6 +106,7 @@ export function createEmptyNoteSelectionLayer(
   overrides?: Partial<NoteSelectionLayer>,
 ): NoteSelectionLayer {
   const layer: NoteSelectionLayer = {
+    id: nanoid(),
     layerType: "noteSelection",
     name: "My selection layer",
     color: layerColorRotation[targetIdx % layerColorRotation.length],
@@ -119,6 +123,7 @@ export function createEmptyShapeLayer(
   overrides?: Partial<ShapeLayer>,
 ): ShapeLayer {
   const layer: ShapeLayer = {
+    id: nanoid(),
     layerType: "shape",
     name: "My shape layer",
     color: layerColorRotation[targetIdx % layerColorRotation.length],

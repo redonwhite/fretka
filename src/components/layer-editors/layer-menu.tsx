@@ -4,20 +4,24 @@ import { actions } from '../../fretka/layers-slice';
 
 import styles from './layer-editor.module.scss';
 
-export function LayerMenu(props: { layerIdx: number }) {
-  const { layerIdx } = props;
+export function LayerMenu(props: { layerId: string }) {
+  const { layerId } = props;
   const dispatch = useDispatch();
 
   return (
     <div className={styles.layerMenu}>
       <button
-        onClick={() => dispatch(actions.resetSelectionInLayer({ layerIdx }))}
+        onClick={() =>
+         
+          dispatch(actions.resetSelectionInLayer({ layerId }))
+        
+        }
         className={styles.resetLayerButton}
       >
         reset
       </button>
       <button
-        onClick={() => dispatch(actions.deleteLayer({ layerIdx }))}
+        onClick={() => dispatch(actions.deleteLayer({ layerId }))}
         className={styles.deleteLayerButton}
       >
         ✘
