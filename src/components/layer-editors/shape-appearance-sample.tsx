@@ -1,37 +1,29 @@
-import { useDispatch, useSelector } from "react-redux";
-import { ShapeLayer } from "../../fretka/layers";
-import { actions } from "../../fretka/layers-slice";
-import { getShapeAppearance, SvgPatternId, svgPatternsArray } from "../../fretka/shapes";
-import { noteStateSelector } from "../../fretka/store";
+import { observer } from "mobx-react-lite";
+import { ShapeLayer } from "../../fretka/layers/shape-layer";
+import { SvgPatternId, svgPatternsArray } from "../../fretka/shapes";
 import { ContentFactory, PopSelector } from "./pop-selector";
 
-export function ShapeAppearanceSample(props: {
-  layerId: string;
-}) {
-  const { layerId } = props;
-  const noteSelection = useSelector(noteStateSelector);
-  const layer = noteSelection.layers.find(l => l.id === layerId) as ShapeLayer;
+export const ShapeAppearanceSample = observer((props: {
+  layer: ShapeLayer;
+}) => {
+
+  const { layer } = props;
   const shape = layer.shape;
 
-  const shapeAppearance = getShapeAppearance(shape, layer);
+  const shapeAppearance = layer.appearance;
+  const patternId = shape.appearance.patternId;
 
-  const pattern = shape.appearance.pattern;
-  const patternPickFactory: ContentFactory<SvgPatternId> = (pick) =>
+  const patternPickFactory: ContentFactory<SvgPatternId | undefined> = (pick) =>
     <>
       {svgPatternsArray.map(
-          pat => <button onClick={() => pick(pat.id)}>{ pat.name }</button>
+        pat => <button key={pat.id} onClick={() => pick(pat.id)}>{pat.name}</button>
       )}
+      <button key='undefined' onClick={() => pick(undefined)}>no pattern</button>
     </>
-  const dispatch = useDispatch();
 
   return (
-    <PopSelector
-      selection={pattern}
-      setSelection={selPattern =>
-        dispatch(
-          actions.setLayerPattern({ layerId: layer.id, pattern: selPattern })
-        )
-      }
+    <PopSelector selection={patternId}
+      setSelection={patternId => shape.appearance.setPattern(patternId)}
       contentFactory={patternPickFactory}
     >
       <svg width="100%">
@@ -46,4 +38,4 @@ export function ShapeAppearanceSample(props: {
       </svg>
     </PopSelector>
   );
-}
+});

@@ -37,7 +37,6 @@ export type NoteClass = {
   isNatural: boolean;
 };
 
-export type EqTempInterval = number;
 export type ScaleStepIndex = number;
 
 const step1: ScaleStepIndex = 0;
@@ -197,7 +196,7 @@ export const basicNotesArray: Array<NoteClass> = [
   gsharp,
 ];
 
-const major: ScaleMovable = {
+export const major: ScaleMovable = {
   intervals: [root, maj2, maj3, perf4, perf5, maj6, maj7],
 };
 

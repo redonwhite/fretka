@@ -1,16 +1,14 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
+
+import { observer } from 'mobx-react-lite';
+import { LayerStore } from '../../fretka/state/stores';
+import type { FretkaLayer } from '../../fretka/layers/fretka-layer';
 import { LayerMenu } from './layer-menu';
 
 import styles from './layer-editor.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { noteStateSelector } from '../../fretka/store';
-import type { FretkaLayerWithIndex } from '../../fretka/layers';
-import { actions } from '../../fretka/layers-slice';
 
-export function LayerHeader(props: { layer: FretkaLayerWithIndex }) {
-  const { layer } = props;
-  const layerState = useSelector(noteStateSelector);
-  const dispatch = useDispatch();
+export const LayerHeader = observer((props: { layer: FretkaLayer, layerStore: LayerStore }) => {
+  const { layer, layerStore } = props;
 
   return (
     <div className={styles.layerHeader}>
@@ -18,19 +16,13 @@ export function LayerHeader(props: { layer: FretkaLayerWithIndex }) {
         <input
           className={styles.layerNameInput}
           value={layer.name}
-          onChange={event =>
-            dispatch(
-              actions.renameLayer({
-                layerId: layer.id,
-                layerName: event.target.value,
-              })
-            )
-          }
+          onChange={event => layer.setName(event.target.value)}
         />
       </div>
       <div className={styles.layerMenuContainer}>
-        <LayerMenu layerId={layer.id} />
+        <LayerMenu layer={layer} layerStore={layerStore}/>
       </div>
     </div>
   );
-}
+  
+});

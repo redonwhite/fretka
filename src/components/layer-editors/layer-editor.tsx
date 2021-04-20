@@ -1,18 +1,21 @@
+import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
-import type {
-  FretkaLayerWithIndex,
-  ShapeLayerWithIndex,
-} from '../../fretka/layers';
+
+import { FretkaLayer } from '../../fretka/layers/fretka-layer';
 
 import { LayerHeader } from './layer-header';
 import { SelectionLayerEditor } from './selection-layer-editor';
-import { ShapeLayerEditor } from './shape-layer-editor';
 
 import styles from './layer-editor.module.scss';
 import { LayerBullet } from './layer-bullet';
+import { LayerStore } from '../../fretka/state/stores';
+import { NoteSelectionLayer } from '../../fretka/layers/note-selection-layer';
+import React from 'react';
+import { ShapeLayer } from '../../fretka/layers/shape-layer';
+import { ShapeLayerEditor } from './shape-layer-editor';
 
-export function LayerEditor(props: { layer: FretkaLayerWithIndex }) {
-  const { layer } = props;
+export const LayerEditor = observer((props: { layerStore: LayerStore, layer: FretkaLayer }) => {
+  const { layerStore, layer } = props;
 
   function getWrapperClass(): string | undefined {
     return classNames({
@@ -28,9 +31,9 @@ export function LayerEditor(props: { layer: FretkaLayerWithIndex }) {
   return (
     <div className={getWrapperClass()}>
       <LayerBullet layer={layer} />
-      <LayerHeader layer={layer} />
-      {isSelection && <SelectionLayerEditor layerId={layer.id} />}
-      {isShape && <ShapeLayerEditor layerId={layer.id} />}
+      <LayerHeader layerStore={layerStore} layer={layer} />
+      {isSelection && <SelectionLayerEditor layer={layer as NoteSelectionLayer} />}
+      {isShape && <ShapeLayerEditor layer={layer as ShapeLayer} />}
     </div>
   );
-}
+});

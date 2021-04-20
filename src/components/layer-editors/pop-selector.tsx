@@ -3,10 +3,10 @@ import classNames from "classnames";
 import { Popover } from "react-tiny-popover";
 
 import styles from "./layer-editor.module.scss";
+import { observer } from "mobx-react-lite";
 export type PickFunction<Tvalue extends OptionValue> = (
   _selection: Tvalue
 ) => void;
-
 
 type OptionValue = string | number | undefined;
 export type ContentFactory<Tvalue extends OptionValue> = (
@@ -26,10 +26,9 @@ type PopSelectorProps<Tvalue extends OptionValue> = PropsWithChildren<{
   }>;
 }>;
 
-
-export function PopSelector<Tvalue extends OptionValue>(
+export const PopSelector = observer(<Tvalue extends OptionValue>(
   props: PopSelectorProps<Tvalue>
-) {
+) => {
   const { selection: sel, setSelection: setSel, options } = props;
   const [isRootPopoverOpen, setIsRootPopoverOpen] = useState(false);
   const hasChildren = props.children !== undefined;
@@ -105,4 +104,4 @@ export function PopSelector<Tvalue extends OptionValue>(
   function getMainButtonClass(): string | undefined {
     return styles.popSelButton + " " + props.className;
   }
-}
+});

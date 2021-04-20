@@ -1,31 +1,28 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { actions } from '../../fretka/layers-slice';
+
+import { observer } from 'mobx-react-lite';
+import { FretkaLayer } from '../../fretka/layers/fretka-layer';
+import { LayerStore } from '../../fretka/state/stores';
 
 import styles from './layer-editor.module.scss';
 
-export function LayerMenu(props: { layerId: string }) {
-  const { layerId } = props;
-  const dispatch = useDispatch();
+export const LayerMenu = observer((props: { layer: FretkaLayer, layerStore: LayerStore }) => {
+  const { layer, layerStore } = props;
 
   return (
     <div className={styles.layerMenu}>
       <button
-        onClick={() =>
-         
-          dispatch(actions.resetSelectionInLayer({ layerId }))
-        
-        }
+        onClick={() => layer.reset()}
         className={styles.resetLayerButton}
       >
         reset
       </button>
       <button
-        onClick={() => dispatch(actions.deleteLayer({ layerId }))}
+        onClick={() => layerStore.removeLayer(layer)}
         className={styles.deleteLayerButton}
       >
         ✘
       </button>
     </div>
   );
-}
+});

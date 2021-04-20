@@ -1,7 +1,3 @@
-import { useDispatch, useSelector } from "react-redux";
-import type { ShapeLayer, ShapeLayerWithIndex } from "../../fretka/layers";
-import { actions } from "../../fretka/layers-slice";
-import { NoteClassId } from "../../fretka/notes";
 import { PopSelector } from "./pop-selector";
 import styles from "./layer-editor.module.scss";
 import {
@@ -12,31 +8,23 @@ import {
 import { RelativeFretCoordEditor } from "./relative-fret-coord-editor";
 import React, { useState } from "react";
 import { ShapeAppearanceSample } from "./shape-appearance-sample";
-import { noteStateSelector } from "../../fretka/store";
+import { observer } from "mobx-react-lite";
+import { ShapeLayer } from "../../fretka/layers/shape-layer";
 
-export function ShapeLayerEditor(props: { layerId: string }) {
-  const { layerId } = props;
-  const noteSelection = useSelector(noteStateSelector);
-  const layer = noteSelection.layers.find(l => l.id === layerId) as ShapeLayer;
+export const ShapeLayerEditor = observer((props: { layer: ShapeLayer }) => {
+  const { layer } = props;
   const { shape } = layer;
-  const dispatch = useDispatch();
+
   const [showTailEditor, setShowTailEditor] = useState(false);
-
-  const setShapeRoot = (noteId: NoteClassId | number) =>
-    dispatch(
-      actions.setShapeRootFretSpec({
-        layerId: layer.id,
-        noteId: noteId as NoteClassId,
-      })
-    );
-
-  const [shapeRoot, ...shapeCoords] = shape.segments;
+  const [shapeHead, ...shapetail] = shape.segments;
+  const shapeHeadStringSpec = shapeHead[0];
+  const shapeHeadFretSpec = shapeHead[1];
 
   return (
     <div className={styles.shapeEditor + " " + styles.layerContentEditor}>
       {/* prettier-ignore */}
       <div className={styles.shapeSample}>
-        <ShapeAppearanceSample layerId={layer.id} />
+        <ShapeAppearanceSample layer={layer} />
       </div>
       <div className={styles.shapeEditorHead}>
         <div className={styles.inner}>
@@ -44,14 +32,14 @@ export function ShapeLayerEditor(props: { layerId: string }) {
           <span className={styles.shapeRootButton}>
             <PopSelector
               className={styles.prominentButton}
-              selection={shapeRoot[1]}
-              setSelection={setShapeRoot}
+              selection={shapeHeadFretSpec}
+              setSelection={fretSpec => shape.setHeadFretSpec(fretSpec)}
               options={basicNoteOptions}
             />
             <PopSelector
               className={styles.prominentButton}
-              selection={shapeRoot[0]}
-              setSelection={() => {}}
+              selection={shapeHeadStringSpec}
+              setSelection={stringSpec => shape.setHeadStringSpec(stringSpec)}
               options={absoluteStringSpecOptions}
             />
           </span>
@@ -74,11 +62,11 @@ export function ShapeLayerEditor(props: { layerId: string }) {
       </div>
       {showTailEditor && (
         <div className={styles.shapeEditorTail}>
-          {shapeCoords.map((coord, idx) => (
+          {shapetail.map((coord, idx) => (
             <RelativeFretCoordEditor key={idx} shapeCoord={coord} />
           ))}
         </div>
       )}
     </div>
   );
-}
+});

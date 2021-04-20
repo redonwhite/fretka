@@ -1,16 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { actions } from '../../fretka/layers-slice';
-import { noteStateSelector } from '../../fretka/store';
-import styles from './layer-editor.module.scss';
-import { LayerEditor } from './layer-editor';
+import { observer } from "mobx-react-lite";
+import { LayerStore } from "../../fretka/state/stores";
+import { LayerEditor } from "./layer-editor";
 
-export function LayerStackEditor() {
-  const layerState = useSelector(noteStateSelector);
-  const { layers } = layerState;
-  const layerEditors = layers.map((layer) => (
-    <LayerEditor layer={layer} key={layer.idx} />
+import styles from "./layer-editor.module.scss";
+
+export const LayerStackEditor = observer((props : { layerStore: LayerStore }) => {
+  const layerStore = props.layerStore;
+  const layers = props.layerStore.layers;
+
+  const layerEditors = layers.map(layer => (
+    <LayerEditor layerStore={layerStore} layer={layer} key={layer.id} />
   ));
-  const dispatch = useDispatch();
 
   return (
     <div className={styles.layeredNoteSelectorWrapper}>
@@ -18,18 +18,14 @@ export function LayerStackEditor() {
       <div className={styles.emptyLayerSlotActionWrapper}>
         <button
           className="addLayerButton secondaryButton"
-          onClick={() =>
-            dispatch(actions.addLayerAtEnd({ layerType: 'noteSelection' }))
-          }
+          onClick={layerStore.addNoteSelectionLayer}
         >
           <span>✚</span>
-          <span>add layer</span>
+          <span>add note selection</span>
         </button>
         <button
           className="addLayerButton secondaryButton"
-          onClick={() =>
-            dispatch(actions.addLayerAtEnd({ layerType: 'shape' }))
-          }
+          onClick={layerStore.addShapeLayer}
         >
           <span>✚</span>
           <span>add shape</span>
@@ -37,4 +33,4 @@ export function LayerStackEditor() {
       </div>
     </div>
   );
-}
+});

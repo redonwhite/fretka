@@ -1,17 +1,25 @@
-import { useDispatch } from "react-redux";
-import { FretkaLayerWithIndex, LayerColorId, layerColors, layerColorsArray } from "../../fretka/layers";
-import { actions } from "../../fretka/layers-slice";
-
+import {
+  FretkaLayer,
+  LayerColorId,
+  layerColorsArray,
+} from "../../fretka/layers/fretka-layer";
+import { observer } from "mobx-react-lite";
 import { PickFunction, PopSelector } from "./pop-selector";
-import styles from './layer-editor.module.scss';
 
-export function LayerBullet(props: { layer: FretkaLayerWithIndex }) {
-  const { layer } = props;
-  return <LayerColorPicker layer={layer} />;
-}
+import styles from "./layer-editor.module.scss";
 
+export const LayerBullet = observer((props: { layer: FretkaLayer }) => <>
+  <LayerColorPicker layer={props.layer} />
+</>);
 
-export function ColorPicker(props: {color: LayerColorId, setColor: PickFunction<LayerColorId>}) {
+export const LayerColorPicker = observer((props: { layer: FretkaLayer }) => (
+  <ColorPicker color={props.layer.color} setColor={props.layer.setColor.bind(props.layer)} />
+));
+
+export const ColorPicker = observer((props: {
+  color: LayerColorId;
+  setColor: PickFunction<LayerColorId>;
+}) => {
   const { color, setColor } = props;
 
   const popupContentFactory = (pick: PickFunction<LayerColorId>) => {
@@ -37,22 +45,8 @@ export function ColorPicker(props: {color: LayerColorId, setColor: PickFunction<
       selection={color}
       setSelection={setColor}
     >
-      {''}
+      {""}
     </PopSelector>
   );
-}
+});
 
-export function LayerColorPicker(props: { layer: FretkaLayerWithIndex }) {
-  const { layer } = props;
-  const { color } = layer;
-  const dispatch = useDispatch();
-
-  return (
-    <ColorPicker
-      color={color}
-      setColor={newColor =>
-        dispatch(actions.setLayerColor({ layerId: layer.id, color: newColor }))
-      }
-    />
-  );
-}

@@ -1,30 +1,20 @@
 import classNames from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
-import { isNoteRootInLayerByIdx } from "../../fretka/note-selection";
-
 import * as fretka from '../../fretka/notes';
+
 import styles from './layer-editor.module.scss';
-import { noteStateSelector } from '../../fretka/store';
-import { actions } from '../../fretka/layers-slice';
-import { NoteSelectionLayer } from "../../fretka/layers";
+import { observer } from 'mobx-react-lite';
+import { NoteSelectionLayer } from '../../fretka/layers/note-selection-layer';
 
-export function SelectionLayerEditor(props: { layerId: string }) {
-  const { layerId } = props;
+export const SelectionLayerEditor = observer((props: { layer: NoteSelectionLayer }) => {
 
-  const noteSelection = useSelector(noteStateSelector);
+  const { layer } = props;
   const notes = fretka.notes.basicNotesArray;
-  const layer = noteSelection.layers.find(
-    
-    l => l.id === layerId
-  
-  ) as NoteSelectionLayer;
-  const dispatch = useDispatch();
 
   const getButtonClass = (note: fretka.NoteClass) => {
     return classNames({
       [styles.shy]: true,
       [styles.noteButton]: true,
-      [styles.selected]: layer.selection.selected[note.id],
+      [styles.selected]: layer.selection.has(note.id),
     });
   };
 
@@ -32,7 +22,7 @@ export function SelectionLayerEditor(props: { layerId: string }) {
     return classNames({
       [styles.rootButton]: true,
       [styles.noteButton]: true,
-      [styles.selected]: layer.selection.root === note.id,
+      [styles.selected]: layer.root === note.id,
     });
   };
 
@@ -40,32 +30,18 @@ export function SelectionLayerEditor(props: { layerId: string }) {
     <div
       className={styles.selectionLayerEditor + " " + styles.layerContentEditor}
     >
-      {/* prettier-ignore */ }
+      {/* prettier-ignore */}
       {notes.map((note, idx) => (
         <div className={styles.noteButtonSet} key={idx}>
           <button
-            onClick={() =>
-              dispatch(
-                actions.toggleNoteSelection({
-                  layerId: layerId,
-                  noteId: note.id,
-                })
-              )
-            }
+            onClick={() => layer.toggleNote(note.id)}
             className={getButtonClass(note)}
             key={idx}
           >
             {fretka.getPrettyNoteName(note)}
           </button>
           <button
-            onClick={() =>
-              dispatch(
-                actions.toggleRootSelection({
-                  layerId: layerId,
-                  noteId: note.id,
-                })
-              )
-            }
+            onClick={() => layer.toggleRoot(note.id)}
             className={getRootButtonClass(note)}
             key={"root" + idx}
           >
@@ -75,4 +51,4 @@ export function SelectionLayerEditor(props: { layerId: string }) {
       ))}
     </div>
   );
-}
+});

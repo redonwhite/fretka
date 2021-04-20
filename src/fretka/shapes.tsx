@@ -2,11 +2,7 @@ import React from "react";
 import styles from "./symbols.module.scss";
 
 import {
-  addInterval,
-  addSemitones,
   BasicIntervalId,
-  getPositiveSteps,
-  getShortestDelta,
   IntervalDirectionId,
 } from "./intervals";
 import {
@@ -18,10 +14,10 @@ import {
 } from "./notes";
 import {
   LayerColorId,
-  layerColors,
-  layerColorsArray,
-  ShapeLayer,
-} from "./layers";
+} from "./layers/fretka-layer";
+import { action, makeObservable, observable } from "mobx";
+import { getPositiveSteps, addSemitones, addInterval, getShortestDelta } from "./interval-functions";
+import { ShapeLayer } from "./layers/shape-layer";
 
 export type AbsoluteStringSpec = {
   id: AbsoluteStringSpecId;
@@ -221,11 +217,36 @@ export type RelativeFretCoord = [
   ...fretSpec: RelativeIntervalSpec
 ];
 
-export type FretShapeCoords = [AbsoluteFretCoord, ...RelativeFretCoord[]];
-export type ShapeAppearance = {
-  strokeWidth?: number;
-  stroke?: string;
-  pattern?: SvgPatternId;
+export type FretShapeCoordArray = [AbsoluteFretCoord, ...RelativeFretCoord[]];
+
+export class ShapeAppearance {
+  strokeWidth: number | undefined;
+  stroke: string | undefined;
+  patternId: SvgPatternId | undefined;
+
+  constructor(pattern?: SvgPatternId, strokeWidth?: number, stroke?: string) {
+    this.strokeWidth = strokeWidth;
+    this.stroke = stroke;
+    this.patternId = pattern;
+
+    makeObservable(this, {
+      strokeWidth: observable,
+      stroke: observable,
+      patternId: observable,
+      resetTo: action,
+      setPattern: action,
+    });
+  }
+
+  setPattern = (patternId: SvgPatternId | undefined) => this.patternId = patternId;
+  setStroke = (stroke: string | undefined) => this.stroke = stroke;
+  setStrokeWidth = (strokeWidth: number | undefined) => this.strokeWidth = strokeWidth;
+
+  resetTo = (state: ShapeAppearance) => {
+    this.strokeWidth = state.strokeWidth;
+    this.stroke = state.stroke;
+    this.patternId = state.patternId;
+  }
 };
 
 export type FretShapeSpecTypeId = "sequence of intervals";
@@ -243,10 +264,36 @@ export const fretShapeTypeArray: FretShapeSpecType[] = [
 ];
 
 
-export type FretShapeSpec = {
+export class FretShapeSpec {
+
   type: FretShapeSpecTypeId;
-  segments: FretShapeCoords;
+  segments: FretShapeCoordArray;
   appearance: ShapeAppearance;
+
+  constructor(type: FretShapeSpecTypeId, headCoord : AbsoluteFretCoord = ['string1', 'a']) {
+    this.type = type;
+    this.segments = [headCoord];
+    this.appearance = new ShapeAppearance();
+    
+    makeObservable(this, {
+      type: observable,
+      segments: observable,
+      appearance: observable,
+      resetTo: action,
+      setHeadFretSpec: action,
+      setHeadStringSpec: action,
+    });
+  }
+
+  setHeadFretSpec = (fretSpec: AbsoluteFretSpec) => this.segments[0][1] = fretSpec;
+  setHeadStringSpec = (stringSpec: AbsoluteStringSpecId) => this.segments[0][0] = stringSpec;
+
+  resetTo = (state: FretShapeSpec) => {
+    this.type = state.type;
+    this.segments = [...state.segments];
+    this.appearance.resetTo(state.appearance);
+  }
+  
 };
 
 export function getStringIndexesFromAbsSpec(
@@ -312,7 +359,7 @@ export type GridSpaceCoordSet = Array<GridSpaceCoord>;
 export type GridSpaceCoordSets = Array<GridSpaceCoordSet>;
 
 export function fretSpaceShapeToGridSpace(
-  shape: FretShapeCoords,
+  shape: FretShapeCoordArray,
   tuning: GuitarTuning,
   fretCount: number
 ): GridSpaceCoordSets {
@@ -407,16 +454,4 @@ export const svgPatternsArray: SvgPattern[] = Object.values(svgPatterns);
 
 export function getDomPatternId(pattern: SvgPatternId, color: LayerColorId) {
   return `${pattern}Pattern_${color}`;
-}
-
-export function getShapeAppearance(shape: FretShapeSpec, layer: ShapeLayer) {
-  const { pattern, ...otherShapeAppearance } = shape.appearance;
-  const fill = pattern
-    ? `url(#${getDomPatternId(pattern, layer.color)})`
-    : undefined;
-
-  return {
-    ...otherShapeAppearance,
-    fill,
-  };
 }

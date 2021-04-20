@@ -1,34 +1,39 @@
-import React from 'react';
-import './App.module.scss';
-import { SvgFretboard } from './components/fretboard/svg-fretboard';
-import { guitarTunings } from './fretka/notes';
-import store from './fretka/store';
-import { Provider } from 'react-redux';
-import { LayerStackEditor } from './components/layer-editors/layer-stack-editor';
+import "./App.module.scss";
+// import { SvgFretboard } from "./components/fretboard/svg-fretboard";
+// import { guitarTunings } from "./fretka/notes";
+import { LayerStackEditor } from "./components/layer-editors/layer-stack-editor";
 
 import "./vars.scss";
-import styles from './App.module.scss';
+import styles from "./App.module.scss";
 
 import { SvgPatterns } from "./components/svg-patterns/svg-patterns";
-import { SvgPatternPreview } from './components/svg-patterns/svg-pattern-preview';
+import { AppStateStore } from "./fretka/state/stores";
+import { autorun } from "mobx";
 
-interface AppProps {}
+const appState = new AppStateStore();
 
-function App({ }: AppProps) {
-  
+autorun(() => console.log('layers in layer store: ' + appState.layerStore.layers));
+
+appState.layerStore.addShapeLayer();
+appState.layerStore.addNoteSelectionLayer();
+appState.layerStore.addShapeLayer();
+appState.layerStore.addShapeLayer();
+
+
+
+function App() {
   return (
-    <Provider store={store}>
+    <>
       <SvgPatterns />
       <div className={styles.appContainer}>
-        <div className={styles.fretboardArea}>
-          {/* <SvgPatternPreview /> */}
+        {/*<div className={styles.fretboardArea}>
           <SvgFretboard tuning={guitarTunings.standard} />
-        </div>
+  </div>*/}
         <div className={styles.noteSelectorArea}>
-          <LayerStackEditor />
+          <LayerStackEditor layerStore={appState.layerStore}   />
         </div>
       </div>
-    </Provider>
+    </>
   );
 }
 

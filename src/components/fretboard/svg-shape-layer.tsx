@@ -1,20 +1,21 @@
-import classNames from 'classnames';
-import React from 'react';
-import type { ShapeLayer, ShapeLayerWithIndex } from "../../fretka/layers";
-import { SvgFretSpaceShape } from './svg-fret-space-shape';
+export {};
+// import classNames from 'classnames';
+// import React from 'react';
+// import type { ShapeLayer, ShapeLayerWithIndex } from "../../fretka/layers";
+// import { SvgFretSpaceShape } from './svg-fret-space-shape';
 
-export function SvgShapeLayer(props: { layer: ShapeLayerWithIndex }) {
-  const { layer } = props;
+// export function SvgShapeLayer(props: { layer: ShapeLayerWithIndex }) {
+//   const { layer } = props;
 
-  const groupClasseNames = classNames({
-    shapeLayer: true,
-    layerColor: true,
-    [`layerColor-${layer.color}`]: true,
-  });
+//   const groupClasseNames = classNames({
+//     shapeLayer: true,
+//     layerColor: true,
+//     [`layerColor-${layer.color}`]: true,
+//   });
 
-  return (
-    <g className={groupClasseNames}>
-      <SvgFretSpaceShape shape={layer.shape} layer={layer} />
-    </g>
-  );
-}
+//   return (
+//     <g className={groupClasseNames}>
+//       <SvgFretSpaceShape shape={layer.shape} layer={layer} />
+//     </g>
+//   );
+// }

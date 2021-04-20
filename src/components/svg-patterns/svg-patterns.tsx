@@ -1,6 +1,5 @@
 import React from 'react';
-import { layerColorsArray } from "../../fretka/layers";
-
+import { layerColorsArray } from "../../fretka/layers/fretka-layer";
 
 export function SvgPatterns() {
   return (
