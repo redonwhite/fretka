@@ -1,12 +1,17 @@
 import { action, computed, makeObservable, observable } from "mobx";
+import { computedFn } from "mobx-utils";
+import { FretboardDefinition } from "../fretka/fretboard";
+import { guitarTuningsLibrary } from "../fretka/guitar-tunings";
 import {
   FretkaLayer,
+  isShapeLayer,
   LayerColorId,
   layerColorRotation,
-  layerColorsArray,
-} from "../layers/fretka-layer";
-import { NoteSelectionLayer } from "../layers/note-selection-layer";
-import { ShapeLayer } from "../layers/shape-layer";
+} from "../fretka/layers/fretka-layer";
+
+import { NoteSelectionLayer } from "../fretka/layers/note-selection-layer";
+import { ShapeLayer } from "../fretka/layers/shape-layer";
+import { NoteClassId } from "../fretka/notes";
 
 export abstract class RootStore {}
 
@@ -24,12 +29,18 @@ export abstract class Store extends RootStore {
 
 export class AppStateStore extends RootStore {
   layerStore: LayerStore;
+  fretboardDefinition: FretboardDefinition;
 
   constructor() {
     super();
     this.layerStore = new LayerStore(this);
+    this.fretboardDefinition = new FretboardDefinition(
+      guitarTuningsLibrary.standard
+    );
+
     makeObservable(this, {
       layerStore: observable,
+      fretboardDefinition: observable,
     });
   }
 }
@@ -37,8 +48,33 @@ export class AppStateStore extends RootStore {
 export class LayerStore extends Store {
   layers: FretkaLayer[] = [];
 
+  selectionByNote = () => {};
+
+  getSelectionsForNote = computedFn(function selForNote(
+    this: LayerStore,
+    noteId: NoteClassId
+  ) {
+    console.log("computing selection state for " + noteId);
+
+    return {
+      selectedIn: this.noteSelectionLayers.filter(l => l.selection.has(noteId)),
+      rootOf: this.noteSelectionLayers.filter(l => l.root === noteId),
+      onlySelectedIn: this.noteSelectionLayers.filter(
+        l => l.selection.has(noteId) && l.root !== noteId
+      ),
+    };
+  });
+
+  get noteSelectionLayers(): NoteSelectionLayer[] {
+    return this.layers.filter(
+      l => l.layerType === "noteSelection"
+    ) as NoteSelectionLayer[];
+  }
+  get shapeLayers(): ShapeLayer[] {
+    return this.layers.filter(l => isShapeLayer(l)) as ShapeLayer[];
+  }
+
   get nextLayerColor(): LayerColorId {
-    
     const revLayers = [...this.layers].reverse();
     console.log(revLayers);
 
@@ -48,9 +84,10 @@ export class LayerStore extends Store {
         color: color,
       }))
       .map(res =>
-      res.idx >= 0 ? res : { idx: this.layers.length, color: res.color }
-    ).sort((color1, color2) => color2.idx - color1.idx)[0].color;
-    
+        res.idx >= 0 ? res : { idx: this.layers.length, color: res.color }
+      )
+      .sort((color1, color2) => color2.idx - color1.idx)[0].color;
+
     return leastRecentlyUsedColor;
   }
 
@@ -60,6 +97,8 @@ export class LayerStore extends Store {
 
     makeObservable(this, {
       layers: observable,
+      noteSelectionLayers: computed,
+      shapeLayers: computed,
       nextLayerColor: computed,
       addNoteSelectionLayer: action,
       addShapeLayer: action,

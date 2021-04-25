@@ -3,8 +3,19 @@ import { nanoid } from "nanoid";
 import { action, makeObservable, observable, override } from "mobx";
 import cloneDeep from "lodash/cloneDeep";
 import { NoteClassId } from "../notes";
+import { NoteSelectionLayer } from "./note-selection-layer";
+import { ShapeLayer } from "./shape-layer";
 
 export type FretkaLayerType = "noteSelection" | "shape";
+
+export function isNoteSelectionLayer(
+  layer: FretkaLayer
+): layer is NoteSelectionLayer {
+  return layer.layerType === "noteSelection";
+}
+export function isShapeLayer(layer: FretkaLayer): layer is ShapeLayer {
+  return layer.layerType === "shape";
+} 
 
 export abstract class FretkaLayer {
   id: string;

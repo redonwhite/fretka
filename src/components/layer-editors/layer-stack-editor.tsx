@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { LayerStore } from "../../fretka/state/stores";
+import { LayerStore } from "../../store/app-state";
 import { LayerEditor } from "./layer-editor";
 
 import styles from "./layer-editor.module.scss";

@@ -1,79 +1,60 @@
-export {};
-// import React from 'react';
-// import { notes } from '../../fretka/notes';
-// import type { NoteAbsolute, NoteClass } from '../../fretka/notes';
-// import type { Point } from '../../fretka/svg';
-// import { SvgFretboardCell } from './svg-fretboard-cell';
+import React from 'react';
 
-// // import styles from './fretboardstring.module.scss';
+import { NoteAbsolute, notes } from '../../fretka/notes';
+import { observer } from 'mobx-react-lite';
+import { SvgFretboardCell } from './svg-fretboard-cell';
 
-// export function SvgFretboardString(props: {
-//   tuning: NoteAbsolute;
-//   fretCount: number;
-//   fromX: number;
-//   toX: number;
-//   fromY: number;
-//   toY: number;
-//   strokeWidth: number;
-//   height: number;
-// }) {
-//   const {
+export const SvgFretboardString = observer((props: {
+  stringTuning: NoteAbsolute;
+  fretCount: number;
+  fromX: number;
+  toX: number;
+  fromY: number;
+  toY: number;
+  strokeWidth: number;
+  height: number;
+}) => {
 
-//        tuning,
+  const fretNotes: Array<NoteAbsolute> = Array.from(
+    { length: props.fretCount },
+    (_, idx) => props.stringTuning.absIdx + idx
+  ).map(absIdx => {
+    const idx = absIdx % 12;
+    const note = notes.basicNotesArray[idx];
+    return {
+      ...note,
+      absIdx: absIdx,
+    };
+  });
 
-//        fretCount,
+  const cellWidth = (props.toX - props.fromX) / props.fretCount;
 
-//        strokeWidth,
-
-//        height,
-
-//     fromX,
-
-//     fromY,
-
-//     toX,
-
-//     toY,
-
-//   } = props;
-
-//   const fretNotes: Array<NoteAbsolute> = Array.from(
-//     { length: fretCount },
-//     (_, idx) => tuning.absIdx + idx
-//   ).map(absIdx => {
-//     const idx = absIdx % 12;
-//     const note = notes.basicNotesArray[idx];
-//     return {
-//       ...note,
-//       absIdx: absIdx,
-//     };
-//   });
-
-//   const cellWidth = (toX - fromX) / fretCount;
-
-//   return (
-//     <>
-//       <line
-//         stroke="black"
-//         strokeWidth={strokeWidth}
-//         x1={fromX}
-//         x2={toX}
-//         y1={fromY}
-//         y2={toY}
-//         className="string"
-//         shapeRendering="crispEdges"
-//       />
-//       {fretNotes.map((note, idx) => (
-//         <SvgFretboardCell
-//           key={idx}
-//           note={note}
-//           fretNumber={idx}
-//           stringTuning={tuning}
-//           width={cellWidth}
-//           height={height}
-//           center={{ x: fromX + cellWidth * (idx + 0.5), y: fromY }}
-//         />
-//       ))}
-//     </>
-//   );
-// }
+  return (
+    <>
+      <line
+        key="string line"
+        stroke="black"
+        strokeWidth={props.strokeWidth}
+        x1={props.fromX}
+        x2={props.toX}
+        y1={props.fromY}
+        y2={props.toY}
+        className="string"
+        shapeRendering="crispEdges"
+      />
+      {
+        fretNotes.map((note, idx) => (
+          <SvgFretboardCell
+            key={note.id + ' ' + note.absIdx + ' fret ' + idx}
+            note={note}
+            fretNumber={idx}
+            stringTuning={props.stringTuning}
+            width={cellWidth}
+            height={props.height}
+            centerX={props.fromX + cellWidth * (idx + 0.5)}
+            centerY={ props.fromY }
+        />
+      ))}
+    </>
+  );
+});

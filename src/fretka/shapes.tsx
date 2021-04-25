@@ -5,19 +5,18 @@ import {
   BasicIntervalId,
   IntervalDirectionId,
 } from "./intervals";
-import {
-  basicNotes,
-  GuitarTuning,
-  NoteAbsolute,
-  NoteClass,
-  NoteClassId,
-} from "./notes";
+import { basicNotes, NoteAbsolute, NoteClass, NoteClassId } from "./notes";
 import {
   LayerColorId,
 } from "./layers/fretka-layer";
 import { action, makeObservable, observable } from "mobx";
-import { getPositiveSteps, addSemitones, addInterval, getShortestDelta } from "./interval-functions";
-import { ShapeLayer } from "./layers/shape-layer";
+import {
+  getPositiveSteps,
+  addSemitones,
+  addInterval,
+  getShortestDelta,
+} from "./interval-functions";
+import { GuitarTuning } from "./guitar-tunings";
 
 export type AbsoluteStringSpec = {
   id: AbsoluteStringSpecId;

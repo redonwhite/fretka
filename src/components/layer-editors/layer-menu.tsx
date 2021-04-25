@@ -2,7 +2,7 @@ import React from 'react';
 
 import { observer } from 'mobx-react-lite';
 import { FretkaLayer } from '../../fretka/layers/fretka-layer';
-import { LayerStore } from '../../fretka/state/stores';
+import { LayerStore } from "../../store/app-state";
 
 import styles from './layer-editor.module.scss';
 
