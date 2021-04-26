@@ -1,21 +1,27 @@
-export {};
-// import classNames from 'classnames';
-// import React from 'react';
-// import type { ShapeLayer, ShapeLayerWithIndex } from "../../fretka/layers";
-// import { SvgFretSpaceShape } from './svg-fret-space-shape';
+import React from "react";
+import { observer } from "mobx-react-lite";
+import classNames from "classnames";
+import { ShapeLayer } from "../../fretka/layers/shape-layer";
+import { SvgFretSpaceShape } from "./svg-fret-space-shape";
+import { FretboardDefinition } from "../../fretka/fretboard";
 
-// export function SvgShapeLayer(props: { layer: ShapeLayerWithIndex }) {
-//   const { layer } = props;
+export const SvgShapeLayer = observer((props: {
+  fretboardDefinition: FretboardDefinition,
+  layer: ShapeLayer
+}) => {
 
-//   const groupClasseNames = classNames({
-//     shapeLayer: true,
-//     layerColor: true,
-//     [`layerColor-${layer.color}`]: true,
-//   });
+  const { fretboardDefinition, layer } = props;
 
-//   return (
-//     <g className={groupClasseNames}>
-//       <SvgFretSpaceShape shape={layer.shape} layer={layer} />
-//     </g>
-//   );
-// }
+  const groupClasseNames = classNames({
+    shapeLayer: true,
+    layerColor: true,
+    [`layerColor-${layer.color}`]: true,
+  });
+
+  return (
+    <g className={groupClasseNames}>
+      <SvgFretSpaceShape fretboardDefinition={fretboardDefinition} shape={layer.shape} layer={layer} />
+    </g>
+  );
+
+});

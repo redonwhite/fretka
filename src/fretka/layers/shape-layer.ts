@@ -1,6 +1,6 @@
-import { action, computed, makeObservable, observable, override } from "mobx";
+import { computed, makeObservable, observable, override } from "mobx";
 
-import { FretShapeSpec, getDomPatternId } from "../shapes";
+import { FretShapeSpec, getDomPatternId, IFretShapeSpec } from "../shapes";
 import { FretkaLayer, getOriginalState, LayerColorId } from "./fretka-layer";
 
 export class ShapeLayer extends FretkaLayer {
@@ -24,11 +24,13 @@ export class ShapeLayer extends FretkaLayer {
   constructor(
     color: LayerColorId,
     name: string = "New shape",
-    shape?: FretShapeSpec
+    shape?: IFretShapeSpec
   ) {
     super(color, name);
     this.layerType = "shape";
-    this.shape = shape ?? new FretShapeSpec("sequence of intervals");
+    this.shape = new FretShapeSpec("sequence of intervals");
+    
+    if (shape) this.shape.resetTo(shape);
 
     this.originalState = getOriginalState(this);
 

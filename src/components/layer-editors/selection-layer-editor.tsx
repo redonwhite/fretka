@@ -14,7 +14,7 @@ export const SelectionLayerEditor = observer((props: { layer: NoteSelectionLayer
     return classNames({
       [styles.shy]: true,
       [styles.noteButton]: true,
-      [styles.selected]: layer.selection.has(note.id),
+      [styles.selected]: layer.selection[note.id],
     });
   };
 

@@ -1,4 +1,6 @@
+import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
+import { pentatonicMinorPos1, pentatonicMinorPos2, pentatonicMinorPos3, pentatonicMinorPos4, pentatonicMinorPos5 } from "../../fretka/shape-library";
 import { LayerStore } from "../../store/app-state";
 import { LayerEditor } from "./layer-editor";
 
@@ -25,7 +27,28 @@ export const LayerStackEditor = observer((props : { layerStore: LayerStore }) =>
         </button>
         <button
           className="addLayerButton secondaryButton"
-          onClick={layerStore.addShapeLayer}
+          onClick={() => runInAction(() => {
+            layerStore.addShapeLayer(
+              'Pentatonic minor - position 1',
+              pentatonicMinorPos1
+            );
+            layerStore.addShapeLayer(
+              'Pentatonic minor - position 2',
+              pentatonicMinorPos2
+            );
+            layerStore.addShapeLayer(
+              'Pentatonic minor - position 3',
+              pentatonicMinorPos3
+            );
+            layerStore.addShapeLayer(
+              'Pentatonic minor - position 4',
+              pentatonicMinorPos4
+            );
+            layerStore.addShapeLayer(
+              'Pentatonic minor - position 5',
+              pentatonicMinorPos5
+            );
+          })}
         >
           <span>✚</span>
           <span>add shape</span>

@@ -181,6 +181,10 @@ export const basicNotes: { [key in NoteClassId]: NoteClass } = {
   gsharp: gsharp,
 };
 
+export const basicNoteIds: NoteClassId[] = Object.keys(
+  basicNotes
+) as NoteClassId[];
+
 export const basicNotesArray: Array<NoteClass> = [
   a,
   asharp,

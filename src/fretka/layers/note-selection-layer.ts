@@ -1,19 +1,28 @@
-import { cloneDeep } from "lodash";
 import { makeObservable, override, observable, action } from "mobx";
-import { NoteClassId } from "../notes";
+import { basicNoteIds, NoteClassId } from "../notes";
 import { FretkaLayer, getOriginalState, LayerColorId } from "./fretka-layer";
+
+export type NoteSelection = {
+  [_noteId in NoteClassId]?: boolean;
+};
+
+function createEmptySelection<Tkey extends string>(keys: Tkey[]) {
+  return Object.fromEntries(keys.map(key => [key, false])) as {
+    [_key in Tkey]: false;
+  };
+}
 
 export class NoteSelectionLayer extends FretkaLayer {
   originalState: Omit<NoteSelectionLayer, "id">;
   layerType: "noteSelection";
   root: NoteClassId | null;
-  selection: Set<NoteClassId>;
+  selection: NoteSelection;
 
   constructor(color: LayerColorId, name: string = "New note selection") {
     super(color, name);
     this.layerType = "noteSelection";
     this.root = null;
-    this.selection = new Set([]);
+    this.selection = createEmptySelection(basicNoteIds);
     this.originalState = getOriginalState(this);
 
     makeObservable(this, {
@@ -30,14 +39,12 @@ export class NoteSelectionLayer extends FretkaLayer {
   }
 
   public toggleNote(noteId: NoteClassId) {
-    this.selection.has(noteId)
-      ? this.selection.delete(noteId)
-      : this.selection.add(noteId);
+    this.selection[noteId] = !this.selection[noteId];
   }
 
   public reset() {
     super.resetTo(this.originalState);
     this.root = this.originalState.root;
-    this.selection = new Set(this.originalState.selection);
+    this.selection = { ...this.originalState.selection };
   }
 }

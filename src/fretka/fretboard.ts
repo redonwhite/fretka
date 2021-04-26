@@ -13,6 +13,8 @@ export class FretboardDefinition {
   marginLeft: number = 1;
   stringStrokeWidth: number = 2;
   fretStrokeWidth: number = 2;
+  fretColor: string = "transparent";
+  stringColor: string = "lightgray";
 
   get stringCount() {
     return this.tuning.stringTunings.length;
@@ -41,7 +43,7 @@ export class FretboardDefinition {
   get fretTopY() {
     return this.getStringPosY(this.tuning.stringTunings.length - 1);
   }
-  
+
   get fretBottomY() {
     return this.getStringPosY(0);
   }
@@ -93,5 +95,4 @@ export class FretboardDefinition {
       this.getStringPosY(coord[0]),
     ]);
   }
-  
 }

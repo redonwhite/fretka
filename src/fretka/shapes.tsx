@@ -218,7 +218,12 @@ export type RelativeFretCoord = [
 
 export type FretShapeCoordArray = [AbsoluteFretCoord, ...RelativeFretCoord[]];
 
-export class ShapeAppearance {
+export interface IShapeAppearance {
+  strokeWidth?: number | undefined;
+  stroke?: string;
+  patternId?: SvgPatternId;
+}
+export class ShapeAppearance implements IShapeAppearance {
   strokeWidth: number | undefined;
   stroke: string | undefined;
   patternId: SvgPatternId | undefined;
@@ -237,15 +242,17 @@ export class ShapeAppearance {
     });
   }
 
-  setPattern = (patternId: SvgPatternId | undefined) => this.patternId = patternId;
-  setStroke = (stroke: string | undefined) => this.stroke = stroke;
-  setStrokeWidth = (strokeWidth: number | undefined) => this.strokeWidth = strokeWidth;
+  setPattern = (patternId: SvgPatternId | undefined) =>
+    (this.patternId = patternId);
+  setStroke = (stroke: string | undefined) => (this.stroke = stroke);
+  setStrokeWidth = (strokeWidth: number | undefined) =>
+    (this.strokeWidth = strokeWidth);
 
-  resetTo = (state: ShapeAppearance) => {
+  resetTo = (state: IShapeAppearance) => {
     this.strokeWidth = state.strokeWidth;
     this.stroke = state.stroke;
     this.patternId = state.patternId;
-  }
+  };
 };
 
 export type FretShapeSpecTypeId = "sequence of intervals";
@@ -262,18 +269,25 @@ export const fretShapeTypeArray: FretShapeSpecType[] = [
   },
 ];
 
+export interface IFretShapeSpec {
+  type: FretShapeSpecTypeId;
+  segments: FretShapeCoordArray;
+  appearance: IShapeAppearance;
+}
 
-export class FretShapeSpec {
-
+export class FretShapeSpec implements IFretShapeSpec {
   type: FretShapeSpecTypeId;
   segments: FretShapeCoordArray;
   appearance: ShapeAppearance;
 
-  constructor(type: FretShapeSpecTypeId, headCoord : AbsoluteFretCoord = ['string1', 'a']) {
+  constructor(
+    type: FretShapeSpecTypeId,
+    headCoord: AbsoluteFretCoord = ["string1", "a"]
+  ) {
     this.type = type;
     this.segments = [headCoord];
     this.appearance = new ShapeAppearance();
-    
+
     makeObservable(this, {
       type: observable,
       segments: observable,
@@ -284,15 +298,17 @@ export class FretShapeSpec {
     });
   }
 
-  setHeadFretSpec = (fretSpec: AbsoluteFretSpec) => this.segments[0][1] = fretSpec;
-  setHeadStringSpec = (stringSpec: AbsoluteStringSpecId) => this.segments[0][0] = stringSpec;
+  setHeadFretSpec = (fretSpec: AbsoluteFretSpec) =>
+    (this.segments[0][1] = fretSpec);
+  
+  setHeadStringSpec = (stringSpec: AbsoluteStringSpecId) =>
+    (this.segments[0][0] = stringSpec);
 
-  resetTo = (state: FretShapeSpec) => {
+  resetTo = (state: IFretShapeSpec) => {
     this.type = state.type;
     this.segments = [...state.segments];
     this.appearance.resetTo(state.appearance);
-  }
-  
+  };
 };
 
 export function getStringIndexesFromAbsSpec(

@@ -12,6 +12,7 @@ import {
 import { NoteSelectionLayer } from "../fretka/layers/note-selection-layer";
 import { ShapeLayer } from "../fretka/layers/shape-layer";
 import { NoteClassId } from "../fretka/notes";
+import { IFretShapeSpec } from "../fretka/shapes";
 
 export abstract class RootStore {}
 
@@ -54,13 +55,11 @@ export class LayerStore extends Store {
     this: LayerStore,
     noteId: NoteClassId
   ) {
-    console.log("computing selection state for " + noteId);
-
     return {
-      selectedIn: this.noteSelectionLayers.filter(l => l.selection.has(noteId)),
+      selectedIn: this.noteSelectionLayers.filter(l => l.selection[noteId]),
       rootOf: this.noteSelectionLayers.filter(l => l.root === noteId),
       onlySelectedIn: this.noteSelectionLayers.filter(
-        l => l.selection.has(noteId) && l.root !== noteId
+        l => l.selection[noteId] && l.root !== noteId
       ),
     };
   });
@@ -114,7 +113,7 @@ export class LayerStore extends Store {
     this.layers.push(new NoteSelectionLayer(this.nextLayerColor));
   };
 
-  addShapeLayer = () => {
-    this.layers.push(new ShapeLayer(this.nextLayerColor));
+  addShapeLayer = (name : string = "New shape layer", shape?: IFretShapeSpec) => {
+    this.layers.push(new ShapeLayer(this.nextLayerColor, name, shape));
   };
 }
