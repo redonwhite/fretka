@@ -4,9 +4,11 @@ import { NoteAbsolute, notes } from '../../fretka/notes';
 import { observer } from 'mobx-react-lite';
 import { SvgFretboardCell } from './svg-fretboard-cell';
 import { FretboardDefinition } from "../../fretka/fretboard";
+import { LayerStore } from "../../store/app-state";
 
 export const SvgFretboardString = observer(
   (props: {
+    layerStore: LayerStore;
     fretboardDefinition: FretboardDefinition;
     stringTuning: NoteAbsolute;
     fretCount: number;
@@ -46,6 +48,7 @@ export const SvgFretboardString = observer(
         />
         {fretNotes.map((note, idx) => (
           <SvgFretboardCell
+            layerStore={props.layerStore}
             key={note.id + " " + note.absIdx + " fret " + idx}
             note={note}
             fretNumber={idx}

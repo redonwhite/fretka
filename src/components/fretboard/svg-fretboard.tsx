@@ -21,56 +21,53 @@ export const SvgFretboard = observer(
           height: fretboardDefinition.svgHeight + "px",
         }}
       >
-        { layerStore.shapeLayers.map(layer => <SvgShapeLayer fretboardDefinition={fretboardDefinition} layer={layer} key={layer.id} />)}
+        {layerStore.shapeLayers.map(layer => (
+          <SvgShapeLayer
+            fretboardDefinition={fretboardDefinition}
+            layer={layer}
+            key={layer.id}
+          />
+        ))}
         {
           // frets:
           Array.from(Array(fretboardDefinition.fretCount + 1).keys()).map(
-          (_, idx) => (
-                  <line
-                    key={"fret" + idx}
-                    id={"fret" + idx}
-                    stroke={fretboardDefinition.fretColor}
-                    strokeWidth={fretboardDefinition.fretStrokeWidth}
-                    x1={fretboardDefinition.getFretPosX(idx)}
-                    x2={fretboardDefinition.getFretPosX(idx)}
-                    y1={fretboardDefinition.fretTopY}
-                    y2={fretboardDefinition.fretBottomY}
-                    shapeRendering="crispEdges"
-                  />
-                )
-        )
+            (_, idx) => (
+              <line
+                key={"fret" + idx}
+                id={"fret" + idx}
+                stroke={fretboardDefinition.fretColor}
+                strokeWidth={fretboardDefinition.fretStrokeWidth}
+                x1={fretboardDefinition.getFretPosX(idx)}
+                x2={fretboardDefinition.getFretPosX(idx)}
+                y1={fretboardDefinition.fretTopY}
+                y2={fretboardDefinition.fretBottomY}
+                shapeRendering="crispEdges"
+              />
+            )
+          )
         }
         {
           // strings, including note selections:
           Array.from(fretboardDefinition.tuning.stringTunings).map(
-            
-          
-          (stringTuning, idx) => (
+            (stringTuning, idx) => (
               <SvgFretboardString
+                layerStore={layerStore}
                 fretboardDefinition={fretboardDefinition}
-                    key={"string " + (idx + 1)}
-                    fromX={fretboardDefinition.stringPosX}
-                    fromY={fretboardDefinition.getStringPosY(idx)}
-                    toX={
-                  
-                
-                fretboardDefinition.stringPosX +
-              
-               
-                   fretboardDefinition.fretboardWidth
-                
-              
-              }
-                    toY={fretboardDefinition.getStringPosY(idx)}
-                    height={fretboardDefinition.stringDistance}
-                    stringTuning={stringTuning}
-                    fretCount={fretboardDefinition.fretCount}
-                    strokeWidth={fretboardDefinition.stringStrokeWidth}
-                  />
-                )
-          
-        
-        )
+                key={"string " + (idx + 1)}
+                fromX={fretboardDefinition.stringPosX}
+                fromY={fretboardDefinition.getStringPosY(idx)}
+                toX={
+                  fretboardDefinition.stringPosX +
+                  fretboardDefinition.fretboardWidth
+                }
+                toY={fretboardDefinition.getStringPosY(idx)}
+                height={fretboardDefinition.stringDistance}
+                stringTuning={stringTuning}
+                fretCount={fretboardDefinition.fretCount}
+                strokeWidth={fretboardDefinition.stringStrokeWidth}
+              />
+            )
+          )
         }
       </svg>
     );

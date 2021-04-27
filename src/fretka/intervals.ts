@@ -68,11 +68,11 @@ export type IntervalDirection = {
 
 export const intervalDirectionArray = [
   {
-    id: "up",
+    id: "up" as IntervalDirectionId,
     name: "up",
   },
   {
-    id: "down",
+    id: "down" as IntervalDirectionId,
     name: "down",
   },
 ];

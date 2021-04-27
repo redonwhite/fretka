@@ -4,6 +4,7 @@ import { FretboardDefinition } from "../fretka/fretboard";
 import { guitarTuningsLibrary } from "../fretka/guitar-tunings";
 import {
   FretkaLayer,
+  isNoteSelectionLayer,
   isShapeLayer,
   LayerColorId,
   layerColorRotation,
@@ -11,8 +12,8 @@ import {
 
 import { NoteSelectionLayer } from "../fretka/layers/note-selection-layer";
 import { ShapeLayer } from "../fretka/layers/shape-layer";
-import { NoteClassId } from "../fretka/notes";
-import { IFretShapeSpec } from "../fretka/shapes";
+import { NoteAbsolute, NoteClassId } from "../fretka/notes";
+import { AbsoluteStringSpecId, IFretShapeSpec, SingleStringId } from "../fretka/shapes";
 
 export abstract class RootStore {}
 
@@ -48,8 +49,8 @@ export class AppStateStore extends RootStore {
 
 export class LayerStore extends Store {
   layers: FretkaLayer[] = [];
-
-  selectionByNote = () => {};
+  currentLayer: FretkaLayer | undefined;
+  selectionByNote = () => { };
 
   getSelectionsForNote = computedFn(function selForNote(
     this: LayerStore,
@@ -63,6 +64,21 @@ export class LayerStore extends Store {
       ),
     };
   });
+
+  useCurrentLayer = () => {
+    
+    if (this.currentLayer && this.layers.includes(this.currentLayer)) {
+      return this.currentLayer;
+    }
+
+    if (this.noteSelectionLayers.length > 0) {
+      this.currentLayer = this.noteSelectionLayers[0];
+      return this.currentLayer;
+    }
+
+    return undefined;
+
+  }
 
   get noteSelectionLayers(): NoteSelectionLayer[] {
     return this.layers.filter(
@@ -96,17 +112,28 @@ export class LayerStore extends Store {
 
     makeObservable(this, {
       layers: observable,
+      useCurrentLayer: action,
+      currentLayer: observable,
       noteSelectionLayers: computed,
       shapeLayers: computed,
       nextLayerColor: computed,
       addNoteSelectionLayer: action,
       addShapeLayer: action,
       removeLayer: action,
+      handleNotePick: action,
     });
+  }
+
+  handleNotePick = (note: NoteAbsolute, _string?: SingleStringId, _fretNumber?: number) => {
+    const current = this.useCurrentLayer();
+    if (isNoteSelectionLayer(current)) {
+      current.toggleNote(note.id);
+    }
   }
 
   removeLayer = (layer: FretkaLayer) => {
     this.layers.splice(this.layers.indexOf(layer), 1);
+
   };
 
   addNoteSelectionLayer = () => {

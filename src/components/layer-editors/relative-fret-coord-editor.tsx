@@ -1,3 +1,4 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { RelativeFretCoord } from "../../fretka/shapes";
 import styles from "./layer-editor.module.scss";
@@ -8,9 +9,9 @@ import {
   intervalDirectionOptions,
 } from "./pop-selector-options";
 
-export function RelativeFretCoordEditor(props: {
+export const RelativeFretCoordEditor = observer((props: {
   shapeCoord: RelativeFretCoord;
-}) {
+}) => {
   const { shapeCoord } = props;
   const [relStringSpec, interval, direction] = shapeCoord;
 
@@ -20,21 +21,22 @@ export function RelativeFretCoordEditor(props: {
         key="string selector"
         className={styles.stringSelector}
         selection={relStringSpec}
-        setSelection={() => {}}
+        setSelection={(stringSel) => shapeCoord[0] = stringSel}
         options={relativeStringSpecOptions}
       />
       <PopSelector
         key="interval selector"
         selection={interval}
-        setSelection={() => {}}
+        setSelection={(intervalSel) => shapeCoord[1] = intervalSel}
         options={basicIntervalOptions}
       />
       <PopSelector
         key="dir selector"
         selection={direction}
-        setSelection={() => {}}
+        setSelection={(dirSel) => shapeCoord[2] = dirSel}
         options={intervalDirectionOptions}
       />
     </span>
   );
-}
+
+});

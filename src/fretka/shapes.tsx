@@ -61,14 +61,15 @@ export const absoluteStringSpecArray: Array<AbsoluteStringSpec> = [
   },
 ];
 
-export type AbsoluteStringSpecId =
-  | "allStrings"
+export type SingleStringId =
   | "string1"
   | "string2"
   | "string3"
   | "string4"
   | "string5"
   | "string6";
+
+export type AbsoluteStringSpecId = SingleStringId | "allStrings";
 
 export type RelativeStringSpec = {
   id: RelativeStringSpecId;

@@ -7,12 +7,14 @@ import { ShapeLayer } from "./shape-layer";
 export type FretkaLayerType = "noteSelection" | "shape";
 
 export function isNoteSelectionLayer(
-  layer: FretkaLayer
+  layer: FretkaLayer | undefined
 ): layer is NoteSelectionLayer {
-  return layer.layerType === "noteSelection";
+  return layer?.layerType === "noteSelection";
 }
-export function isShapeLayer(layer: FretkaLayer): layer is ShapeLayer {
-  return layer.layerType === "shape";
+export function isShapeLayer(
+  layer: FretkaLayer | undefined
+): layer is ShapeLayer {
+  return layer?.layerType === "shape";
 }
 
 export abstract class FretkaLayer {
