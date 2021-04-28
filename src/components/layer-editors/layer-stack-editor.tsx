@@ -6,54 +6,58 @@ import { LayerEditor } from "./layer-editor";
 
 import styles from "./layer-editor.module.scss";
 
-export const LayerStackEditor = observer((props : { layerStore: LayerStore }) => {
-  const layerStore = props.layerStore;
-  const layers = props.layerStore.layers;
+export const LayerStackEditor = observer(
+  (props: { layerStore: LayerStore }) => {
+    const layerStore = props.layerStore;
+    const layers = props.layerStore.layers;
 
-  const layerEditors = layers.map(layer => (
-    <LayerEditor layerStore={layerStore} layer={layer} key={layer.id} />
-  ));
+    const layerEditors = layers.map(layer => (
+      <LayerEditor layerStore={layerStore} layer={layer} key={layer.id} />
+    ));
 
-  return (
-    <div className={styles.layeredNoteSelectorWrapper}>
-      {layerEditors}
-      <div className={styles.emptyLayerSlotActionWrapper}>
-        <button
-          className="addLayerButton secondaryButton"
-          onClick={layerStore.addNoteSelectionLayer}
-        >
-          <span>✚</span>
-          <span>add note selection</span>
-        </button>
-        <button
-          className="addLayerButton secondaryButton"
-          onClick={() => runInAction(() => {
-            layerStore.addShapeLayer(
-              'Pentatonic minor - position 1',
-              pentatonicMinorPos1
-            );
-            layerStore.addShapeLayer(
-              'Pentatonic minor - position 2',
-              pentatonicMinorPos2
-            );
-            layerStore.addShapeLayer(
-              'Pentatonic minor - position 3',
-              pentatonicMinorPos3
-            );
-            layerStore.addShapeLayer(
-              'Pentatonic minor - position 4',
-              pentatonicMinorPos4
-            );
-            layerStore.addShapeLayer(
-              'Pentatonic minor - position 5',
-              pentatonicMinorPos5
-            );
-          })}
-        >
-          <span>✚</span>
-          <span>add shape</span>
-        </button>
+    return (
+      <div className={styles.layeredNoteSelectorWrapper}>
+        {layerEditors}
+        <div className={styles.emptyLayerSlotActionWrapper}>
+          <button
+            className="addLayerButton secondaryButton"
+            onClick={layerStore.addNoteSelectionLayer}
+          >
+            <span>✚</span>
+            <span>add note selection</span>
+          </button>
+          <button
+            className="addLayerButton secondaryButton"
+            onClick={() =>
+              runInAction(() => {
+                layerStore.addShapeLayer(
+                  "Pentatonic minor - position 1",
+                  pentatonicMinorPos1
+                );
+                layerStore.addShapeLayer(
+                  "Pentatonic minor - position 2",
+                  pentatonicMinorPos2
+                );
+                layerStore.addShapeLayer(
+                  "Pentatonic minor - position 3",
+                  pentatonicMinorPos3
+                );
+                layerStore.addShapeLayer(
+                  "Pentatonic minor - position 4",
+                  pentatonicMinorPos4
+                );
+                layerStore.addShapeLayer(
+                  "Pentatonic minor - position 5",
+                  pentatonicMinorPos5
+                );
+              })
+            }
+          >
+            <span>✚</span>
+            <span>add shape</span>
+          </button>
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);

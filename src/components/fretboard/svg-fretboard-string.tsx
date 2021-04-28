@@ -6,6 +6,8 @@ import { SvgFretboardCell } from './svg-fretboard-cell';
 import { FretboardDefinition } from "../../fretka/fretboard";
 import { LayerStore } from "../../store/app-state";
 
+import stylesSvg from "./svg-fretboard.module.scss";
+
 export const SvgFretboardString = observer(
   (props: {
     layerStore: LayerStore;
@@ -43,7 +45,7 @@ export const SvgFretboardString = observer(
           x2={props.toX}
           y1={props.fromY}
           y2={props.toY}
-          className="string"
+          className={stylesSvg.string}
           shapeRendering="crispEdges"
         />
         {fretNotes.map((note, idx) => (

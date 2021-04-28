@@ -11,14 +11,11 @@ export const LayerMenu = observer((props: { layer: FretkaLayer, layerStore: Laye
 
   return (
     <div className={styles.layerMenu}>
-      <button
-        onClick={() => layer.reset()}
-        className={styles.resetLayerButton}
-      >
+      <button onClick={() => layer.reset()} className={styles.resetLayerButton}>
         reset
       </button>
       <button
-        onClick={() => layerStore.removeLayer(layer)}
+        onClick={() => layerStore.animatedRemoveLayer(layer)}
         className={styles.deleteLayerButton}
       >
         ✘

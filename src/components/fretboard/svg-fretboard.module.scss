@@ -1,4 +1,19 @@
 .fretSvg {
+
+  transition: 400ms all;
+  .fret, .string {
+    transition: 400ms all;
+  }
+  
+  &:hover, 
+  &:focus-within {
+    .fret, .string {
+      stroke: black; 
+      transition: 400ms all;
+    }
+  }
+
+
   width: 100%;
   height: 150px;
   margin: 0px 0;

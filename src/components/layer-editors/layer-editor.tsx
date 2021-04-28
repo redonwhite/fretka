@@ -16,12 +16,14 @@ import { ShapeLayerEditor } from './shape-layer-editor';
 
 export const LayerEditor = observer((props: { layerStore: LayerStore, layer: FretkaLayer }) => {
   const { layerStore, layer } = props;
+  const layerState = layerStore.layerStates.get(layer.id);
 
   function getWrapperClass(): string | undefined {
     return classNames({
       [styles.layerEditor]: true,
       layerColor: true,
       [`layerColor-${layer.color}`]: true,
+      [styles.layerLeaving]: layerState === "leaving",
     });
   }
 

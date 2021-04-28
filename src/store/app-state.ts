@@ -13,7 +13,7 @@ import {
 import { NoteSelectionLayer } from "../fretka/layers/note-selection-layer";
 import { ShapeLayer } from "../fretka/layers/shape-layer";
 import { NoteAbsolute, NoteClassId } from "../fretka/notes";
-import { AbsoluteStringSpecId, IFretShapeSpec, SingleStringId } from "../fretka/shapes";
+import { IFretShapeSpec, SingleStringId } from "../fretka/shapes";
 
 export abstract class RootStore {}
 
@@ -47,10 +47,13 @@ export class AppStateStore extends RootStore {
   }
 }
 
+export type LayerStateInStore = "normal" | "leaving";
+
 export class LayerStore extends Store {
   layers: FretkaLayer[] = [];
+  layerStates: Map<string, LayerStateInStore>;
   currentLayer: FretkaLayer | undefined;
-  selectionByNote = () => { };
+  selectionByNote = () => {};
 
   getSelectionsForNote = computedFn(function selForNote(
     this: LayerStore,
@@ -66,7 +69,6 @@ export class LayerStore extends Store {
   });
 
   useCurrentLayer = () => {
-    
     if (this.currentLayer && this.layers.includes(this.currentLayer)) {
       return this.currentLayer;
     }
@@ -77,14 +79,14 @@ export class LayerStore extends Store {
     }
 
     return undefined;
-
-  }
+  };
 
   get noteSelectionLayers(): NoteSelectionLayer[] {
     return this.layers.filter(
       l => l.layerType === "noteSelection"
     ) as NoteSelectionLayer[];
   }
+  
   get shapeLayers(): ShapeLayer[] {
     return this.layers.filter(l => isShapeLayer(l)) as ShapeLayer[];
   }
@@ -109,9 +111,11 @@ export class LayerStore extends Store {
   constructor(rootStore: RootStore) {
     super(rootStore);
     this.rootStore = rootStore;
-
+    this.layerStates = new Map<string, LayerStateInStore>();
+    
     makeObservable(this, {
       layers: observable,
+      layerStates: observable,
       useCurrentLayer: action,
       currentLayer: observable,
       noteSelectionLayers: computed,
@@ -120,27 +124,39 @@ export class LayerStore extends Store {
       addNoteSelectionLayer: action,
       addShapeLayer: action,
       removeLayer: action,
+      animatedRemoveLayer: action,
       handleNotePick: action,
     });
   }
 
-  handleNotePick = (note: NoteAbsolute, _string?: SingleStringId, _fretNumber?: number) => {
+  handleNotePick = (
+    note: NoteAbsolute,
+    _string?: SingleStringId,
+    _fretNumber?: number
+  ) => {
     const current = this.useCurrentLayer();
     if (isNoteSelectionLayer(current)) {
       current.toggleNote(note.id);
     }
-  }
+  };
+
+  animatedRemoveLayer = (layer: FretkaLayer) => {
+    this.layerStates.set(layer.id, 'leaving');
+    setTimeout(() => this.removeLayer(layer), 250);
+  };
 
   removeLayer = (layer: FretkaLayer) => {
     this.layers.splice(this.layers.indexOf(layer), 1);
-
   };
 
   addNoteSelectionLayer = () => {
     this.layers.push(new NoteSelectionLayer(this.nextLayerColor));
   };
 
-  addShapeLayer = (name : string = "New shape layer", shape?: IFretShapeSpec) => {
+  addShapeLayer = (
+    name: string = "New shape layer",
+    shape?: IFretShapeSpec
+  ) => {
     this.layers.push(new ShapeLayer(this.nextLayerColor, name, shape));
   };
 }

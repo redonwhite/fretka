@@ -55,7 +55,12 @@ button:hover .showOnHover, button:focus-within .showOnHover {
   }
 }
 
+.layerLeaving {
+  opacity: 0;
+}
+
 .layerEditor {
+  transition: opacity var(--fretka-transition-time);
   margin-bottom: 25px;
   display: grid;
   gap: 3px 5px;
