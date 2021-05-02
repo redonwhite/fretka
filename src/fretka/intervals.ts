@@ -17,8 +17,8 @@ export type IntervalBase = {
 };
 
 export type BasicInterval = IntervalBase & {
-  id: BasicIntervalId;
   isBasic: true;
+  id: BasicIntervalId;
 };
 
 export type OtherInterval = IntervalBase & {
@@ -233,7 +233,7 @@ export const basicIntervalsArray: Array<BasicInterval> = [
   maj7,
 ];
 
-export type BasicIntervals = { [k in BasicIntervalId]: BasicInterval };
+export type BasicIntervals = { [key_ in BasicIntervalId]: BasicInterval };
 
 export const basicIntervals: BasicIntervals = Object.fromEntries(
   basicIntervalsArray.map(i => [i.id, i])

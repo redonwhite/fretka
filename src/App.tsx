@@ -5,8 +5,13 @@ import { AppStateStore } from "./store/app-state";
 
 import "./vars.scss";
 import styles from "./App.module.scss";
+import { ScaleMovable } from "./fretka/notes";
+import { modesOfMajor } from "./fretka/scales";
 
 export const appState = new AppStateStore();
+
+const s: ScaleMovable = modesOfMajor.aeolian;
+
 
 function App() {
   return (
