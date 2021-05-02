@@ -233,6 +233,8 @@ export const basicIntervalsArray: Array<BasicInterval> = [
   maj7,
 ];
 
+export type EnharmonicDistance = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
 export type BasicIntervals = { [key_ in BasicIntervalId]: BasicInterval };
 
 export const basicIntervals: BasicIntervals = Object.fromEntries(
