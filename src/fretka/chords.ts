@@ -1,3 +1,4 @@
+import { EnharmonicHistogram, withHistogram } from "./histograms";
 import {
   dim5,
   maj2,
@@ -15,65 +16,73 @@ interface MaybeNamed {
   name: string;
 }
 
-interface Chord extends ScaleLike, MaybeNamed {
+interface ChordBasic extends ScaleLike, MaybeNamed {
   abbr?: string;
 }
 
-interface RootedChord extends Chord, Rooted {}
+interface RootedChord extends ChordBasic, Rooted {}
 
-const majChord: Chord = {
+const majChord: ChordBasic = {
   name: "major",
   intervals: [root, maj3, perf5],
 };
 
-const maj7Chord: Chord = {
+const maj7Chord: ChordBasic = {
   name: "major 7th",
   intervals: [root, maj3, perf5, maj7],
 };
 
-const dom7Chord: Chord = {
+const dom7Chord: ChordBasic = {
   name: "dominant 7th",
   intervals: [root, maj3, perf5, min7],
 };
 
-const minChord: Chord = {
+const minChord: ChordBasic = {
   name: "minor",
   intervals: [root, min3, perf5],
 };
 
-const min7Chord: Chord = {
+const min7Chord: ChordBasic = {
   name: "minor 7th",
   intervals: [root, min3, perf5, min7],
 };
 
-const sus2Chord: Chord = {
+const sus2Chord: ChordBasic = {
   name: "suspended 2nd",
   intervals: [root, maj2, perf5],
 };
 
-const sus4Chord: Chord = {
+const sus4Chord: ChordBasic = {
   name: "suspended 4th",
   intervals: [root, perf4, perf5],
 };
 
-const dimTriad: Chord = {
+const dimTriad: ChordBasic = {
   name: "diminished (triad)",
   intervals: [root, min3, dim5],
 };
 
-const halfDim7Chord: Chord = {
+const halfDim7Chord: ChordBasic = {
   name: "half-diminished 7th",
   intervals: [root, min3, dim5, min7],
 };
 
+export interface WithHistogram {
+  histogram: EnharmonicHistogram
+}
+export interface Chord extends
+  ChordBasic, WithHistogram {}
+
 export const chords = {
-  majChord,
-  maj7Chord,
-  dom7Chord,
-  minChord,
-  min7Chord,
-  dimTriad,
-  halfDim7Chord,
-  sus2Chord,
-  sus4Chord,
+  maj: withHistogram(majChord),
+  maj7: withHistogram(maj7Chord),
+  dom7: withHistogram(dom7Chord),
+  min: withHistogram(minChord),
+  min7: withHistogram(min7Chord),
+  dimTriad: withHistogram(dimTriad),
+  halfDim7: withHistogram(halfDim7Chord),
+  sus2: withHistogram(sus2Chord),
+  sus4: withHistogram(sus4Chord),
 };
+
+export const chordsArray = Object.values(chords);

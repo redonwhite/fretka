@@ -6,7 +6,7 @@ export type NoteSelection = {
   [_noteId in NoteClassId]?: boolean;
 };
 
-function createEmptySelection<Tkey extends string>(keys: Tkey[]) {
+export function createEmptySelection<Tkey extends string>(keys: Tkey[]) {
   return Object.fromEntries(keys.map(key => [key, false])) as {
     [_key in Tkey]: false;
   };

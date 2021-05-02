@@ -1,4 +1,10 @@
+import { WithHistogram } from "./chords";
+import { Interval } from "./intervals";
+import { NoteSelection } from "./layers/note-selection-layer";
+import { basicNoteIds } from "./notes";
 import { ScaleLike } from "./scales";
+
+export interface ScaleWithHistogramLike extends ScaleLike, WithHistogram { };
 
 export type EnharmonicHistogramValue =
   | 0
@@ -27,12 +33,23 @@ export type EnharmonicHistogram = [
   EnharmonicHistogramTritoneCount
 ];
 
-export function getEnharmonicHistogram(scale: ScaleLike): EnharmonicHistogram {
+
+export function withHistogram<T extends ScaleLike>(scale: T) {
+  return {
+    ...scale,
+    histogram: getEnharmonicHistogramForScale(scale),
+  };
+}
+
+export function getEnharmonicHistogramForScale(scale: ScaleLike) {
+  return getEnharmonicHistogram(scale.intervals.map(iv => iv.span));
+}
+
+export function getEnharmonicHistogram(spans: number[]): EnharmonicHistogram {
   const histogram: EnharmonicHistogram = [0, 0, 0, 0, 0, 0, 0];
   const positionSet: Set<number> = new Set([]);
 
-  scale.intervals
-    .map(interval => interval.span)
+  spans
     .map(span => (span + 12) % 12)
     .forEach(span => positionSet.add(span));
 
@@ -48,3 +65,69 @@ export function getEnharmonicHistogram(scale: ScaleLike): EnharmonicHistogram {
 
   return histogram;
 }
+
+export function getEnharmonicHistogramForSelection(sel: NoteSelection):
+  EnharmonicHistogram
+{
+  return getEnharmonicHistogram(
+    getSpansFromSelection(sel)
+  );
+}
+
+export function getIndexOfFirstSelection(sel: NoteSelection): number {
+  if (sel.a) return 0;
+  if (sel.asharp) return 1;
+  if (sel.b) return 2;
+  if (sel.c) return 3;
+  if (sel.csharp) return 4;
+  if (sel.d) return 5;
+  if (sel.dsharp) return 6;
+  if (sel.e) return 7;
+  if (sel.f) return 8;
+  if (sel.fsharp) return 9;
+  if (sel.g) return 10;
+  if (sel.gsharp) return 11;
+  return -1;
+}
+
+export function getSpansFromSelection(sel: NoteSelection): number[] {
+  const firstIndex = getIndexOfFirstSelection(sel);
+  if (firstIndex < 0) return [];
+  const spans = [0];
+  for (let n = 1; n < 12; n++) {
+    const currIdx = (firstIndex + n) % 12;
+    const currentNoteId = basicNoteIds[currIdx];
+    if (sel[currentNoteId]) spans.push(n);
+  }
+  return spans;
+}
+
+// export function isSelectionSubsetCanditate(sel: NoteSelection, scale: WithHistogram) {
+//   return 
+// }
+
+export function isSubsetCandidate(superHist:EnharmonicHistogram, subHist: EnharmonicHistogram): boolean {
+  return (
+       superHist[0] >= subHist[0]
+    && superHist[1] >= subHist[1]
+    && superHist[2] >= subHist[2]
+    && superHist[3] >= subHist[3]
+    && superHist[4] >= subHist[4]
+    && superHist[5] >= subHist[5]
+    && superHist[6] >= subHist[6]
+  );
+}
+
+export function isEqualCanditate(superHist: EnharmonicHistogram, subHist: EnharmonicHistogram): boolean {
+  return (
+    superHist[0] === subHist[0] &&
+    superHist[1] === subHist[1] &&
+    superHist[2] === subHist[2] &&
+    superHist[3] === subHist[3] &&
+    superHist[4] === subHist[4] &&
+    superHist[5] === subHist[5] &&
+    superHist[6] === subHist[6]
+  );
+}
+
+

@@ -1,3 +1,4 @@
+import { withHistogram } from "./histograms";
 import {
   aug4,
   BasicInterval,
@@ -131,18 +132,18 @@ export function makeRootedScale(
 }
 
 export const scales = {
-  major,
-  minor,
+  major: withHistogram(major),
+  minor: withHistogram(minor),
 };
 
 export const modesOfMajor = {
-  ionian,
-  dorian,
-  phrygian,
-  lydian,
-  mixolydian,
-  aeolian,
-  locrian,
+  ionian: withHistogram(ionian),
+  dorian: withHistogram(dorian),
+  phrygian: withHistogram(phrygian),
+  lydian: withHistogram(lydian),
+  mixolydian: withHistogram(mixolydian),
+  aeolian: withHistogram(aeolian),
+  locrian: withHistogram(locrian),
 };
 
 export interface ScaleLike {
@@ -155,3 +156,6 @@ export interface Rooted {
 
 export interface RootedScaleLike extends ScaleLike, Rooted {}
 
+export function getDistance(scale1: ScaleLike, scale2: ScaleLike) {
+  
+}

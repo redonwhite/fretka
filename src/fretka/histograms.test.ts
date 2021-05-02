@@ -1,3 +1,4 @@
+import { getEnharmonicHistogramForScale, EnharmonicHistogram, getEnharmonicHistogramForSelection } from "./histograms";
 import {
   maj2,
   maj3,
@@ -12,9 +13,9 @@ import {
   root,
   tt,
 } from "./intervals";
+import { createEmptySelection, NoteSelection } from "./layers/note-selection-layer";
+import { basicNoteIds } from "./notes";
 import {
-  EnharmonicHistogram,
-  getEnharmonicHistogram,
   major,
   modesOfMajor,
   ScaleLike,
@@ -24,7 +25,7 @@ export {};
 
 test("Generating simplest enharmonic histogram", () => {
   const singleNote: ScaleLike = { intervals: [root] };
-  const histogram = getEnharmonicHistogram(singleNote);
+  const histogram = getEnharmonicHistogramForScale(singleNote);
   const expectedHistogram: EnharmonicHistogram = [1, 0, 0, 0, 0, 0, 0];
   expect(histogram).toBeDefined();
   expect(histogram).toStrictEqual(expectedHistogram);
@@ -32,7 +33,7 @@ test("Generating simplest enharmonic histogram", () => {
 
 test("Generating empty enharmonic histogram", () => {
   const singleNote: ScaleLike = { intervals: [] };
-  const histogram = getEnharmonicHistogram(singleNote);
+  const histogram = getEnharmonicHistogramForScale(singleNote);
   const expectedHistogram: EnharmonicHistogram = [0, 0, 0, 0, 0, 0, 0];
   expect(histogram).toBeDefined();
   expect(histogram).toStrictEqual(expectedHistogram);
@@ -40,7 +41,7 @@ test("Generating empty enharmonic histogram", () => {
 
 test("Generating two-note enharmonic histogram", () => {
   const twoNotes: ScaleLike = { intervals: [root, maj3] };
-  const histogram = getEnharmonicHistogram(twoNotes);
+  const histogram = getEnharmonicHistogramForScale(twoNotes);
   const expectedHistogram: EnharmonicHistogram = [2, 0, 0, 0, 1, 0, 0];
   expect(histogram).toBeDefined();
   expect(histogram).toStrictEqual(expectedHistogram);
@@ -48,7 +49,7 @@ test("Generating two-note enharmonic histogram", () => {
 
 test("Generating two-note enharmonic histogram with inverted interval", () => {
   const twoNotes: ScaleLike = { intervals: [root, maj7] };
-  const histogram = getEnharmonicHistogram(twoNotes);
+  const histogram = getEnharmonicHistogramForScale(twoNotes);
   const expectedHistogram: EnharmonicHistogram = [2, 1, 0, 0, 0, 0, 0];
   expect(histogram).toBeDefined();
   expect(histogram).toStrictEqual(expectedHistogram);
@@ -56,7 +57,7 @@ test("Generating two-note enharmonic histogram with inverted interval", () => {
 
 test("Generating three-note enharmonic histogram", () => {
   const twoNotes: ScaleLike = { intervals: [root, min2, maj3] };
-  const histogram = getEnharmonicHistogram(twoNotes);
+  const histogram = getEnharmonicHistogramForScale(twoNotes);
   const expectedHistogram: EnharmonicHistogram = [3, 1, 0, 1, 1, 0, 0];
   expect(histogram).toBeDefined();
   expect(histogram).toStrictEqual(expectedHistogram);
@@ -64,7 +65,7 @@ test("Generating three-note enharmonic histogram", () => {
 
 test("Generating three-note enharmonic histogram with inverted interval", () => {
   const twoNotes: ScaleLike = { intervals: [root, min2, maj7] };
-  const histogram = getEnharmonicHistogram(twoNotes);
+  const histogram = getEnharmonicHistogramForScale(twoNotes);
   const expectedHistogram: EnharmonicHistogram = [3, 2, 1, 0, 0, 0, 0];
   expect(histogram).toBeDefined();
   expect(histogram).toStrictEqual(expectedHistogram);
@@ -87,34 +88,34 @@ test("Generating chromatic scale enharmonic histogram", () => {
       maj7,
     ],
   };
-  const histogram = getEnharmonicHistogram(chromaticScale);
+  const histogram = getEnharmonicHistogramForScale(chromaticScale);
   const expectedHistogram: EnharmonicHistogram = [12, 12, 12, 12, 12, 12, 6];
   expect(histogram).toBeDefined();
   expect(histogram).toStrictEqual(expectedHistogram);
 });
 
 test("Generating major enharmonic histogram", () => {
-  const histogram = getEnharmonicHistogram(major);
+  const histogram = getEnharmonicHistogramForScale(major);
   const expectedHistogram: EnharmonicHistogram = [7, 2, 5, 4, 3, 6, 1];
   expect(histogram).toBeDefined();
   expect(histogram).toStrictEqual(expectedHistogram);
 });
 
 test("Generating minor enharmonic histogram", () => {
-  const histogram = getEnharmonicHistogram(major);
+  const histogram = getEnharmonicHistogramForScale(major);
   const expectedHistogram: EnharmonicHistogram = [7, 2, 5, 4, 3, 6, 1];
   expect(histogram).toBeDefined();
   expect(histogram).toStrictEqual(expectedHistogram);
 });
 
 test("Histogram equality for modes", () => {
-  const histogramMode1 = getEnharmonicHistogram(modesOfMajor.ionian);
-  const histogramMode2 = getEnharmonicHistogram(modesOfMajor.dorian);
-  const histogramMode3 = getEnharmonicHistogram(modesOfMajor.phrygian);
-  const histogramMode4 = getEnharmonicHistogram(modesOfMajor.lydian);
-  const histogramMode5 = getEnharmonicHistogram(modesOfMajor.mixolydian);
-  const histogramMode6 = getEnharmonicHistogram(modesOfMajor.aeolian);
-  const histogramMode7 = getEnharmonicHistogram(modesOfMajor.locrian);
+  const histogramMode1 = getEnharmonicHistogramForScale(modesOfMajor.ionian);
+  const histogramMode2 = getEnharmonicHistogramForScale(modesOfMajor.dorian);
+  const histogramMode3 = getEnharmonicHistogramForScale(modesOfMajor.phrygian);
+  const histogramMode4 = getEnharmonicHistogramForScale(modesOfMajor.lydian);
+  const histogramMode5 = getEnharmonicHistogramForScale(modesOfMajor.mixolydian);
+  const histogramMode6 = getEnharmonicHistogramForScale(modesOfMajor.aeolian);
+  const histogramMode7 = getEnharmonicHistogramForScale(modesOfMajor.locrian);
 
   const expectedHistogram: EnharmonicHistogram = [7, 2, 5, 4, 3, 6, 1];
 
@@ -127,3 +128,41 @@ test("Histogram equality for modes", () => {
   expect(histogramMode1).toStrictEqual(histogramMode6);
   expect(histogramMode1).toStrictEqual(histogramMode7);
 });
+
+
+test("Convert empty selection to empty histogram", () => {
+  const sel: NoteSelection = createEmptySelection(basicNoteIds);
+  const hist = getEnharmonicHistogramForSelection(sel);
+  expect(hist).toStrictEqual([0, 0, 0, 0, 0, 0, 0]);
+});
+
+test("Convert one note selection to histogram", () => {
+  const sel: NoteSelection = createEmptySelection(basicNoteIds);
+  sel.b = true;
+  const hist = getEnharmonicHistogramForSelection(sel);
+  expect(hist).toStrictEqual([1, 0, 0, 0, 0, 0, 0]);
+});
+
+test("Convert two note selection to histogram", () => {
+  const sel: NoteSelection = createEmptySelection(basicNoteIds);
+  sel.b = true;
+  sel.csharp = true;
+  const hist = getEnharmonicHistogramForSelection(sel);
+  expect(hist).toStrictEqual([2, 0, 1, 0, 0, 0, 0]);
+});
+
+test("Convert inverted two note selection to histogram", () => {
+  const sel: NoteSelection = createEmptySelection(basicNoteIds);
+  sel.b = true;
+  sel.g = true;
+  const hist = getEnharmonicHistogramForSelection(sel);
+  expect(hist).toStrictEqual([2, 0, 0, 0, 1, 0, 0]);
+});
+
+test("Convert full selection to histogram", () => {
+  const sel: NoteSelection = Object.fromEntries(basicNoteIds.map(id => [id, true]));
+  const hist = getEnharmonicHistogramForSelection(sel);
+  expect(hist).toStrictEqual([12, 12, 12, 12, 12, 12, 6]);
+});
+
+

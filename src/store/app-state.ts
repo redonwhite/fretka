@@ -52,7 +52,7 @@ export type LayerStateInStore = "normal" | "leaving";
 export class LayerStore extends Store {
   layers: FretkaLayer[] = [];
   layerStates: Map<string, LayerStateInStore>;
-  currentLayer: FretkaLayer | undefined;
+  currentLayer: FretkaLayer | null;
   selectionByNote = () => {};
 
   getSelectionsForNote = computedFn(function selForNote(
@@ -69,6 +69,7 @@ export class LayerStore extends Store {
   });
 
   useCurrentLayer = () => {
+    console.log("use curr lay");
     if (this.currentLayer && this.layers.includes(this.currentLayer)) {
       return this.currentLayer;
     }
@@ -86,7 +87,7 @@ export class LayerStore extends Store {
       l => l.layerType === "noteSelection"
     ) as NoteSelectionLayer[];
   }
-  
+
   get shapeLayers(): ShapeLayer[] {
     return this.layers.filter(l => isShapeLayer(l)) as ShapeLayer[];
   }
@@ -112,7 +113,8 @@ export class LayerStore extends Store {
     super(rootStore);
     this.rootStore = rootStore;
     this.layerStates = new Map<string, LayerStateInStore>();
-    
+    this.currentLayer = null;
+
     makeObservable(this, {
       layers: observable,
       layerStates: observable,
@@ -141,7 +143,8 @@ export class LayerStore extends Store {
   };
 
   animatedRemoveLayer = (layer: FretkaLayer) => {
-    this.layerStates.set(layer.id, 'leaving');
+    this.useCurrentLayer();
+    this.layerStates.set(layer.id, "leaving");
     setTimeout(() => this.removeLayer(layer), 250);
   };
 
@@ -151,6 +154,7 @@ export class LayerStore extends Store {
 
   addNoteSelectionLayer = () => {
     this.layers.push(new NoteSelectionLayer(this.nextLayerColor));
+    this.useCurrentLayer();
   };
 
   addShapeLayer = (
