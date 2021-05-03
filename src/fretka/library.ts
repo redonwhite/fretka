@@ -1,5 +1,5 @@
 import { chords } from "./chords";
-import { modesOfMajor, ScaleLike, scales } from "./scales";
+import { modesOfMajor, scales } from "./scales";
 
 export const allScaleLikes = [
   ...Object.values(chords),

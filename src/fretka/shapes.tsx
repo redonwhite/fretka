@@ -1,14 +1,8 @@
 import React from "react";
-import styles from "./symbols.module.scss";
 
-import {
-  BasicIntervalId,
-  IntervalDirectionId,
-} from "./intervals";
+import { BasicIntervalId, IntervalDirectionId } from "./intervals";
 import { basicNotes, NoteAbsolute, NoteClass, NoteClassId } from "./notes";
-import {
-  LayerColorId,
-} from "./layers/fretka-layer";
+import { LayerColorId } from "./layers/fretka-layer";
 import { action, makeObservable, observable } from "mobx";
 import {
   getPositiveSteps,
@@ -254,7 +248,7 @@ export class ShapeAppearance implements IShapeAppearance {
     this.stroke = state.stroke;
     this.patternId = state.patternId;
   };
-};
+}
 
 export type FretShapeSpecTypeId = "sequence of intervals";
 
@@ -301,7 +295,7 @@ export class FretShapeSpec implements IFretShapeSpec {
 
   setHeadFretSpec = (fretSpec: AbsoluteFretSpec) =>
     (this.segments[0][1] = fretSpec);
-  
+
   setHeadStringSpec = (stringSpec: AbsoluteStringSpecId) =>
     (this.segments[0][0] = stringSpec);
 
@@ -310,7 +304,7 @@ export class FretShapeSpec implements IFretShapeSpec {
     this.segments = [...state.segments];
     this.appearance.resetTo(state.appearance);
   };
-};
+}
 
 export function getStringIndexesFromAbsSpec(
   stringSpec: AbsoluteStringSpecId,
@@ -442,7 +436,6 @@ export function fretSpaceShapeToGridSpace(
 export type XyCoord = [x: number, y: number];
 export type XyCoordSet = XyCoord[];
 export type XyXoordSets = XyCoordSet[];
-
 
 export type SvgPatternId =
   | "beads"

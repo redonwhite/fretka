@@ -24,7 +24,7 @@ import {
 export {};
 
 test("Generating simplest enharmonic histogram", () => {
-  const singleNote: ScaleLike = { intervals: [root] };
+  const singleNote: ScaleLike = { intervals: [root], name: "" };
   const histogram = getEnharmonicHistogramForScale(singleNote);
   const expectedHistogram: EnharmonicHistogram = [1, 0, 0, 0, 0, 0, 0];
   expect(histogram).toBeDefined();
@@ -32,7 +32,7 @@ test("Generating simplest enharmonic histogram", () => {
 });
 
 test("Generating empty enharmonic histogram", () => {
-  const singleNote: ScaleLike = { intervals: [] };
+  const singleNote: ScaleLike = { intervals: [], name: "" };
   const histogram = getEnharmonicHistogramForScale(singleNote);
   const expectedHistogram: EnharmonicHistogram = [0, 0, 0, 0, 0, 0, 0];
   expect(histogram).toBeDefined();
@@ -40,7 +40,7 @@ test("Generating empty enharmonic histogram", () => {
 });
 
 test("Generating two-note enharmonic histogram", () => {
-  const twoNotes: ScaleLike = { intervals: [root, maj3] };
+  const twoNotes: ScaleLike = { intervals: [root, maj3], name: "" };
   const histogram = getEnharmonicHistogramForScale(twoNotes);
   const expectedHistogram: EnharmonicHistogram = [2, 0, 0, 0, 1, 0, 0];
   expect(histogram).toBeDefined();
@@ -48,7 +48,7 @@ test("Generating two-note enharmonic histogram", () => {
 });
 
 test("Generating two-note enharmonic histogram with inverted interval", () => {
-  const twoNotes: ScaleLike = { intervals: [root, maj7] };
+  const twoNotes: ScaleLike = { intervals: [root, maj7], name: "" };
   const histogram = getEnharmonicHistogramForScale(twoNotes);
   const expectedHistogram: EnharmonicHistogram = [2, 1, 0, 0, 0, 0, 0];
   expect(histogram).toBeDefined();
@@ -56,7 +56,7 @@ test("Generating two-note enharmonic histogram with inverted interval", () => {
 });
 
 test("Generating three-note enharmonic histogram", () => {
-  const twoNotes: ScaleLike = { intervals: [root, min2, maj3] };
+  const twoNotes: ScaleLike = { intervals: [root, min2, maj3], name: "" };
   const histogram = getEnharmonicHistogramForScale(twoNotes);
   const expectedHistogram: EnharmonicHistogram = [3, 1, 0, 1, 1, 0, 0];
   expect(histogram).toBeDefined();
@@ -64,7 +64,7 @@ test("Generating three-note enharmonic histogram", () => {
 });
 
 test("Generating three-note enharmonic histogram with inverted interval", () => {
-  const twoNotes: ScaleLike = { intervals: [root, min2, maj7] };
+  const twoNotes: ScaleLike = { intervals: [root, min2, maj7], name: "" };
   const histogram = getEnharmonicHistogramForScale(twoNotes);
   const expectedHistogram: EnharmonicHistogram = [3, 2, 1, 0, 0, 0, 0];
   expect(histogram).toBeDefined();
@@ -87,6 +87,7 @@ test("Generating chromatic scale enharmonic histogram", () => {
       min7,
       maj7,
     ],
+    name: "",
   };
   const histogram = getEnharmonicHistogramForScale(chromaticScale);
   const expectedHistogram: EnharmonicHistogram = [12, 12, 12, 12, 12, 12, 6];

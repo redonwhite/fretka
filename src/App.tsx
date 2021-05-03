@@ -6,7 +6,7 @@ import { AppStateStore } from "./store/app-state";
 import "./vars.scss";
 import styles from "./App.module.scss";
 import { allScaleLikes } from "./fretka/library";
-import { autorun, computed, makeObservable } from "mobx";
+import { computed, makeObservable } from "mobx";
 import { findRootedScaleMatchesForSelection, isScaleSubsetOfSelection, isSelectionSubsetOfScale, RootedScaleLike } from "./fretka/scales";
 import {
   EnharmonicHistogram,

@@ -1,4 +1,4 @@
-import { EnharmonicHistogram, withHistogram } from "./histograms";
+import { withHistogram } from "./histograms";
 import {
   dim5,
   maj2,
@@ -10,7 +10,7 @@ import {
   perf5,
   root,
 } from "./intervals";
-import { Rooted, ScaleLike } from "./scales";
+import { ScaleLike } from "./scales";
 
 interface MaybeNamed {
   name: string;
@@ -19,8 +19,6 @@ interface MaybeNamed {
 interface Chord extends ScaleLike, MaybeNamed {
   abbr?: string;
 }
-
-interface RootedChord extends Chord, Rooted {}
 
 const majChord: Chord = {
   name: "major chord",
