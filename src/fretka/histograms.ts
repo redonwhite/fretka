@@ -1,10 +1,9 @@
-import { WithHistogram } from "./chords";
-import { Interval } from "./intervals";
 import { NoteSelection } from "./layers/note-selection-layer";
 import { basicNoteIds } from "./notes";
 import { ScaleLike } from "./scales";
-
-export interface ScaleWithHistogramLike extends ScaleLike, WithHistogram { };
+export interface WithHistogram {
+  histogram: EnharmonicHistogram;
+}
 
 export type EnharmonicHistogramValue =
   | 0
@@ -33,7 +32,6 @@ export type EnharmonicHistogram = [
   EnharmonicHistogramTritoneCount
 ];
 
-
 export function withHistogram<T extends ScaleLike>(scale: T) {
   return {
     ...scale,
@@ -49,9 +47,7 @@ export function getEnharmonicHistogram(spans: number[]): EnharmonicHistogram {
   const histogram: EnharmonicHistogram = [0, 0, 0, 0, 0, 0, 0];
   const positionSet: Set<number> = new Set([]);
 
-  spans
-    .map(span => (span + 12) % 12)
-    .forEach(span => positionSet.add(span));
+  spans.map(span => (span + 12) % 12).forEach(span => positionSet.add(span));
 
   const positions = Array.from(positionSet);
 
@@ -66,12 +62,10 @@ export function getEnharmonicHistogram(spans: number[]): EnharmonicHistogram {
   return histogram;
 }
 
-export function getEnharmonicHistogramForSelection(sel: NoteSelection):
-  EnharmonicHistogram
-{
-  return getEnharmonicHistogram(
-    getSpansFromSelection(sel)
-  );
+export function getEnharmonicHistogramForSelection(
+  sel: NoteSelection
+): EnharmonicHistogram {
+  return getEnharmonicHistogram(getSpansFromSelection(sel));
 }
 
 export function getIndexOfFirstSelection(sel: NoteSelection): number {
@@ -102,23 +96,25 @@ export function getSpansFromSelection(sel: NoteSelection): number[] {
   return spans;
 }
 
-// export function isSelectionSubsetCanditate(sel: NoteSelection, scale: WithHistogram) {
-//   return 
-// }
-
-export function isSubsetCandidate(superHist:EnharmonicHistogram, subHist: EnharmonicHistogram): boolean {
+export function isSubsetCandidate(
+  superHist: EnharmonicHistogram,
+  subHist: EnharmonicHistogram
+): boolean {
   return (
-       superHist[0] >= subHist[0]
-    && superHist[1] >= subHist[1]
-    && superHist[2] >= subHist[2]
-    && superHist[3] >= subHist[3]
-    && superHist[4] >= subHist[4]
-    && superHist[5] >= subHist[5]
-    && superHist[6] >= subHist[6]
+    superHist[0] >= subHist[0] &&
+    superHist[1] >= subHist[1] &&
+    superHist[2] >= subHist[2] &&
+    superHist[3] >= subHist[3] &&
+    superHist[4] >= subHist[4] &&
+    superHist[5] >= subHist[5] &&
+    superHist[6] >= subHist[6]
   );
 }
 
-export function isEqualCanditate(superHist: EnharmonicHistogram, subHist: EnharmonicHistogram): boolean {
+export function isEqualCanditate(
+  superHist: EnharmonicHistogram,
+  subHist: EnharmonicHistogram
+): boolean {
   return (
     superHist[0] === subHist[0] &&
     superHist[1] === subHist[1] &&
@@ -129,5 +125,3 @@ export function isEqualCanditate(superHist: EnharmonicHistogram, subHist: Enharm
     superHist[6] === subHist[6]
   );
 }
-
-

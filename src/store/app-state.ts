@@ -69,7 +69,6 @@ export class LayerStore extends Store {
   });
 
   useCurrentLayer = () => {
-    console.log("use curr lay");
     if (this.currentLayer && this.layers.includes(this.currentLayer)) {
       return this.currentLayer;
     }
@@ -94,7 +93,6 @@ export class LayerStore extends Store {
 
   get nextLayerColor(): LayerColorId {
     const revLayers = [...this.layers].reverse();
-    console.log(revLayers);
 
     let leastRecentlyUsedColor = layerColorRotation
       .map(color => ({

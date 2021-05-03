@@ -14,7 +14,7 @@ body {
   grid-template-rows: fit-content(0) auto;
   grid-template-areas: 
     'fretboard       fretboard     '
-    'noteSelector    .             ';
+    'noteSelector    matches       ';
 }
 
 .fretboardArea {
@@ -23,6 +23,11 @@ body {
 
 .noteSelectorArea {
   grid-area: noteSelector;
+  align-items: start;
+}
+
+.matchesArea {
+  grid-area: matches;
   align-items: start;
 }
 

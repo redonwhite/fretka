@@ -321,7 +321,6 @@ export function getStringIndexesFromAbsSpec(
       const r = Object.keys(tuning.stringTunings)
         .map((_, idx) => idx)
         .reverse();
-      console.log(r);
       return r;
     case "string1":
       return [0];

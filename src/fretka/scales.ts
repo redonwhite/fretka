@@ -1,9 +1,7 @@
 import { withHistogram } from "./histograms";
 import {
   aug4,
-  BasicInterval,
   dim5,
-  EnharmonicDistance,
   Interval,
   maj2,
   maj3,
@@ -23,16 +21,28 @@ import {
   NoteClassId,
   NoteClassInScale,
   NoteInScaleExtraParams,
+  basicNoteIds,
+  basicNotes,
 } from "./notes";
 
-export const major: ScaleMovable = {
+export const major: ScaleLike = {
+  name: "major scale",
   intervals: [root, maj2, maj3, perf4, perf5, maj6, maj7],
 };
 
+export const minorPentatonic: ScaleLike = {
+  name: "minor pentatonic scale",
+  intervals: [root, min3, perf4, perf5, min7],
+};
+
+export const blues: ScaleLike = {
+  name: "blues scale",
+  intervals: [root, min3, perf4, aug4, perf5, min7],
+};
+
 export type ScaleMovable = {
-  name?: string;
+  name: string;
   intervals: Array<Interval>;
-  extraParams?: { [key: number]: NoteInScaleExtraParams };
 };
 
 export type ScaleRooted = {
@@ -69,44 +79,42 @@ const ionian: Mode = {
 };
 
 const dorian: Mode = {
-  name: "Dorian",
+  name: "Dorian mode",
   modeOf: major,
   startOn: step2,
   intervals: [root, maj2, min3, perf4, perf5, maj6, min7],
 };
 
 const phrygian: Mode = {
-  name: "Phrygian",
+  name: "Phrygian mode",
   modeOf: major,
   startOn: step3,
   intervals: [root, min2, min3, perf4, perf5, min6, min7],
 };
 
 const lydian: Mode = {
-  name: "Lydian",
+  name: "Lydian mode",
   modeOf: major,
   startOn: step4,
   intervals: [root, maj2, maj3, aug4, perf5, maj6, maj7],
 };
 
 const mixolydian: Mode = {
-  name: "Myxolydian",
+  name: "Myxolydian mode",
   modeOf: major,
   startOn: step5,
   intervals: [root, maj2, maj3, perf4, perf5, maj6, min7],
 };
 
 const aeolian: Mode = {
-  name: "Aeolian",
+  name: "Aeolian mode",
   modeOf: major,
   startOn: step6,
-  intervals: [root, min2, min3, perf4, perf5, min6, min7],
+  intervals: [root, maj2, min3, perf4, perf5, min6, min7],
 };
 
-const minor: Mode = aeolian;
-
 const locrian: Mode = {
-  name: "Locrian",
+  name: "Locrian mode",
   modeOf: major,
   startOn: step7,
   intervals: [root, min2, min3, perf4, dim5, min6, min7],
@@ -133,7 +141,7 @@ export function makeRootedScale(
 
 export const scales = {
   major: withHistogram(major),
-  minor: withHistogram(minor),
+  minorPentatonic: withHistogram(minorPentatonic),
 };
 
 export const modesOfMajor = {
@@ -148,6 +156,8 @@ export const modesOfMajor = {
 
 export interface ScaleLike {
   intervals: Interval[];
+  name: string;
+  extraParams?: { [key: number]: NoteInScaleExtraParams };
 }
 
 export interface Rooted {
@@ -156,6 +166,71 @@ export interface Rooted {
 
 export interface RootedScaleLike extends ScaleLike, Rooted {}
 
-export function getDistance(scale1: ScaleLike, scale2: ScaleLike) {
-  
+function getNotesFromRootAndSpans(rootId: NoteClassId, spans: number[]) {
+  const rootIdx = basicNotes[rootId].idx;
+  return spans.map(span => basicNoteIds[(rootIdx + span + 12) % 12]);
 }
+
+export function findRootedScaleMatchesForSelection(
+  floatingScale: ScaleLike,
+  selNoteIds: NoteClassId[],
+  selRoot: NoteClassId | null,
+  isMatch: ScaleToSelectionMatcher
+) {
+  let existingMatches = [] as RootedScaleLike[];
+  if (selRoot) {
+    addRootedScaleToMatchesIfItFits(
+      floatingScale,
+      selRoot,
+      selNoteIds,
+      existingMatches,
+      isMatch
+    );
+  } else {
+    selNoteIds.forEach(rootId =>
+      addRootedScaleToMatchesIfItFits(
+        floatingScale,
+        rootId,
+        selNoteIds,
+        existingMatches,
+        isMatch
+      )
+    );
+  }
+  return existingMatches;
+}
+
+type ScaleToSelectionMatcher = (
+  _scaleNotes: NoteClassId[],
+  _selNotes: NoteClassId[]
+) => boolean;
+
+export const isSelectionSubsetOfScale: ScaleToSelectionMatcher = (
+  scaleNoteIds,
+  selNoteIds
+) => selNoteIds.every(noteId => scaleNoteIds.includes(noteId));
+
+export const isScaleSubsetOfSelection: ScaleToSelectionMatcher = (
+  scaleNoteIds,
+  selNoteIds
+) => scaleNoteIds.every(noteId => selNoteIds.includes(noteId));
+
+function addRootedScaleToMatchesIfItFits(
+  floatingScale: ScaleLike,
+  selRoot: NoteClassId,
+  selNoteIds: NoteClassId[],
+  previousMatches: RootedScaleLike[],
+  isMatch: ScaleToSelectionMatcher
+) {
+  const scaleNoteIds = getNotesFromRootAndSpans(
+    selRoot,
+    floatingScale.intervals.map(i => i.span)
+  );
+  if (isMatch(scaleNoteIds, selNoteIds)) {
+    previousMatches.push({
+      ...floatingScale,
+      root: basicNotes[selRoot],
+    });
+  }
+}
+
