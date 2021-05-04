@@ -1,7 +1,12 @@
 import { computed, makeObservable, observable, override } from "mobx";
 
 import { FretShapeSpec, getDomPatternId, IFretShapeSpec } from "../shapes";
-import { FretkaLayer, getOriginalState, LayerColorId } from "./fretka-layer";
+import {
+  FretkaLayer,
+  getOriginalState,
+  LayerColorId,
+  layerColors,
+} from "./fretka-layer";
 
 export class ShapeLayer extends FretkaLayer {
   originalState: Omit<ShapeLayer, "id">;
@@ -12,7 +17,7 @@ export class ShapeLayer extends FretkaLayer {
     const patternId = this.shape.appearance.patternId;
     const fill = patternId
       ? `url(#${getDomPatternId(patternId, this.color)})`
-      : undefined;
+      : layerColors[this.color].value;
 
     return {
       strokeWidth: this.shape.appearance.strokeWidth,

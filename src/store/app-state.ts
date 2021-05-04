@@ -65,6 +65,13 @@ export class LayerStore extends Store {
       onlySelectedIn: this.noteSelectionLayers.filter(
         l => l.selection[noteId] && l.root !== noteId
       ),
+      selections: this.noteSelectionLayers
+        .filter(l => l.selection[noteId] || l.root === noteId)
+        .map(l => ({
+          layer: l,
+          selected: !!l.selection[noteId],
+          root: !!(l.root === noteId),
+        })),
     };
   });
 

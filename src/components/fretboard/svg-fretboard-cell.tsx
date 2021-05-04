@@ -31,10 +31,14 @@ export const SvgFretboardCell = observer(
     height: number;
   }) => {
     const note = addSemitones(props.stringTuning, props.fretNumber);
-    const selections = appState.layerStore.getSelectionsForNote(note.id);
-
+    const selections = appState.layerStore.getSelectionsForNote(note.id)
+      .selections;
+    const selCount = selections.length;
     const r = 7;
-
+    const deltaR = 2;
+    const startY = props.centerY + (deltaR * (selCount-1)) / 2;
+    const startX = props.centerX - (deltaR * (selCount-1)) / 2;
+    
     return (
       <React.Fragment>
         <rect
@@ -47,7 +51,25 @@ export const SvgFretboardCell = observer(
           fill="transparent"
           cursor="pointer"
         />
-        {selections.onlySelectedIn.map(layer => (
+        {selections.map((sel, idx) => (
+          <circle
+            key={"sel" + sel.layer.id}
+            cx={startX + idx * deltaR}
+            cy={startY - idx * deltaR}
+            r={r}
+            className={getCellDotClass(sel.layer, sel.root)}
+            onClick={() =>
+
+                           sel.root
+               
+                ? sel.layer.toggleRoot(note.id)
+              
+                 : sel.layer.toggleNote(note.id)
+            
+            }
+          />
+        ))}
+        {/* {selections.onlySelectedIn.map(layer => (
           <circle
             key={"sel" + layer.id}
             cx={props.centerX}
@@ -66,7 +88,7 @@ export const SvgFretboardCell = observer(
             className={getCellDotClass(layer, true)}
             onClick={() => layer.toggleRoot(note.id)}
           />
-        ))}
+        ))} */}
       </React.Fragment>
     );
   }

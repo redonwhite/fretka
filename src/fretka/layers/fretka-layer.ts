@@ -66,11 +66,11 @@ export const layerColors: {
   },
   blue: {
     id: "blue",
-    value: "blue",
+    value: "rgb(17, 140, 255)",
   },
   gray: {
     id: "gray",
-    value: "gray",
+    value: "#999",
   },
   red: {
     id: "red",
@@ -78,7 +78,7 @@ export const layerColors: {
   },
   green: {
     id: "green",
-    value: "darkturquoise",
+    value: "rgb(31, 216, 77)",
   },
 };
 export const layerColorsArray = Object.values(layerColors);

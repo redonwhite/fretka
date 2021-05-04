@@ -20,6 +20,7 @@
 
   circle:global(.fretCellDot) {
     fill: var(--fretka-layer-color);
+    stroke-width: 0;
     transition: all var(--fretka-transition-time);
   }
   circle:global(.fretCellRootDot) {
