@@ -43,7 +43,7 @@ export const SvgFretboard = observer(
                 x2={fretboardDefinition.getFretPosX(idx)}
                 y1={fretboardDefinition.fretTopY}
                 y2={fretboardDefinition.fretBottomY}
-                shapeRendering="crispEdges"
+                // shapeRendering="crispEdges"
               />
             )
           )

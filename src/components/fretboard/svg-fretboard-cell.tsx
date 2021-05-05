@@ -88,20 +88,24 @@ export const SvgFretboardCell = observer(
                 key={"sel" + sel.layer.id}
                 cx={dotPos.x}
                 cy={dotPos.y}
-                r={sel.interval ? r * 1.5 : r }
+                r={sel.interval ? 1.5 * r : r}
                 className={getCellDotClass(sel.layer, sel.root)}
                 onClick={() => {
                   sel.root
                     ? sel.layer.toggleRoot(note.id)
-                    : sel.layer.toggleNote(note.id)
+                    : sel.layer.toggleNote(note.id);
                 }}
               />
               <text
                 className={styles.noteText}
-                style={{fontSize: r * 1.6}}
+                style={{ fontSize: r * 2 }}
                 x={dotPos.x}
-                y={dotPos.y + r / 2}>{ sel.interval?.dotAbbr ?? sel.interval?.abbr }</text>
-            </React.Fragment>)
+                y={dotPos.y + 0.75 * r}
+              >
+                {sel.interval?.dotAbbr ?? sel.interval?.abbr}
+              </text>
+            </React.Fragment>
+          );
         })}
         {/* {selections.onlySelectedIn.map(layer => (
           <circle

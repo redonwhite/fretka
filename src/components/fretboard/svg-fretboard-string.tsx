@@ -46,7 +46,7 @@ export const SvgFretboardString = observer(
           y1={props.fromY}
           y2={props.toY}
           className={stylesSvg.string}
-          shapeRendering="crispEdges"
+          //shapeRendering="crispEdges"
         />
         {fretNotes.map((note, idx) => (
           <SvgFretboardCell
