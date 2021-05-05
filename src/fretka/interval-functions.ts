@@ -3,8 +3,15 @@ import {
   IntervalDirectionId,
   basicIntervals,
   BasicIntervalId,
+  basicIntervalsBySpan,
 } from "./intervals";
-import { basicNotesArray, NoteAbsolute, NoteClass } from "./notes";
+import {
+  basicNotes,
+  basicNotesArray,
+  NoteAbsolute,
+  NoteClass,
+  NoteClassId,
+} from "./notes";
 
 export function addSemitonesOld(note: NoteClass, semitones: number): NoteClass {
   const newIdx = (note.idx + semitones + 12) % 12;
@@ -58,6 +65,11 @@ export function addIntervalOld(
   };
 
   return newNote;
+}
+
+export function getBasicIntervalBetween(from: NoteClassId, to: NoteClassId) {
+  const positiveSteps = (12 + basicNotes[to].idx - basicNotes[from].idx) % 12;
+  return basicIntervalsBySpan[positiveSteps];
 }
 
 export function getPositiveSteps(from: NoteClass, to: NoteClass) {

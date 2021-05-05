@@ -1,14 +1,14 @@
 import React from 'react';
-import type { Point } from '../../fretka/svg';
 import type { NoteAbsolute } from '../../fretka/notes';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { appState } from '../../App';
-import { addInterval, addSemitones } from '../../fretka/interval-functions';
+import { addSemitones } from '../../fretka/interval-functions';
 import { NoteSelectionLayer } from '../../fretka/layers/note-selection-layer';
 import { LayerStore } from '../../store/app-state';
-import { FretkaLayer } from '../../fretka/layers/fretka-layer';
 import { action } from "mobx";
+
+import styles from './svg-fretboard.module.scss';
 
 const getCellDotClass = (layer : NoteSelectionLayer, isRoot: boolean) => {
   return classNames({
@@ -18,6 +18,35 @@ const getCellDotClass = (layer : NoteSelectionLayer, isRoot: boolean) => {
     [`layerColor-${layer.color}`]: true,
   });
 };
+
+
+type DotArrangementType = 'shadow' | 'side-by-side';
+const getStartDotPosition = (
+  centerX: number,
+  centerY: number,
+  selCount: number,
+  r: number,
+  _style: DotArrangementType = 'shadow'
+) => {
+  const deltaR = 2;
+  return {
+    x: centerX - (deltaR * (selCount - 1)) / 2,
+    y: centerY + (deltaR * (selCount - 1)) / 2
+  }
+}
+const getNthDotPosition = (
+  start: { x: number, y: number },
+  n: number,
+  _selCount: number,
+  _r: number,
+  _style: DotArrangementType) =>
+{
+  const deltaR = 2;
+  return {
+    x: start.x + n * deltaR,
+    y: start.y - n * deltaR,
+  }
+}
 
 export const SvgFretboardCell = observer(
   (props: {
@@ -31,13 +60,13 @@ export const SvgFretboardCell = observer(
     height: number;
   }) => {
     const note = addSemitones(props.stringTuning, props.fretNumber);
-    const selections = appState.layerStore.getSelectionsForNote(note.id)
-      .selections;
+    const selections =
+      appState.layerStore.getSelectionsForNote(note.id);
+    
     const selCount = selections.length;
-    const r = 7;
-    const deltaR = 2;
-    const startY = props.centerY + (deltaR * (selCount-1)) / 2;
-    const startX = props.centerX - (deltaR * (selCount-1)) / 2;
+    const r = 5;
+    const arrangement = "shadow";
+    const start = getStartDotPosition(props.centerX, props.centerY, selCount, r, arrangement);
     
     return (
       <React.Fragment>
@@ -51,24 +80,29 @@ export const SvgFretboardCell = observer(
           fill="transparent"
           cursor="pointer"
         />
-        {selections.map((sel, idx) => (
-          <circle
-            key={"sel" + sel.layer.id}
-            cx={startX + idx * deltaR}
-            cy={startY - idx * deltaR}
-            r={r}
-            className={getCellDotClass(sel.layer, sel.root)}
-            onClick={() =>
-
-                           sel.root
-               
-                ? sel.layer.toggleRoot(note.id)
-              
-                 : sel.layer.toggleNote(note.id)
-            
-            }
-          />
-        ))}
+        {selections.map((sel, idx) => {
+          const dotPos = getNthDotPosition(start, idx, selCount, r, arrangement);
+          return (
+            <React.Fragment key={"selfrag" + sel.layer.id}>
+              <circle
+                key={"sel" + sel.layer.id}
+                cx={dotPos.x}
+                cy={dotPos.y}
+                r={sel.interval ? r * 1.5 : r }
+                className={getCellDotClass(sel.layer, sel.root)}
+                onClick={() => {
+                  sel.root
+                    ? sel.layer.toggleRoot(note.id)
+                    : sel.layer.toggleNote(note.id)
+                }}
+              />
+              <text
+                className={styles.noteText}
+                style={{fontSize: r * 1.6}}
+                x={dotPos.x}
+                y={dotPos.y + r / 2}>{ sel.interval?.dotAbbr ?? sel.interval?.abbr }</text>
+            </React.Fragment>)
+        })}
         {/* {selections.onlySelectedIn.map(layer => (
           <circle
             key={"sel" + layer.id}

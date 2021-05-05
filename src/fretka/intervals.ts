@@ -10,6 +10,7 @@ export type IntervalQuality =
 export type IntervalBase = {
   id: string;
   abbr: string;
+  dotAbbr?: string;
   name: string;
   step: number;
   quality?: IntervalQuality;
@@ -80,6 +81,7 @@ export const intervalDirectionArray = [
 export const root: BasicInterval = {
   id: "root",
   abbr: "♮R",
+  dotAbbr: "R",
   name: "root",
   step: 1,
   quality: "perfect",
@@ -100,6 +102,7 @@ export const min2: BasicInterval = {
 export const maj2: BasicInterval = {
   id: "maj2",
   abbr: "♮2",
+  dotAbbr: "2",
   name: "major second",
   step: 2,
   quality: "major",
@@ -121,6 +124,7 @@ export const maj3: BasicInterval = {
   id: "maj3",
   name: "major third",
   abbr: "♮3",
+  dotAbbr: "3",
   step: 3,
   quality: "major",
   span: 4,
@@ -131,6 +135,7 @@ export const perf4: BasicInterval = {
   id: "perf4",
   name: "perfect fourth",
   abbr: "♮4",
+  dotAbbr: "4",
   step: 4,
   quality: "perfect",
   span: 5,
@@ -172,6 +177,7 @@ export const perf5: BasicInterval = {
   id: "perf5",
   name: "perfect fifth",
   abbr: "♮5",
+  dotAbbr: "5",
   step: 5,
   quality: "perfect",
   span: 7,
@@ -192,6 +198,7 @@ export const maj6: BasicInterval = {
   id: "maj6",
   name: "major sixth",
   abbr: "♮6",
+  dotAbbr: "6",
   step: 6,
   quality: "major",
   span: 9,
@@ -212,6 +219,7 @@ export const maj7: BasicInterval = {
   id: "maj7",
   name: "major seventh",
   abbr: "♮7",
+  dotAbbr: "7",
   step: 7,
   quality: "major",
   span: 11,

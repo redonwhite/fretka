@@ -29,4 +29,11 @@
     stroke: var(--fretka-layer-color);
     transition: all var(--fretka-transition-time);
   }
+
+  text.noteText {
+    fill: white;
+    font-weight: bold;
+    font-size: 9px;
+    text-anchor: middle;
+  }
 }
