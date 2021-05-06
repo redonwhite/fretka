@@ -24,15 +24,14 @@
     transition: all var(--fretka-transition-time);
   }
   circle:global(.fretCellRootDot) {
-    fill: white;
-    stroke-width: 2px;
+    //fill: white;
+    //stroke-width: 4px;
     stroke: var(--fretka-layer-color);
     transition: all var(--fretka-transition-time);
   }
 
   text.noteText {
     fill: white;
-    font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     text-anchor: middle;
   }

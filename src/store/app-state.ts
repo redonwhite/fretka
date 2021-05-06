@@ -2,7 +2,7 @@ import { action, computed, makeObservable, observable } from "mobx";
 import { computedFn } from "mobx-utils";
 import { FretboardDefinition } from "../fretka/fretboard";
 import { guitarTuningsLibrary } from "../fretka/guitar-tunings";
-import { getBasicIntervalBetween, getSemitones } from "../fretka/interval-functions";
+import { getBasicIntervalBetween } from "../fretka/interval-functions";
 import {
   FretkaLayer,
   isNoteSelectionLayer,
@@ -61,13 +61,13 @@ export class LayerStore extends Store {
     noteId: NoteClassId
   ) {
     return this.noteSelectionLayers
-        .filter(l => l.selection[noteId] || l.root === noteId)
-        .map(l => ({
-          layer: l,
-          selected: !!l.selection[noteId],
-          root: !!(l.root === noteId),
-          interval: l.root ? getBasicIntervalBetween(l.root, noteId) : null
-        }))
+      .filter(l => l.selection[noteId])
+      .map(l => ({
+        layer: l,
+        selected: !!l.selection[noteId],
+        root: !!(l.root === noteId),
+        interval: l.root ? getBasicIntervalBetween(l.root, noteId) : null,
+      }));
   });
 
   useCurrentLayer = () => {

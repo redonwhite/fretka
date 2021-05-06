@@ -10,38 +10,75 @@ import { action } from "mobx";
 
 import styles from './svg-fretboard.module.scss';
 
+const r = 11;
+const rBig = 11;
+const fontSize = 1.2 * rBig;
+type DotArrangementType =
+  | "shadow"
+  | "side-by-side"
+  | "side-by-side with overlap";
+const overlap = r*1.5;
+const deltaR = r/2;
+const arrangement: DotArrangementType = "side-by-side with overlap";
+
 const getCellDotClass = (layer : NoteSelectionLayer, isRoot: boolean) => {
   return classNames({
     layerColor: true,
     fretCellRootDot: isRoot,
-    fretCellDot: !isRoot,
+    fretCellDot: true,
     [`layerColor-${layer.color}`]: true,
   });
 };
 
 
-type DotArrangementType = 'shadow' | 'side-by-side';
+
+
 const getStartDotPosition = (
   centerX: number,
   centerY: number,
   selCount: number,
   r: number,
-  _style: DotArrangementType = 'shadow'
+  style: DotArrangementType = 'shadow'
 ) => {
-  const deltaR = 2;
+  if (style === 'side-by-side') {
+    return {
+      x: centerX - r * (selCount-1),
+      y: centerY,
+    };
+  }
+  if (style === 'side-by-side with overlap') {
+    
+    return {
+      x: centerX - (selCount - 1) * ( r - overlap/2),
+      y: centerY,
+    };
+  }
+  
   return {
     x: centerX - (deltaR * (selCount - 1)) / 2,
     y: centerY + (deltaR * (selCount - 1)) / 2
   }
 }
+
 const getNthDotPosition = (
   start: { x: number, y: number },
   n: number,
   _selCount: number,
-  _r: number,
-  _style: DotArrangementType) =>
+  r: number,
+  style: DotArrangementType) =>
 {
-  const deltaR = 2;
+  if (style === "side-by-side") {
+    return {
+      x: start.x + r * n * 2,
+      y: start.y,
+    };
+  }
+  if (style === 'side-by-side with overlap') {
+    return {
+      x: start.x + (r * 2 - overlap) * n,
+      y: start.y,
+    };
+  }
   return {
     x: start.x + n * deltaR,
     y: start.y - n * deltaR,
@@ -64,10 +101,12 @@ export const SvgFretboardCell = observer(
       appState.layerStore.getSelectionsForNote(note.id);
     
     const selCount = selections.length;
-    const r = 5;
-    const arrangement = "shadow";
     const start = getStartDotPosition(props.centerX, props.centerY, selCount, r, arrangement);
     
+    const toggle: (_sel: typeof selections[0]) => void = sel => {
+      sel.root ? sel.layer.toggleRoot(note.id) : sel.layer.toggleNote(note.id);
+    };
+
     return (
       <React.Fragment>
         <rect
@@ -81,52 +120,36 @@ export const SvgFretboardCell = observer(
           cursor="pointer"
         />
         {selections.map((sel, idx) => {
-          const dotPos = getNthDotPosition(start, idx, selCount, r, arrangement);
+          const dotPos = getNthDotPosition(
+            start,
+            idx,
+            selCount,
+            r,
+            arrangement
+          );
           return (
             <React.Fragment key={"selfrag" + sel.layer.id}>
               <circle
                 key={"sel" + sel.layer.id}
                 cx={dotPos.x}
                 cy={dotPos.y}
-                r={sel.interval ? 1.5 * r : r}
+                r={sel.interval ? rBig : r}
                 className={getCellDotClass(sel.layer, sel.root)}
-                onClick={() => {
-                  sel.root
-                    ? sel.layer.toggleRoot(note.id)
-                    : sel.layer.toggleNote(note.id);
-                }}
-              />
+                onClick={() => toggle(sel)}
+              >
+              </circle>
               <text
                 className={styles.noteText}
-                style={{ fontSize: r * 2 }}
+                style={{ fontSize }}
                 x={dotPos.x}
-                y={dotPos.y + 0.75 * r}
+                y={dotPos.y + fontSize * .34}
+                onClick={() => toggle(sel)}
               >
                 {sel.interval?.dotAbbr ?? sel.interval?.abbr}
-              </text>
+                </text>
             </React.Fragment>
           );
         })}
-        {/* {selections.onlySelectedIn.map(layer => (
-          <circle
-            key={"sel" + layer.id}
-            cx={props.centerX}
-            cy={props.centerY}
-            r={r}
-            className={getCellDotClass(layer, false)}
-            onClick={() => layer.toggleNote(note.id)}
-          />
-        ))}
-        {selections.rootOf.map(layer => (
-          <circle
-            key={"sel" + layer.id}
-            cx={props.centerX}
-            cy={props.centerY}
-            r={r}
-            className={getCellDotClass(layer, true)}
-            onClick={() => layer.toggleRoot(note.id)}
-          />
-        ))} */}
       </React.Fragment>
     );
   }
