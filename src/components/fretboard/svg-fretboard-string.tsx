@@ -3,7 +3,7 @@ import React from 'react';
 import { NoteAbsolute, notes } from '../../fretka/notes';
 import { observer } from 'mobx-react-lite';
 import { SvgFretboardCell } from './svg-fretboard-cell';
-import { FretboardDefinition } from "../../fretka/fretboard";
+import { FretboardDefinition } from "../../fretka/fretboard-definition";
 import { LayerStore } from "../../store/app-state";
 
 import stylesSvg from "./svg-fretboard.module.scss";

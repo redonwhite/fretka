@@ -1,14 +1,14 @@
-import { computed, makeObservable, observable } from 'mobx';
-import { GuitarTuning } from './guitar-tunings';
-import type { GridSpaceCoordSet, XyCoordSet } from './shapes';
+import { computed, makeObservable, observable } from "mobx";
+import { GuitarTuning } from "./guitar-tunings";
+import type { GridSpaceCoordSet, XyCoordSet } from "./shapes";
 
 export class FretboardDefinition {
   fretCount: number;
   tuning: GuitarTuning;
   stringDistance: number = 25;
   fretboardWidth: number = 1398;
-  marginTop: number = 50;
-  marginBottom: number = 50;
+  marginTop: number = 20;
+  marginBottom: number = 40;
   marginRight: number = 1;
   marginLeft: number = 1;
   stringStrokeWidth: number = 2;

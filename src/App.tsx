@@ -18,6 +18,8 @@ import { isNoteSelectionLayer } from "./fretka/layers/fretka-layer";
 import _ from "lodash";
 import { getPrettyNoteName, NoteClassId } from "./fretka/notes";
 import { observer } from "mobx-react-lite";
+import React from "react";
+import { Keyboard } from "./components/keyboard/keyboard";
 
 export const appState = new AppStateStore();
 
@@ -76,6 +78,12 @@ const App = observer(() => {
     <>
       <SvgPatterns />
       <div className={styles.appContainer}>
+        <div className={styles.keyboardArea}>
+          <Keyboard
+            keyboardDefinition={appState.keyboardDefinition}
+            layerStore={appState.layerStore}
+          />
+        </div>
         <div className={styles.fretboardArea}>
           <SvgFretboard
             fretboardDefinition={appState.fretboardDefinition}

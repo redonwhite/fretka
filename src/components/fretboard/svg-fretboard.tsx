@@ -1,7 +1,7 @@
 import React from 'react';
 import { SvgFretboardString } from './svg-fretboard-string';
 import { observer } from 'mobx-react-lite';
-import { FretboardDefinition } from '../../fretka/fretboard';
+import { FretboardDefinition } from "../../fretka/fretboard-definition";
 import { LayerStore } from "../../store/app-state";
 import { SvgShapeLayer } from './svg-shape-layer';
 

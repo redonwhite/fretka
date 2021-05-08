@@ -12,10 +12,15 @@ body {
   display: grid;
   justify-content: center;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: fit-content(0) auto;
-  grid-template-areas: 
+  grid-template-rows: fit-content(0) fit-content(0) auto;
+  grid-template-areas:
+    'keyboard keyboard' 
     'fretboard       fretboard     '
     'noteSelector    matches       ';
+}
+
+.keyboardArea {
+  grid-area: keyboard;
 }
 
 .fretboardArea {

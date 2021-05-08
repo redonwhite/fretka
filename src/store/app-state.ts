@@ -1,8 +1,9 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import { computedFn } from "mobx-utils";
-import { FretboardDefinition } from "../fretka/fretboard";
+import { FretboardDefinition } from "../fretka/fretboard-definition";
 import { guitarTuningsLibrary } from "../fretka/guitar-tunings";
 import { getBasicIntervalBetween } from "../fretka/interval-functions";
+import { KeyboardDefinition } from "../fretka/keyboard-definition";
 import {
   FretkaLayer,
   isNoteSelectionLayer,
@@ -13,7 +14,7 @@ import {
 
 import { NoteSelectionLayer } from "../fretka/layers/note-selection-layer";
 import { ShapeLayer } from "../fretka/layers/shape-layer";
-import { NoteAbsolute, NoteClassId } from "../fretka/notes";
+import { a0, basicNotes, NoteAbsolute, NoteClassId } from "../fretka/notes";
 import { IFretShapeSpec, SingleStringId } from "../fretka/shapes";
 
 export abstract class RootStore {}
@@ -33,6 +34,7 @@ export abstract class Store extends RootStore {
 export class AppStateStore extends RootStore {
   layerStore: LayerStore;
   fretboardDefinition: FretboardDefinition;
+  keyboardDefinition: KeyboardDefinition;
 
   constructor() {
     super();
@@ -40,6 +42,7 @@ export class AppStateStore extends RootStore {
     this.fretboardDefinition = new FretboardDefinition(
       guitarTuningsLibrary.standard
     );
+    this.keyboardDefinition = new KeyboardDefinition(88, a0);
 
     makeObservable(this, {
       layerStore: observable,

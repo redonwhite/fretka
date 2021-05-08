@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { FretboardDefinition } from '../../fretka/fretboard';
+import { FretboardDefinition } from "../../fretka/fretboard-definition";
 import { ShapeLayer } from '../../fretka/layers/shape-layer';
 import { FretShapeSpec, fretSpaceShapeToGridSpace } from '../../fretka/shapes';
 import { xyCoordSetToPathD } from '../../fretka/svg';

@@ -20,9 +20,9 @@ export type NoteClass = {
   isNatural: boolean;
 };
 
-export type NoteAbsolute = NoteClass & {
-  absIdx: number;
-};
+export type NoteAbsoluteNatural = NoteAbsolute & { isNatural: true };
+
+export type NoteAbsolute = NoteClass & { absIdx: number };
 
 export type NoteInScaleExtraParams = { direction?: "up" | "down" };
 
@@ -164,3 +164,21 @@ export function getPrettyNoteName(note: NoteClass) {
   if (note.isNatural) return note.id.toUpperCase();
   return note.sharpOf.toUpperCase() + "♯";
 }
+
+export const middleC: NoteAbsolute = {
+  ...basicNotes.c,
+  absIdx: 60, // midi indexes used.
+};
+
+export const c1: NoteAbsolute = {
+  ...basicNotes.c,
+  absIdx: middleC.absIdx - 3 * 12,
+};
+
+export const a0: NoteAbsolute = {
+  ...basicNotes.a,
+  absIdx: c1.absIdx - 3,
+};
+
+
+

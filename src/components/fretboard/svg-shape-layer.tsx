@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { ShapeLayer } from "../../fretka/layers/shape-layer";
 import { SvgFretSpaceShape } from "./svg-fret-space-shape";
-import { FretboardDefinition } from "../../fretka/fretboard";
+import { FretboardDefinition } from "../../fretka/fretboard-definition";
 
 export const SvgShapeLayer = observer((props: {
   fretboardDefinition: FretboardDefinition,
