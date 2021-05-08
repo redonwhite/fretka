@@ -12,6 +12,13 @@ export type NoteClassId =
   | "g"
   | "gsharp";
 
+export type SharpNoteClassId =
+  | "asharp"
+  | "csharp"
+  | "dsharp"
+  | "fsharp"
+  | "gsharp";
+
 export type NoteClass = {
   id: NoteClassId;
   idx: number;
@@ -179,6 +186,3 @@ export const a0: NoteAbsolute = {
   ...basicNotes.a,
   absIdx: c1.absIdx - 3,
 };
-
-
-

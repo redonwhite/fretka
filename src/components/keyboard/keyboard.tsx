@@ -18,13 +18,14 @@ export const Keyboard = observer(
     const startAbsIdx = startingNote.absIdx;
     const startClassIdx = startingNote.idx;
 
-    const keys: ReactElement[] = [];
+    const naturalKeys: ReactElement[] = [];
+    const sharpKeys: ReactElement[] = [];
 
     for (let keyIdx = 0, x = 0; keyIdx < keyCount; keyIdx++) {
       const absIdx = startAbsIdx + keyIdx;
       const note = basicNotesArray[(startClassIdx + keyIdx) % 12];
       const noteAbs = { ...note, absIdx };
-      keys.push(
+      const keyElement = (
         <Key
           x={x}
           keyboardDefinition={keyboardDefinition}
@@ -32,14 +33,16 @@ export const Keyboard = observer(
           key={"key note " + note.id + " (" + absIdx + ")"}
         />
       );
-      if (note.isNatural) x += keyboardDefinition.naturalKeyWidth;
+      if (note.isNatural) {
+        x += keyboardDefinition.naturalKeyWidth;
+        naturalKeys.push(keyElement);
+      } else {
+        sharpKeys.push(keyElement);
+      }
     }
 
-    return (
-      <svg style={{ width: "100%", height: "75px" }}>
-        <rect x="0" width="100%" y="0" height="100%" fill="green" />
-        {keys}
-      </svg>
-    );
+    const keys = [...naturalKeys, ...sharpKeys];
+
+    return <svg style={{ width: "100%", height: "70px" }}>{keys}</svg>;
   }
 );
