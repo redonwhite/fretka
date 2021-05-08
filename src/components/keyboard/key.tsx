@@ -2,24 +2,33 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { KeyboardDefinition } from "../../fretka/keyboard-definition";
 import { NoteAbsolute, SharpNoteClassId } from "../../fretka/notes";
+import { LayerStore } from "../../store/app-state";
+import { layerColors } from "../../fretka/layers/fretka-layer";
 
 export const Key = observer(
   (props: {
     x: number;
     note: NoteAbsolute;
     keyboardDefinition: KeyboardDefinition;
+    layerStore: LayerStore;
   }) => {
-    const { x, note, keyboardDefinition } = props;
+    const { x, note, keyboardDefinition, layerStore } = props;
     const natWidth = keyboardDefinition.naturalKeyWidth;
-    const gap = natWidth / 20;
+    const gap = natWidth / 10;
     const rx = natWidth / 7;
     
+    const selections = layerStore.getSelectionsForNote(note.id);
+    
+    const overrideColor = (selections.length > 0) ?
+      layerColors[selections[selections.length-1].layer.color].id : undefined;
+
+
     if (note.isNatural) {
       // natural note - white key
       return (
         <>
           <rect
-            fill="lightgray"
+            fill={overrideColor ?? '#efefef'}
             x={x + gap + "%"}
             y="-10%"
             rx={rx + "%"}
@@ -38,14 +47,14 @@ export const Key = observer(
       return (
         <>
           <rect
-            fill="lightgray"
-            strokeWidth="3"
+            fill={overrideColor ?? "#efefef"}
+            strokeWidth={(2.5 * gap) + '%'}
             stroke="white"
             x={x + xoffset + "%"}
             y={-10 + "%"}
             width={keyboardDefinition.sharpKeyWidth + "%"}
             rx={rx + "%"}
-            height="65%"
+            height="70%"
           />
         </>
       );

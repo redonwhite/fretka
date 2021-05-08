@@ -14,7 +14,14 @@ import {
 
 import { NoteSelectionLayer } from "../fretka/layers/note-selection-layer";
 import { ShapeLayer } from "../fretka/layers/shape-layer";
-import { a0, basicNotes, NoteAbsolute, NoteClassId } from "../fretka/notes";
+import {
+  a0,
+  basicNotes,
+  c1,
+  middleC,
+  NoteAbsolute,
+  NoteClassId,
+} from "../fretka/notes";
 import { IFretShapeSpec, SingleStringId } from "../fretka/shapes";
 
 export abstract class RootStore {}
@@ -42,7 +49,7 @@ export class AppStateStore extends RootStore {
     this.fretboardDefinition = new FretboardDefinition(
       guitarTuningsLibrary.standard
     );
-    this.keyboardDefinition = new KeyboardDefinition(88, a0);
+    this.keyboardDefinition = new KeyboardDefinition(12 * 5, c1);
 
     makeObservable(this, {
       layerStore: observable,
@@ -57,7 +64,6 @@ export class LayerStore extends Store {
   layers: FretkaLayer[] = [];
   layerStates: Map<string, LayerStateInStore>;
   currentLayer: FretkaLayer | null;
-  selectionByNote = () => {};
 
   getSelectionsForNote = computedFn(function selForNote(
     this: LayerStore,

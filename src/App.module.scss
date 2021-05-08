@@ -14,8 +14,8 @@ body {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: fit-content(0) fit-content(0) auto;
   grid-template-areas:
-    'keyboard keyboard' 
     'fretboard       fretboard     '
+    'noteSelector    keyboard'
     'noteSelector    matches       ';
 }
 

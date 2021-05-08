@@ -31,6 +31,7 @@ export const Keyboard = observer(
           keyboardDefinition={keyboardDefinition}
           note={noteAbs}
           key={"key note " + note.id + " (" + absIdx + ")"}
+          layerStore={layerStore}
         />
       );
       if (note.isNatural) {
@@ -43,6 +44,6 @@ export const Keyboard = observer(
 
     const keys = [...naturalKeys, ...sharpKeys];
 
-    return <svg style={{ width: "100%", height: "70px" }}>{keys}</svg>;
+    return <svg style={{ width: "100%", height: "90px" }}>{keys}</svg>;
   }
 );
