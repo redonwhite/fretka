@@ -44,6 +44,18 @@ export const Keyboard = observer(
 
     const keys = [...naturalKeys, ...sharpKeys];
 
-    return <svg style={{ width: "100%", height: "90px" }}>{keys}</svg>;
+    return (
+      <svg style={{ width: "100%", height: "90px" }}>
+        {keys}
+        <rect
+          x="0"
+          width="100%"
+          height="100%"
+          y="0"
+          fill="white"
+          opacity=".7"
+        />
+      </svg>
+    );
   }
 );

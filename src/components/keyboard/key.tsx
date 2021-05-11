@@ -28,7 +28,7 @@ export const Key = observer(
       return (
         <>
           <rect
-            fill={overrideColor ?? '#efefef'}
+            fill={overrideColor ?? "#efefef"}
             x={x + gap + "%"}
             y="-10%"
             rx={rx + "%"}
@@ -48,7 +48,7 @@ export const Key = observer(
         <>
           <rect
             fill={overrideColor ?? "#efefef"}
-            strokeWidth={(2.5 * gap) + '%'}
+            strokeWidth={2.5 * gap + "%"}
             stroke="white"
             x={x + xoffset + "%"}
             y={-10 + "%"}

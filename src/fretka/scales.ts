@@ -1,3 +1,5 @@
+import { isMatch } from "lodash";
+import { NoteSuggestionOption, NoteSuggestionParameters } from "./chord-finder";
 import { withHistogram } from "./histograms";
 import {
   aug4,
@@ -171,34 +173,27 @@ function getNotesFromRootAndSpans(rootId: NoteClassId, spans: number[]) {
   return spans.map(span => basicNoteIds[(rootIdx + span + 12) % 12]);
 }
 
-export function findRootedScaleMatchesForSelection(
+export function findRootedSuggestions(
   floatingScale: ScaleLike,
-  selNoteIds: NoteClassId[],
-  selRoot: NoteClassId | null,
-  isMatch: ScaleToSelectionMatcher
+  possibleRoots: NoteClassId[],
+  yesNotes: NoteClassId[],
+  noNotes: NoteClassId[],
 ) {
-  let existingMatches = [] as RootedScaleLike[];
-  if (selRoot) {
-    addRootedScaleToMatchesIfItFits(
-      floatingScale,
-      selRoot,
-      selNoteIds,
-      existingMatches,
-      isMatch
-    );
-  } else {
-    selNoteIds.forEach(rootId =>
-      addRootedScaleToMatchesIfItFits(
-        floatingScale,
-        rootId,
-        selNoteIds,
-        existingMatches,
-        isMatch
-      )
-    );
-  }
-  return existingMatches;
+
+  const matches: RootedScaleLike[] = [];
+
+  possibleRoots.forEach(rootId => {
+    const scaleNoteIds = getNotesFromRootAndSpans(rootId, floatingScale.intervals.map(i => i.span));
+    const isMatch =
+      noNotes.every(forbiddenNoteId => !scaleNoteIds.includes(forbiddenNoteId)) &&
+      yesNotes.every(necessaryNoteId => scaleNoteIds.includes(necessaryNoteId));
+
+    if (isMatch) matches.push({...floatingScale, root: basicNotes[rootId]});  
+  });
+
+  return matches;
 }
+
 
 type ScaleToSelectionMatcher = (
   _scaleNotes: NoteClassId[],
@@ -232,5 +227,9 @@ function addRootedScaleToMatchesIfItFits(
       root: basicNotes[selRoot],
     });
   }
+}
+
+function doNotesMatchSuggestion(scaleNoteIds: NoteClassId[], suggestionParams: NoteSuggestionParameters) {
+  
 }
 

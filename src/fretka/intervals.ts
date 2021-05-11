@@ -194,6 +194,18 @@ export const min6: BasicInterval = {
   isBasic: true,
 };
 
+export const aug5: Interval = {
+  id: "aug5",
+  name: "augmented fifth",
+  abbr: "♯5",
+  dotAbbr: "♯5",
+  step: 5,
+  quality: "augmented",
+  span: 8,
+  isBasic: false,
+  basicEquivalent: min6,
+};
+
 export const maj6: BasicInterval = {
   id: "maj6",
   name: "major sixth",

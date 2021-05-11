@@ -1,5 +1,6 @@
 import { withHistogram } from "./histograms";
 import {
+  aug5,
   dim5,
   maj2,
   maj3,
@@ -60,6 +61,11 @@ const dimTriad: Chord = {
   intervals: [root, min3, dim5],
 };
 
+const augChord = {
+  name: "augmented chord",
+  intervals: [root, maj3, aug5],
+};
+
 const halfDim7Chord: Chord = {
   name: "half-diminished 7th chord",
   intervals: [root, min3, dim5, min7],
@@ -75,6 +81,7 @@ export const chords = {
   halfDim7: withHistogram(halfDim7Chord),
   sus2: withHistogram(sus2Chord),
   sus4: withHistogram(sus4Chord),
+  aug: withHistogram(augChord),
 };
 
 export const chordsArray = Object.values(chords);

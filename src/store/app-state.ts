@@ -1,5 +1,6 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import { computedFn } from "mobx-utils";
+import { ChordFinder } from "../fretka/chord-finder";
 import { FretboardDefinition } from "../fretka/fretboard-definition";
 import { guitarTuningsLibrary } from "../fretka/guitar-tunings";
 import { getBasicIntervalBetween } from "../fretka/interval-functions";
@@ -39,9 +40,11 @@ export abstract class Store extends RootStore {
 }
 
 export class AppStateStore extends RootStore {
+  
   layerStore: LayerStore;
   fretboardDefinition: FretboardDefinition;
   keyboardDefinition: KeyboardDefinition;
+  chordFinder: ChordFinder;
 
   constructor() {
     super();
@@ -50,7 +53,7 @@ export class AppStateStore extends RootStore {
       guitarTuningsLibrary.standard
     );
     this.keyboardDefinition = new KeyboardDefinition(12 * 5, c1);
-
+    this.chordFinder = new ChordFinder(this.layerStore);
     makeObservable(this, {
       layerStore: observable,
       fretboardDefinition: observable,

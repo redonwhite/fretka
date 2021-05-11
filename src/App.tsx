@@ -20,6 +20,7 @@ import { getPrettyNoteName, NoteClassId } from "./fretka/notes";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Keyboard } from "./components/keyboard/keyboard";
+import { ChordFinder } from "./components/chord-finder/chord-finder";
 
 export const appState = new AppStateStore();
 
@@ -77,39 +78,31 @@ const App = observer(() => {
   return (
     <>
       <SvgPatterns />
+      
       <div className={styles.appContainer}>
+        
         <div className={styles.keyboardArea}>
           <Keyboard
             keyboardDefinition={appState.keyboardDefinition}
             layerStore={appState.layerStore}
           />
         </div>
+        
         <div className={styles.fretboardArea}>
           <SvgFretboard
             fretboardDefinition={appState.fretboardDefinition}
             layerStore={appState.layerStore}
           />
         </div>
+        
         <div className={styles.noteSelectorArea}>
           <LayerStackEditor layerStore={appState.layerStore} />
         </div>
+        
         <div className={styles.matchesArea}>
-          <ul>
-            {suggestions.matches.map(match => (
-              <li key={"match " + match.root.id + " " + match.name}>
-                {getPrettyNoteName(match.root)} {match.name}
-              </li>
-            ))}
-          </ul>
-          <hr />
-          <ul>
-            {suggestions.subsets.map(subset => (
-              <li key={"sub " + subset.root.id + " " + subset.name}>
-                {getPrettyNoteName(subset.root)} {subset.name}
-              </li>
-            ))}
-          </ul>
+          <ChordFinder layerStore={appState.layerStore} />
         </div>
+      
       </div>
     </>
   );

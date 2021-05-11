@@ -68,6 +68,28 @@ export function getEnharmonicHistogramForSelection(
   return getEnharmonicHistogram(getSpansFromSelection(sel));
 }
 
+export function histogramGreaterOrEqualTo(
+  given: EnharmonicHistogram,
+  minimum: EnharmonicHistogram
+) {
+  return given.every((val, idx) => minimum[idx] <= val);
+}
+
+export function histogramSmallerOrEqualTo(
+  given: EnharmonicHistogram,
+  maximum: EnharmonicHistogram
+) {
+  return given.every((val, idx) => maximum[idx] >= val);
+}
+
+export function histogramInRange(
+  given: EnharmonicHistogram,
+  minimum: EnharmonicHistogram,
+  maximum: EnharmonicHistogram
+) {
+  return given.every((val, idx) => minimum[idx] <= val && val <= maximum[idx]);
+}  
+
 export function getIndexOfFirstSelection(sel: NoteSelection): number {
   if (sel.a) return 0;
   if (sel.asharp) return 1;
