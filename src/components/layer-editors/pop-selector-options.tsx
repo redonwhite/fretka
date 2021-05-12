@@ -1,3 +1,4 @@
+import { noteSuggestionOptionsArray } from "../../fretka/chord-finder";
 import {
   basicIntervalsArray,
   intervalDirectionArray,
@@ -43,4 +44,9 @@ export const relativeStringSpecOptions = relativeStringSpecArray.map(s => ({
 export const intervalDirectionOptions = intervalDirectionArray.map(d => ({
   value: d.id,
   label: d.name,
+}));
+
+export const noteSuggestionOptions = noteSuggestionOptionsArray.map(o => ({
+  value: o,
+  label: o,
 }));

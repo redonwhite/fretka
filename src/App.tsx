@@ -5,104 +5,43 @@ import { AppStateStore } from "./store/app-state";
 
 import "./vars.scss";
 import styles from "./App.module.scss";
-import { allScaleLikes } from "./fretka/library";
-import { computed, makeObservable } from "mobx";
-import { findRootedScaleMatchesForSelection, isScaleSubsetOfSelection, isSelectionSubsetOfScale, RootedScaleLike } from "./fretka/scales";
-import {
-  EnharmonicHistogram,
-  getEnharmonicHistogramForSelection,
-  isEqualCanditate,
-  isSubsetCandidate,
-} from "./fretka/histograms";
-import { isNoteSelectionLayer } from "./fretka/layers/fretka-layer";
 import _ from "lodash";
-import { getPrettyNoteName, NoteClassId } from "./fretka/notes";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { Keyboard } from "./components/keyboard/keyboard";
-import { ChordFinder } from "./components/chord-finder/chord-finder";
+import { ChordFinderUi } from "./components/chord-finder/chord-finder-ui";
 
 export const appState = new AppStateStore();
-
-const suggestions = {
-  
-  get selectionHistogram(): EnharmonicHistogram {
-    const currentLayer = appState.layerStore.currentLayer;
-    if (currentLayer && isNoteSelectionLayer(currentLayer)) {
-      return getEnharmonicHistogramForSelection(currentLayer.selection);
-    }
-    return [0, 0, 0, 0, 0, 0, 0];
-  },
-
-  get subsets() {
-    const matches = [] as RootedScaleLike[];
-    const currentLayer = appState.layerStore.currentLayer;
-    if (currentLayer && isNoteSelectionLayer(currentLayer)) {
-      const sel = currentLayer.selection;
-      const canditdateScales = allScaleLikes.filter(s =>
-        isSubsetCandidate(this.selectionHistogram, s.histogram)
-      );
-      const selNoteIds = Object.keys(sel).filter(
-        key => sel[key as NoteClassId]
-      ) as NoteClassId[];
-      canditdateScales.forEach(scale =>
-        matches.push(
-          ...findRootedScaleMatchesForSelection(scale, selNoteIds, null, isScaleSubsetOfSelection)
-        )
-      );
-    }
-    return matches;
-  },
-
-  get matches() {
-    const matches = [] as RootedScaleLike[];
-    const currentLayer = appState.layerStore.currentLayer;
-    if (currentLayer && isNoteSelectionLayer(currentLayer)) {
-      const sel = currentLayer.selection;
-      
-      const canditdateScales = allScaleLikes.filter(s =>
-        isEqualCanditate(s.histogram, this.selectionHistogram)
-      );
-      const selNoteIds = Object.keys(sel).filter(key => sel[key as NoteClassId]) as NoteClassId[];
-      canditdateScales.forEach(scale =>
-        matches.push(...findRootedScaleMatchesForSelection(scale, selNoteIds, currentLayer.root, isSelectionSubsetOfScale))
-      );
-    }
-    return matches;
-  },
-};
-
-makeObservable(suggestions, { selectionHistogram: computed, subsets: computed, matches: computed }, { deep: true });
 
 const App = observer(() => {
   return (
     <>
       <SvgPatterns />
-      
+
       <div className={styles.appContainer}>
-        
         <div className={styles.keyboardArea}>
           <Keyboard
             keyboardDefinition={appState.keyboardDefinition}
             layerStore={appState.layerStore}
           />
         </div>
-        
+
         <div className={styles.fretboardArea}>
           <SvgFretboard
             fretboardDefinition={appState.fretboardDefinition}
             layerStore={appState.layerStore}
           />
         </div>
-        
+
         <div className={styles.noteSelectorArea}>
           <LayerStackEditor layerStore={appState.layerStore} />
         </div>
-        
+
         <div className={styles.matchesArea}>
-          <ChordFinder layerStore={appState.layerStore} />
+          <ChordFinderUi
+            layerStore={appState.layerStore}
+            chordFinder={appState.chordFinder}
+          />
         </div>
-      
       </div>
     </>
   );

@@ -209,27 +209,3 @@ export const isScaleSubsetOfSelection: ScaleToSelectionMatcher = (
   scaleNoteIds,
   selNoteIds
 ) => scaleNoteIds.every(noteId => selNoteIds.includes(noteId));
-
-function addRootedScaleToMatchesIfItFits(
-  floatingScale: ScaleLike,
-  selRoot: NoteClassId,
-  selNoteIds: NoteClassId[],
-  previousMatches: RootedScaleLike[],
-  isMatch: ScaleToSelectionMatcher
-) {
-  const scaleNoteIds = getNotesFromRootAndSpans(
-    selRoot,
-    floatingScale.intervals.map(i => i.span)
-  );
-  if (isMatch(scaleNoteIds, selNoteIds)) {
-    previousMatches.push({
-      ...floatingScale,
-      root: basicNotes[selRoot],
-    });
-  }
-}
-
-function doNotesMatchSuggestion(scaleNoteIds: NoteClassId[], suggestionParams: NoteSuggestionParameters) {
-  
-}
-
