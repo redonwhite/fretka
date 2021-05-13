@@ -1,0 +1,31 @@
+
+.chordNote {
+  position: relative;
+  border-radius: 50%;//var(--fretka-base-border-radius);
+  background-color: var(--fretka-layer-color);
+  color: white;
+  
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+  vertical-align: bottom;
+
+  & > & {
+    bottom: 2px;
+  }
+
+  &.final, &.unselected {
+    padding: 2px;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+  }
+
+  &.unselected {
+    color: black;
+  }
+
+  & + .chordNote {
+    margin-left: 2px;
+  }
+}

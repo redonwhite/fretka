@@ -62,6 +62,7 @@ export class AppStateStore extends RootStore {
 }
 
 export type LayerStateInStore = "normal" | "leaving";
+export type NoteSelectionProps = ReturnType<LayerStore["getSelectionsForNote"]>;
 
 export class LayerStore extends Store {
   layers: FretkaLayer[] = [];
