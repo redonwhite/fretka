@@ -1,31 +1,79 @@
+.chordMatches {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
 
-.chordNote {
+  &::after {
+    content: "";
+    flex: auto;
+    flex-basis: 50%;
+  }
+}
+
+.chordMatch {
+  flex-grow: 1;
+  border: 1px solid gray;
+  white-space: nowrap;
+  margin: 5px;
+  border-radius: var(--fretka-base-border-radius);
+  padding: 5px 10px;
+  list-style: none;
+}
+
+.chordName {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.chordNotes {
+  display: flex;
+  justify-content: center;
+}
+
+.noteOuterWrap {
+  --circle-diameter: 16pt;
+  font-size: 8pt;
+  border-radius: 50%;
+  background: var(--fretka-primary-button-bg);
+  text-align: center;
+  width: var(--circle-diameter);
+  height: var(--circle-diameter);
   position: relative;
-  border-radius: 50%;//var(--fretka-base-border-radius);
-  background-color: var(--fretka-layer-color);
-  color: white;
-  
-  font-size: 12px;
-  font-weight: bold;
-  display: inline-block;
-  vertical-align: bottom;
 
-  & > & {
+  & + & {
+    margin-left: 5px;
+  }
+}
+
+.noteSelectionWrap 
+{
+  border-radius: 50%;
+  display: block;
+  background-color: var(--fretka-layer-color);
+  position: relative;
+  width: var(--circle-diameter);
+  height: var(--circle-diameter);
+
+  & > .noteSelectionWrap {
     bottom: 2px;
   }
 
-  &.final, &.unselected {
-    padding: 2px;
-    width: 15px;
-    height: 15px;
-    text-align: center;
-  }
+}
 
-  &.unselected {
-    color: black;
-  }
+.noteInnerWrap {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  font-weight: bold;
 
-  & + .chordNote {
-    margin-left: 2px;
+  color: black;
+
+  @at-root :global(.layerColor) & {
+    color: white;
   }
 }
+

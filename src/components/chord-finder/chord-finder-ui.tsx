@@ -8,13 +8,12 @@ import { LayerStore, NoteSelectionProps } from "../../store/app-state";
 
 import styles from './chord-finder.module.scss';
 
-const getNoteClass = (color?: LayerColorId, final?: boolean, isRoot?: boolean) => {
+const getWrapClass = (color?: LayerColorId, isRoot?: boolean) => {
   return classNames({
-    [styles.chordNote]: true,
+    [styles.noteSelectionWrap]: true,
     [styles.unselected]: !color,
     layerColor: color,
-    [styles.final]: final,
-    //layerRoot: isRoot,
+    layerRoot: isRoot,
     [`layerColor-${color}`]: color,
   });
 };
@@ -29,23 +28,17 @@ function ChordNote(
 
   const { colors, note, interval } = props;
 
-  const wrap = (index: number = 0) => {
-    return index >= colors.length - 1 ? (
-      <span className={getNoteClass(colors[index], true)}>
-        {interval.dotAbbr ?? interval.abbr}
-      </span>
-    ) : (
-        <span className={getNoteClass(colors[index], false)}>
-          {wrap(index + 1)}
+  const renderNoteWrapContents = (index: number = 0) => {
+    return index >= colors.length
+      ? <span className={styles.noteInnerWrap}>
+          {interval.dotAbbr ?? interval.abbr}
         </span>
-    );
+      : <span className={getWrapClass(colors[index])}>
+          {renderNoteWrapContents(index + 1)}
+        </span>
   }
 
-  return colors.length > 0 ? (
-    <>{wrap()}</>
-  ) : (
-    <span className={getNoteClass(undefined, true)}>{wrap()}</span>
-  );
+  return <span className={styles.noteOuterWrap}>{renderNoteWrapContents()}</span>
 }
 
 export const ChordFinderUi = observer(
@@ -64,7 +57,7 @@ export const ChordFinderUi = observer(
             unselected: {chordFinder.suggestionOptionByColor.unselected}
           </div>
         }
-        <ul>
+        <div className={styles.chordMatches}>
           {chordFinder.suggestions.map(match => {
             const chordNotes = match.intervals.map(interval => {
               const note = basicNotesArray[(match.root.idx + interval.span) % 12];
@@ -72,17 +65,20 @@ export const ChordFinderUi = observer(
               return { interval, note, colors };
             });
             
-            return (
-              <li key={"match " + match.root.id + " " + match.name}>
-                {getPrettyNoteName(match.root)}
-                {match.name}:
-                <span className={styles.chordNotes}>
-                  {chordNotes.map(chordNote => <ChordNote {...chordNote} key={chordNote.note.id} />)}
-                </span>
-              </li>
-            )
+            return ( 
+              <div key={"match " + match.root.id + " " + match.name} className={styles.chordMatch}>
+                <div className={styles.chordName}>
+                  {getPrettyNoteName(match.root)} {match.name}
+                </div>
+                <div className={styles.chordNotes}>
+                  {chordNotes.map(chordNote => (
+                    <ChordNote {...chordNote} key={chordNote.note.id} />
+                  ))}
+                </div>
+              </div>)
+            
           })}
-        </ul>
+        </div>
       </>
     );
   }

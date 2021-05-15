@@ -1,3 +1,5 @@
+import { ReactElement } from "react";
+
 export type EqTempInterval = number;
 
 export type IntervalQuality =
@@ -9,8 +11,8 @@ export type IntervalQuality =
 
 export type IntervalBase = {
   id: string;
-  abbr: string;
-  dotAbbr?: string;
+  abbr: string | ReactElement;
+  dotAbbr?: string | ReactElement;
   name: string;
   step: number;
   quality?: IntervalQuality;
@@ -91,7 +93,13 @@ export const root: BasicInterval = {
 
 export const min2: BasicInterval = {
   id: "min2",
-  abbr: "♭2",
+  abbr: (
+    <>
+      <span className="flat">♭</span>
+      <span>2</span>
+    </>
+  ),
+  dotAbbr: "♭2",
   name: "minor second",
   step: 2,
   quality: "minor",
@@ -113,7 +121,13 @@ export const maj2: BasicInterval = {
 export const min3: BasicInterval = {
   id: "min3",
   name: "minor third",
-  abbr: "♭3",
+  abbr: (
+    <>
+      <span className="flat">♭</span>
+      <span>3</span>
+    </>
+  ),
+  dotAbbr: "♭3",
   step: 3,
   quality: "minor",
   span: 3,
@@ -187,7 +201,13 @@ export const perf5: BasicInterval = {
 export const min6: BasicInterval = {
   id: "min6",
   name: "minor sixth",
-  abbr: "♭6",
+  abbr: (
+    <>
+      <span className="flat">♭</span>
+      <span>6</span>
+    </>
+  ),
+  dotAbbr: "♭6",
   step: 6,
   quality: "minor",
   span: 8,
@@ -219,7 +239,13 @@ export const maj6: BasicInterval = {
 
 export const min7: BasicInterval = {
   id: "min7",
-  abbr: "♭7",
+  abbr: (
+    <>
+      <span className="flat">♭</span>
+      <span>7</span>
+    </>
+  ),
+  dotAbbr: "♭7",
   name: "minor seventh",
   step: 7,
   quality: "minor",
