@@ -32,9 +32,10 @@ export const LayerEditor = observer((props: { layerStore: LayerStore, layer: Fre
 
   return (
     <div className={getWrapperClass()}>
-      <LayerBullet layer={layer} />
       <LayerHeader layerStore={layerStore} layer={layer} />
-      {isSelection && <SelectionLayerEditor layer={layer as NoteSelectionLayer} />}
+      {isSelection && (
+        <SelectionLayerEditor layer={layer as NoteSelectionLayer} />
+      )}
       {isShape && <ShapeLayerEditor layer={layer as ShapeLayer} />}
     </div>
   );

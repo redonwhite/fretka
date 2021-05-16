@@ -2,11 +2,14 @@ import React, { PropsWithChildren, ReactElement, useState } from "react";
 import classNames from "classnames";
 import { Popover } from "react-tiny-popover";
 
-import styles from "./layer-editor.module.scss";
 import { observer } from "mobx-react-lite";
+import styles from "./layer-editor.module.scss";
+import ui from "../ui.module.scss";
+
 export type PickFunction<Tvalue extends OptionValue> = (
   _selection: Tvalue
 ) => void;
+  
 
 type OptionValue = string | number | undefined;
 export type ContentFactory<Tvalue extends OptionValue> = (
@@ -14,7 +17,9 @@ export type ContentFactory<Tvalue extends OptionValue> = (
 ) => ReactElement;
 
 type PopSelectorProps<Tvalue extends OptionValue> = PropsWithChildren<{
-  className?: string;
+  buttonClassName?: string;
+  wrapperClassName?: string;
+  popoverClassName?: string;
   selection: Tvalue;
   setSelection: PickFunction<Tvalue>;
   contentFactory?: ContentFactory<Tvalue>;
@@ -29,7 +34,7 @@ type PopSelectorProps<Tvalue extends OptionValue> = PropsWithChildren<{
 export const PopSelector = observer(<Tvalue extends OptionValue>(
   props: PopSelectorProps<Tvalue>
 ) => {
-  const { selection: sel, setSelection: setSel, options } = props;
+  const { selection: sel, setSelection: setSel, options, popoverClassName } = props;
   const [isRootPopoverOpen, setIsRootPopoverOpen] = useState(false);
   const hasChildren = props.children !== undefined;
 
@@ -39,8 +44,8 @@ export const PopSelector = observer(<Tvalue extends OptionValue>(
 
   const getChoiceButtonClass = (_value: Tvalue) => {
     return classNames({
-      [styles.noteButton]: true,
-      [styles.compact]: true,
+      // [styles.noteButton]: true,
+      // [styles.compact]: true,
     });
   };
 
@@ -74,7 +79,7 @@ export const PopSelector = observer(<Tvalue extends OptionValue>(
 
   return (
     <Popover
-      containerClassName={styles.selectorPopover}
+      containerClassName={ui.selectorPopover + ' ' + (popoverClassName ?? '') }
       onClickOutside={closePopover}
       positions={["right", "left"]}
       align="center"
@@ -82,9 +87,9 @@ export const PopSelector = observer(<Tvalue extends OptionValue>(
       isOpen={isRootPopoverOpen}
       content={<>{content}</>}
     >
-      <span>
+      <span className={ui.popSelButtonWrapper + ' ' + props.wrapperClassName}>
         {hasChildren && (
-          <button className={props.className} onClick={flip}>
+          <button className={getMainButtonClass()} onClick={flip}>
             {props.children}
           </button>
         )}
@@ -102,6 +107,6 @@ export const PopSelector = observer(<Tvalue extends OptionValue>(
   );
 
   function getMainButtonClass(): string | undefined {
-    return styles.popSelButton + " " + props.className;
+    return ui.popSelButton + " " + props.buttonClassName;
   }
 });

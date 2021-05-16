@@ -6,6 +6,7 @@ import type { FretkaLayer } from '../../fretka/layers/fretka-layer';
 import { LayerMenu } from './layer-menu';
 
 import styles from './layer-editor.module.scss';
+import { LayerBullet } from "./layer-bullet";
 
 export const LayerHeader = observer((props: { layer: FretkaLayer, layerStore: LayerStore }) => {
   const { layer, layerStore } = props;
@@ -20,7 +21,7 @@ export const LayerHeader = observer((props: { layer: FretkaLayer, layerStore: La
         />
       </div>
       <div className={styles.layerMenuContainer}>
-        <LayerMenu layer={layer} layerStore={layerStore}/>
+        <LayerMenu layer={layer} layerStore={layerStore} />
       </div>
     </div>
   );

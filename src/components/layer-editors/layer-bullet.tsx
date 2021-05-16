@@ -7,46 +7,54 @@ import { observer } from "mobx-react-lite";
 import { PickFunction, PopSelector } from "./pop-selector";
 
 import styles from "./layer-editor.module.scss";
+import ui from "../ui.module.scss";
 
 export const LayerBullet = observer((props: { layer: FretkaLayer }) => <>
   <LayerColorPicker layer={props.layer} />
 </>);
 
 export const LayerColorPicker = observer((props: { layer: FretkaLayer }) => (
-  <ColorPicker color={props.layer.color} setColor={props.layer.setColor.bind(props.layer)} />
+  <ColorPicker
+    showLabel={true}
+    color={props.layer.color}
+    setColor={props.layer.setColor.bind(props.layer)}
+  />
 ));
 
-export const ColorPicker = observer((props: {
-  color: LayerColorId;
-  setColor: PickFunction<LayerColorId>;
-}) => {
-  const { color, setColor } = props;
+export const ColorPicker = observer(
+  (props: {
+    color: LayerColorId;
+    setColor: PickFunction<LayerColorId>;
+    showLabel?: boolean;
+  }) => {
+    const { color, setColor, showLabel } = props;
 
-  const popupContentFactory = (pick: PickFunction<LayerColorId>) => {
+    const popupContentFactory = (pick: PickFunction<LayerColorId>) => {
+      return (
+        <>
+          {layerColorsArray.map((layerColor, idx) => (
+            <button
+              className={`layerColor layerColor-${layerColor.id} layerColorButton ${styles.layerColorSelectorButton}`}
+              key={idx}
+              onClick={() => pick(layerColor.id)}
+            >
+              {layerColor.id}
+            </button>
+          ))}
+        </>
+      );
+    };
+
     return (
-      <>
-        {layerColorsArray.map((layerColor, idx) => (
-          <button
-            className={`layerColor layerColor-${layerColor.id} layerColorButton ${styles.layerColorSelectorButton}`}
-            key={idx}
-            onClick={() => pick(layerColor.id)}
-          >
-            {""}
-          </button>
-        ))}
-      </>
+      <PopSelector
+        buttonClassName={`${ui.noMinHeight} layerColor layerColor-${color} layerColorButton`}
+        contentFactory={popupContentFactory}
+        selection={color}
+        setSelection={setColor}
+      >
+        {showLabel ? color : ""}
+      </PopSelector>
     );
-  };
-
-  return (
-    <PopSelector
-      className={`layerColor layerColor-${color} layerColorButton ${styles.layerColorSelectorButton}`}
-      contentFactory={popupContentFactory}
-      selection={color}
-      setSelection={setColor}
-    >
-      {""}
-    </PopSelector>
-  );
-});
+  }
+);
 

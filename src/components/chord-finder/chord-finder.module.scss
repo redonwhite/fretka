@@ -1,3 +1,11 @@
+.chordFinderMenu {
+  display: flex;
+
+  .menuItem {
+    flex-grow: 1;
+  }
+}
+
 .chordMatches {
   margin: 0;
   padding: 0;

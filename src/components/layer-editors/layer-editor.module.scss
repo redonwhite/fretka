@@ -19,16 +19,17 @@
   }
 }
 
-:global(.layerColorButton),
-button:global(.layerColorButton),
-.selectorPopover button:global(.layerColorButton) {
-  background-color: var(--fretka-layer-color);
+/* the button that lives in the layer menu, starts the popover */
+:global(.layerColorButton.layerColorButton),
+button:global(.layerColorButton.layerColorButton),
+.selectorPopover button:global(.layerColorButton.layerColorButton) {
+  background-color: transparent;
+  color: var(--fretka-layer-color);
 
   &:hover, &:focus {
     outline-width: 2px;
     color: white;
     background-color: var(--fretka-layer-color);
-    // box-shadow: inset 0 0 5px 5px #fff;
   }
 }
 
@@ -64,11 +65,11 @@ button:hover .showOnHover, button:focus-within .showOnHover {
   margin-bottom: 25px;
   display: grid;
   gap: 3px 5px;
-  grid-template-columns: fit-content(30px) auto;
+  grid-template-columns: auto;
   grid-template-rows: fit-content(1px) auto;
   grid-template-areas: 
-    'bullet header'
-    '. content';
+    'header'
+    'content';
 }
 
 .layerHeader {
@@ -99,13 +100,15 @@ button:hover .showOnHover, button:focus-within .showOnHover {
   display: flex;
   
   button {
-    height: 20px;
-    border-radius: 10px;
+    border-radius: 24px;
     background-color: var(--fretka-tertriary-button-bg);
+    padding: 0 7px;
+    font-size: 8pt;
   }
 
   &>*{
     margin-right: 4px;
+    margin-bottom: 5px;
     &:last-child {
       margin-right: 0;
     }
@@ -145,6 +148,8 @@ button:hover .showOnHover, button:focus-within .showOnHover {
   }
 
   &:hover, &:focus-within {
+    color: black;
+
     .rootButton {
       color: black;
       background-color: var(--fretka-primary-button-bg);
@@ -216,11 +221,11 @@ button {
 
 .shapeSample {
   grid-area: sample;
-  height: 30px;
+  height: 26px;
 
   svg {
     display: block;
-    height: 30px;
+    height: 26px;
     width: 100%;
   }
 
@@ -241,14 +246,13 @@ button {
   margin-left: 10px;
   margin-right: 10px;
   @at-root * + .fieldLabel {
-    margin-left: 30px;
+    margin-left: 26px;
   }
 }
 
 .layerColorSelectorButton,
 button.layerColorSelectorButton.layerColorSelectorButton {
-  width: 25px;
-  height: 25px;
+  background: var(--fretka-layer-color);
 }
 
 .shapeRootButton {
@@ -268,88 +272,3 @@ button.layerColorSelectorButton.layerColorSelectorButton {
   grid-area: tail;
 }
 
-.compositeButton {
-  display: inline-flex;
-  margin: 2px 0;
-}
-
-.sequenceButton {
-  &:not(:last-child):after {
-    content: " 🢒 ";
-    font-size:18px;
-    padding: 0 10px;
-  }
-}
-
-.stringSelector.stringSelector {
-  // font-size: 14px;
-  // padding-top: 0;
-  // padding-bottom: 0;
-
-  :global(.stringSymbol) {
-    // display: inline-block;
-    // height: 20px;
-    font-size: 20px;
-    // vertical-align: -sub;
-    // margin-top: -5px;
-    // margin-bottom: -5px;
-    // padding-top: 0;
-    // padding-bottom: 0;
-    // margin-inline-start: 5px;
-    // font-weight: bolder;
-  }
-
-  :global(.arrowSymbol) {
-    // display: inline-block;
-    // height: 20px;
-    // vertical-align: super;
-    font-weight: bolder;
-    font-size: 20px;
-  }
-}
-
-.popSelButton {
-
-  // height: 2em;
-  vertical-align: baseline;
-
-  .label {
-    vertical-align: baseline;
-  }
-
-  &:not(:first-child) {
-    border-start-start-radius: 0;
-    border-end-start-radius: 0;
-    border-inline-start: 1px solid rgba(black, .1);
-  }
-
-  &:not(:last-child) {
-    border-end-end-radius: 0;
-    border-start-end-radius: 0;
-  }
-
-  // background-color: var(--fretka-layer-color);
-  // color: white;
-
-  min-height: var(--fretka-selector-button-height);
-}
-
-.selectorPopover {
-
-  border-radius: var(--fretka-base-border-radius);
-  background-color: var(--fretka-popover-bg);
-
-  display: grid;
-  grid-template-rows: repeat(auto-fit, 1fr);
-  grid-template-columns: 1fr;
-  gap: 5px;
-  padding: 5px;
-
-  button {
-    background: var(--fretka-secondary-button-bg);
-    padding: 2px;
-    display: block;
-    width: 100%;
-    text-align: center;
-  }
-}

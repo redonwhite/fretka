@@ -20,9 +20,11 @@ export type NoteSuggestionSubParameters = {
 };
 
 export const noteSuggestionOptionsArray: NoteSuggestionOption[] = ['yes', 'no', 'maybe'];
-
+export type NoteTypeForSuggestions = LayerColorId | "unselected";
 export class ChordFinder {
-  suggestionOptionByColor: { [color in LayerColorId | 'unselected']: NoteSuggestionOption };
+  suggestionOptionByColor: {
+    [color_ in NoteTypeForSuggestions]: NoteSuggestionOption;
+  };
   layerStore: LayerStore;
 
   get selectionLayers() {
@@ -82,7 +84,6 @@ export class ChordFinder {
   }
 
   get suggestions() {
-    
     const candidateScales = allScaleLikes.filter(scale =>
       histogramInRange(
         scale.histogram,
@@ -110,7 +111,7 @@ export class ChordFinder {
       red: "yes",
       gray: "no",
       green: "yes",
-      unselected: "maybe"
+      unselected: "maybe",
     };
 
     this.layerStore = layerStore;

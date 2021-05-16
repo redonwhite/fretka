@@ -22,7 +22,9 @@ export const ShapeAppearanceSample = observer((props: {
     </>
 
   return (
-    <PopSelector selection={patternId}
+    <PopSelector
+      popoverClassName={`layerColor layerColor-${layer.color}`}
+      selection={patternId}
       setSelection={patternId => shape.appearance.setPattern(patternId)}
       contentFactory={patternPickFactory}
     >
@@ -30,7 +32,7 @@ export const ShapeAppearanceSample = observer((props: {
         <rect
           x="0"
           y="0"
-          rx="5"
+          rx="3"
           width="100%"
           height="100%"
           {...shapeAppearance}
