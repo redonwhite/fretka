@@ -3,6 +3,8 @@ import { ShapeLayer } from "../../fretka/layers/shape-layer";
 import { SvgPatternId, svgPatternsArray } from "../../fretka/shapes";
 import { ContentFactory, PopSelector } from "./pop-selector";
 
+import styles from "./layer-editor.module.scss";
+
 export const ShapeAppearanceSample = observer((props: {
   layer: ShapeLayer;
 }) => {
@@ -24,6 +26,7 @@ export const ShapeAppearanceSample = observer((props: {
   return (
     <PopSelector
       popoverClassName={`layerColor layerColor-${layer.color}`}
+      wrapperClassName={styles.shapeSample}
       selection={patternId}
       setSelection={patternId => shape.appearance.setPattern(patternId)}
       contentFactory={patternPickFactory}

@@ -25,11 +25,9 @@ export const ShapeLayerEditor = observer((props: { layer: ShapeLayer }) => {
   return (
     <div className={styles.shapeEditor + " " + styles.layerContentEditor}>
       {/* prettier-ignore */}
-      <div className={styles.shapeSample}>
-        <ShapeAppearanceSample layer={layer} />
-      </div>
       <div className={styles.shapeEditorHead}>
-        <div className={styles.inner}>
+        <ShapeAppearanceSample layer={layer} />
+        <span>
           <span className={styles.fieldLabel}>Root:</span>
           <span className={`${styles.shapeRootButton} ${ui.compositeButton}`}>
             <PopSelector
@@ -47,7 +45,9 @@ export const ShapeLayerEditor = observer((props: { layer: ShapeLayer }) => {
               options={absoluteStringSpecOptions}
             />
           </span>
-          {/* <br /> */}
+        </span>
+        {/* <br /> */}
+        <span>
           <span className={styles.fieldLabel}>Type:</span>
           <span className={ui.compositeButton}>
             <PopSelector
@@ -55,15 +55,15 @@ export const ShapeLayerEditor = observer((props: { layer: ShapeLayer }) => {
               selection={shape.type}
               setSelection={() => {}}
               options={shapeTypeOptions}
-            />
+              />
             <button
               className={ui.popSelButton}
               onClick={() => setShowTailEditor(!showTailEditor)}
-            >
-              {showTailEditor ? "hide editor" : "edit"}
+              >
+              {showTailEditor ? "close" : "edit"}
             </button>
           </span>
-        </div>
+        </span>
       </div>
       {showTailEditor && (
         <div className={styles.shapeEditorTail}>

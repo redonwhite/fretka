@@ -1,6 +1,7 @@
 body {
   // background: #222
   font-family: 'Varela Round', sans-serif;
+  font-size: 11pt;
 }
 
 .appContainer {
@@ -12,11 +13,13 @@ body {
   
   display: grid;
   justify-content: center;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: fit-content(0) fit-content(0) auto;
+  grid-template-columns: .5fr 1fr;
+  grid-template-rows: auto fit-content(0) fit-content(0) auto;
+  gap: 10px;
   grid-template-areas:
+    '.               keyboard'
     'fretboard       fretboard     '
-    'noteSelector    keyboard'
+    'noteSelector    matches'
     'noteSelector    matches       ';
 }
 

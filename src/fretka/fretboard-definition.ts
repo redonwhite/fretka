@@ -11,10 +11,10 @@ export class FretboardDefinition {
   marginBottom: number = 40;
   marginRight: number = 1;
   marginLeft: number = 1;
-  stringStrokeWidth: number = 2;
+  stringStrokeWidth: number = 1;
   fretStrokeWidth: number = 2;
   fretColor: string = "transparent";
-  stringColor: string = "lightgray";
+  stringColor: string = "black";
 
   get stringCount() {
     return this.tuning.stringTunings.length;

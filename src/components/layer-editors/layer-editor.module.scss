@@ -75,7 +75,6 @@ button:hover .showOnHover, button:focus-within .showOnHover {
 .layerHeader {
   display: flex;
   grid-area: header;
-  
   align-content: space-between;
   
   .layerTitle {
@@ -88,11 +87,12 @@ button:hover .showOnHover, button:focus-within .showOnHover {
 }
 
 .layerNameInput {
+  width: 100%;
   border: none;
   border-radius: var(--fretka-base-border-radius);
   padding: 0 0 3px 0;
-  
-  font-size: var(--fretka-font-size-bigger);
+  font-family: 'Varela Round', sans-serif;
+  font-size: 11pt;
 }
 
 .layerMenu {
@@ -108,7 +108,6 @@ button:hover .showOnHover, button:focus-within .showOnHover {
 
   &>*{
     margin-right: 4px;
-    margin-bottom: 5px;
     &:last-child {
       margin-right: 0;
     }
@@ -209,19 +208,14 @@ button {
 }
 
 .shapeEditor {
-  display: grid;
-  grid-template-columns: fit-content(90px) auto;
-  grid-template-rows: fit-content(40px) auto;
-  grid-template-areas: 
-    'sample head'
-    'tail tail';
-  //margin: 15px 0;
-  gap: 5px 5px;
+  //margin: 15
 }
 
 .shapeSample {
-  grid-area: sample;
+
+  display: block;
   height: 26px;
+  width: 52px;
 
   svg {
     display: block;
@@ -240,14 +234,12 @@ button {
   grid-area: head;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .fieldLabel {
-  margin-left: 10px;
-  margin-right: 10px;
-  @at-root * + .fieldLabel {
-    margin-left: 26px;
-  }
+  // margin-left: 10px;
+  margin-right: 3px;
 }
 
 .layerColorSelectorButton,
@@ -259,7 +251,7 @@ button.layerColorSelectorButton.layerColorSelectorButton {
   button {
     background: var(--fretka-layer-color);
     color: white;
-    padding: 5px 20px;
+    padding: 5px 10px;
   }
 }
 
