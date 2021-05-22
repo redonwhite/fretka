@@ -18,12 +18,12 @@ const App = observer(() => {
       <SvgPatterns />
 
       <div className={styles.appContainer}>
-        <div className={styles.keyboardArea}>
+        {/* <div className={styles.keyboardArea}>
           <Keyboard
             keyboardDefinition={appState.keyboardDefinition}
             layerStore={appState.layerStore}
           />
-        </div>
+        </div> */}
 
         <div className={styles.fretboardArea}>
           <SvgFretboard

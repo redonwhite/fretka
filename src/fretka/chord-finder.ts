@@ -9,7 +9,7 @@ import { LayerColorId } from "./layers/fretka-layer";
 import { NoteSelection } from "./layers/note-selection-layer";
 import { allScaleLikes } from "./library";
 import { basicNoteIds, NoteClassId } from "./notes";
-import { findRootedSuggestions } from "./scales";
+import { findRootedSuggestions, RootedScaleLike } from "./scales";
 
 export type NoteSuggestionOption = "yes" | "no" | "maybe";
 export type NoteSuggestionParameters = {
@@ -104,6 +104,16 @@ export class ChordFinder {
     return matches;
   }
 
+  get suggestionsByRoot() {
+    const suggDict = Object.fromEntries(
+      basicNoteIds.map(rootNoteId => [
+        rootNoteId,
+        this.suggestions.filter(sugg => sugg.root.id === rootNoteId),
+      ])
+    ) as Record<NoteClassId, RootedScaleLike[]>;
+    return suggDict;
+  }
+
   constructor(layerStore: LayerStore) {
     this.suggestionOptionByColor = {
       black: "yes",
@@ -129,6 +139,7 @@ export class ChordFinder {
         suggestionParameters: computed,
         suggestionParamsByOption: computed,
         suggestions: computed,
+        suggestionsByRoot: computed,
       },
       { deep: true }
     );

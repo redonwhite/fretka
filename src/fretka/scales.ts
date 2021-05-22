@@ -1,4 +1,5 @@
 import { isMatch } from "lodash";
+import { ReactElement } from "react";
 import { NoteSuggestionOption, NoteSuggestionParameters } from "./chord-finder";
 import { withHistogram } from "./histograms";
 import {
@@ -44,6 +45,8 @@ export const blues: ScaleLike = {
 
 export type ScaleMovable = {
   name: string;
+  abbr?: string | ReactElement;
+  shortName?: string | ReactElement;
   intervals: Array<Interval>;
 };
 
@@ -159,6 +162,8 @@ export const modesOfMajor = {
 export interface ScaleLike {
   intervals: Interval[];
   name: string;
+  shortName?: string | ReactElement;
+  abbr?: string | ReactElement;
   extraParams?: { [key: number]: NoteInScaleExtraParams };
 }
 

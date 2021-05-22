@@ -103,31 +103,56 @@ export const ChordFinderUi = observer(
           }
         </div>
         <div className={chordFinderStyles.chordMatches}>
-          {chordFinder.suggestions.map(match => {
-            const chordNotes = match.intervals.map(interval => {
-              const note =
-                basicNotesArray[(match.root.idx + interval.span) % 12];
-              const colors = layerStore
-                .getSelectionsForNote(note.id)
-                .map(sel => sel.layer.color);
-              return { interval, note, colors };
+          {basicNotesArray.map(note => {
+            const suggestionsForNote = chordFinder.suggestionsByRoot[note.id];
+            const renderedSuggesitonsForNote = suggestionsForNote.map(match => {
+              
+              const chordNotes = match.intervals.map(interval => {
+                const note =
+                  basicNotesArray[(match.root.idx + interval.span) % 12];
+                const colors = layerStore
+                  .getSelectionsForNote(note.id)
+                  .map(sel => sel.layer.color);
+                return { interval, note, colors };
+              });
+              const noteName = getPrettyNoteName(match.root);
+              const chordName = match.abbr ?? match.shortName ?? match.name;
+              const spacer = (match.abbr !== undefined || match.shortName !== undefined) ? '' : ' ';
+              const fullChordName = <>{noteName}{spacer}{chordName}</>;
+
+              return (
+                <div
+                  key={"match " + match.root.id + " " + match.name}
+                  className={chordFinderStyles.chordMatch}
+                >
+                  <div className={chordFinderStyles.chordName}>
+                    {fullChordName}
+                  </div>
+                  <div className={chordFinderStyles.chordNotes}>
+                    {chordNotes.map(chordNote => (
+                      <ChordNote {...chordNote} key={chordNote.note.id} />
+                    ))}
+                  </div>
+                </div>
+              );
             });
 
+
+
             return (
-              <div
-                key={"match " + match.root.id + " " + match.name}
-                className={chordFinderStyles.chordMatch}
-              >
-                <div className={chordFinderStyles.chordName}>
-                  {getPrettyNoteName(match.root)} {match.name}
-                </div>
-                <div className={chordFinderStyles.chordNotes}>
-                  {chordNotes.map(chordNote => (
-                    <ChordNote {...chordNote} key={chordNote.note.id} />
-                  ))}
+              <div className={classNames({
+                [chordFinderStyles.rootedChordMatches]: true,
+                [chordFinderStyles.zeroMatches]: renderedSuggesitonsForNote.length === 0
+              })}>
+                <h2 className={chordFinderStyles.rootName }>
+                  {getPrettyNoteName(note)}
+                </h2>
+                <div className={chordFinderStyles.matchesForRoot}>
+                  {renderedSuggesitonsForNote}
                 </div>
               </div>
             );
+
           })}
         </div>
       </>

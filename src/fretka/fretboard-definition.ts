@@ -12,8 +12,8 @@ export class FretboardDefinition {
   marginRight: number = 1;
   marginLeft: number = 1;
   stringStrokeWidth: number = 1;
-  fretStrokeWidth: number = 2;
-  fretColor: string = "transparent";
+  fretStrokeWidth: number = 1;
+  fretColor: string = "black";
   stringColor: string = "black";
 
   get stringCount() {

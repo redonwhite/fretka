@@ -7,11 +7,15 @@
 }
 
 .chordMatches {
+  overflow-x: auto;
+  max-height: 100%;
+  max-width: 100%;
   margin: 0;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
+  flex-direction: column;
 
   &::after {
     content: "";
@@ -20,20 +24,57 @@
   }
 }
 
-.chordMatch {
-  flex-grow: 1;
-  border: 1px solid gray;
-  white-space: nowrap;
-  margin: 5px;
-  border-radius: var(--fretka-base-border-radius);
-  padding: 5px 10px;
-  list-style: none;
+.rootedChordMatches {
+  display: flex;
+  
+  .rootName {
+    width: 35px;
+    margin: 0;
+  }
+
+  .matchesForRoot {
+    display: flex;
+  }
+
+  &.zeroMatches {
+    .rootName {
+      color: lightgray;
+    }
+  }
+
+  .chordMatch {
+    display: flex;
+    flex-grow: 1;
+    // border: 1px solid gray;
+    background: lightgray;
+    white-space: nowrap;
+    margin: 2px;
+    border-radius: var(--fretka-base-border-radius);
+    padding: 5px 15px;
+    list-style: none;
+  }
+
+  .chordName {
+
+    // font-weight: bold;
+    font-size: 12pt;
+    text-align: center;
+    margin-right: 5px;
+
+    sup, sub {
+      vertical-align: baseline;
+      position: relative;
+      top: -0.4em;
+    }
+    sub { 
+      top: 0.4em; 
+    }
+    
+  }
 }
 
-.chordName {
-  text-align: center;
-  margin-bottom: 5px;
-}
+
+
 
 .chordNotes {
   display: flex;
@@ -49,9 +90,10 @@
   width: var(--circle-diameter);
   height: var(--circle-diameter);
   position: relative;
+  font-weight: bold;
 
   & + & {
-    margin-left: 5px;
+  //  margin-left: 2px;
   }
 }
 
