@@ -1,6 +1,7 @@
 import { isMatch } from "lodash";
+import { match } from "node:assert";
 import { ReactElement } from "react";
-import { NoteSuggestionOption, NoteSuggestionParameters } from "./chord-finder";
+import { NoteSuggestionOption, NoteSuggestionParameters, SuggesitonRootParameters } from "./chord-finder";
 import { withHistogram } from "./histograms";
 import {
   aug4,
@@ -171,7 +172,7 @@ export interface Rooted {
   root: NoteClass;
 }
 
-export interface RootedScaleLike extends ScaleLike, Rooted {}
+export interface RootedScaleLike extends ScaleLike, Rooted { }
 
 function getNotesFromRootAndSpans(rootId: NoteClassId, spans: number[]) {
   const rootIdx = basicNotes[rootId].idx;
@@ -179,24 +180,99 @@ function getNotesFromRootAndSpans(rootId: NoteClassId, spans: number[]) {
 }
 
 export function findRootedSuggestions(
-  floatingScale: ScaleLike,
-  possibleRoots: NoteClassId[],
+  floatingChord: ScaleLike,
+  noteSuggestionParams: NoteSuggestionParameters,
+  rootParams: SuggesitonRootParameters,
+  notNoNotes: NoteClassId[],
   yesNotes: NoteClassId[],
-  noNotes: NoteClassId[],
 ) {
 
-  const matches: RootedScaleLike[] = [];
+  const matches: ReturnType<typeof generateMatch>[] = [];
 
-  possibleRoots.forEach(rootId => {
-    const scaleNoteIds = getNotesFromRootAndSpans(rootId, floatingScale.intervals.map(i => i.span));
-    const isMatch =
-      noNotes.every(forbiddenNoteId => !scaleNoteIds.includes(forbiddenNoteId)) &&
-      yesNotes.every(necessaryNoteId => scaleNoteIds.includes(necessaryNoteId));
+  const chordNoteCount = floatingChord.intervals.length;
 
-    if (isMatch) matches.push({...floatingScale, root: basicNotes[rootId]});  
+  notNoNotes.forEach(startingNoteId => {
+    
+    const chordNoteIds =
+      getNotesFromRootAndSpans(startingNoteId, floatingChord.intervals.map(i => i.span));
+    
+    let rootToRootHits = 0;
+    let rootHits = 0;
+    let notNoHits = 0;
+    let yesHits = 0;
+    let maybeHits = 0;
+    let noHits = 0;
+    
+    chordNoteIds.forEach((chordNoteId, chordNoteIdx) => {
+      if (rootParams[chordNoteId]) {
+        rootHits += rootParams[chordNoteId].layers.length;
+        if (floatingChord.intervals[chordNoteIdx].span % 12 === 0) {
+          rootToRootHits += rootParams[chordNoteId].layers.length;
+        }
+      }
+      switch (noteSuggestionParams[chordNoteId]) {
+        case 'yes':
+          yesHits++;
+          notNoHits++;
+          break;
+        case 'maybe':
+          maybeHits++;
+          notNoHits++;
+          break;
+        case 'no':
+          noHits++;
+          break;
+      } 
+    });
+    
+    const isMatch = noHits === 0 && yesHits === yesNotes.length;
+    
+    if (isMatch) {      
+      const matchSpecificity = yesHits / chordNoteCount;
+      
+      matches.push(generateMatch(
+        startingNoteId, floatingChord, rootToRootHits, rootHits, notNoHits, yesHits, maybeHits, noHits, matchSpecificity
+      ));
+    }
   });
 
-  return matches;
+  return matches.sort((m1, m2) => {
+    
+    let order = m1.matchSpecificity - m2.matchSpecificity;
+    if (order !== 0) return order;
+
+    order = m2.intervals.length - m1.intervals.length;
+    return order;
+
+  });
+
+}
+
+
+
+function generateMatch(
+  rootId: NoteClassId,
+  floatingChord: ScaleLike,
+  rootToRootHits: number,
+  rootHits: number,
+  notNoHits: number,
+  yesHits: number,
+  maybeHits: number,
+  noHits: number,
+  matchSpecificity: number,
+) {
+  const root = basicNotes[rootId];
+  return {
+    root,
+    ...floatingChord,
+    rootToRootHits,
+    rootHits,
+    notNoHits,
+    yesHits,
+    maybeHits,
+    noHits,
+    matchSpecificity,
+  };
 }
 
 

@@ -6,7 +6,10 @@ import {
   histogramInRange,
 } from "./histograms";
 import { LayerColorId } from "./layers/fretka-layer";
-import { NoteSelection } from "./layers/note-selection-layer";
+import {
+  NoteSelection,
+  NoteSelectionLayer,
+} from "./layers/note-selection-layer";
 import { allScaleLikes } from "./library";
 import { basicNoteIds, NoteClassId } from "./notes";
 import { findRootedSuggestions, RootedScaleLike } from "./scales";
@@ -19,8 +22,16 @@ export type NoteSuggestionSubParameters = {
   [noteId in NoteClassId]?: NoteSuggestionOption;
 };
 
+export type SuggesitonRootParameters = Record<
+  NoteClassId,
+  {
+    layers: NoteSelectionLayer[];
+  }
+>;
+
 export const noteSuggestionOptionsArray: NoteSuggestionOption[] = ['yes', 'no', 'maybe'];
 export type NoteTypeForSuggestions = LayerColorId | "unselected";
+
 export class ChordFinder {
   suggestionOptionByColor: {
     [color_ in NoteTypeForSuggestions]: NoteSuggestionOption;
@@ -32,20 +43,43 @@ export class ChordFinder {
   }
 
   get suggestionParameters() {
-    const result: NoteSuggestionParameters = Object.fromEntries(
-      basicNoteIds.map(nId => [nId, this.suggestionOptionByColor.unselected])
-    ) as NoteSuggestionParameters;
+
+    const result = Object.fromEntries(
+      basicNoteIds.map(nId => [nId, 'unknown'])
+    );
+
     this.selectionLayers.forEach(layer => {
       const newOpt = this.suggestionOptionByColor[layer.color];
       basicNoteIds.forEach(noteId => {
         if (layer.selection[noteId]) {
           const oldOpt = result[noteId];
-          result[noteId] = combineSuggestionOptions(oldOpt, newOpt);
+          result[noteId] = combineSuggestionOptions(oldOpt as NoteSuggestionOption | 'unknown', newOpt);
         }
       });
     });
+
+    
+    basicNoteIds.forEach(noteId => {
+      if (result[noteId] === 'unknown') result[noteId] = this.suggestionOptionByColor.unselected;
+    });
+
     console.log("suggestion parameters: ", result);
-    return result;
+    
+    return result as NoteSuggestionParameters;
+  }
+
+  get rootParameters(): SuggesitonRootParameters {
+    let rootParams = {} as SuggesitonRootParameters;
+
+    this.selectionLayers
+      .filter(layer => layer.root !== null)
+      .forEach(layer => {
+        const root = layer.root as NoteClassId;
+        rootParams[root] = rootParams[root] ?? { layers: [] };
+        rootParams[root].layers.push(layer);
+      });
+
+    return rootParams;
   }
 
   get suggestionParamsByOption() {
@@ -95,9 +129,10 @@ export class ChordFinder {
     const matches = candidateScales.flatMap(scale =>
       findRootedSuggestions(
         scale,
+        this.suggestionParameters,
+        this.rootParameters,
         this.suggestionParamsByOption.notNo,
         this.suggestionParamsByOption.yes,
-        this.suggestionParamsByOption.no
       )
     );
 
@@ -110,7 +145,7 @@ export class ChordFinder {
         rootNoteId,
         this.suggestions.filter(sugg => sugg.root.id === rootNoteId),
       ])
-    ) as Record<NoteClassId, RootedScaleLike[]>;
+    );
     return suggDict;
   }
 
@@ -140,6 +175,7 @@ export class ChordFinder {
         suggestionParamsByOption: computed,
         suggestions: computed,
         suggestionsByRoot: computed,
+        rootParameters: computed,
       },
       { deep: true }
     );
@@ -147,9 +183,13 @@ export class ChordFinder {
 }
 
 function combineSuggestionOptions(
-  oldOpt: NoteSuggestionOption,
-  newOpt: NoteSuggestionOption
-): NoteSuggestionOption {
+  oldOpt: NoteSuggestionOption | 'unknown',
+  newOpt: NoteSuggestionOption | 'unknown'
+): NoteSuggestionOption | 'unknown' {
+  if (oldOpt === 'unknown') return newOpt;
+  if (newOpt === 'unknown') return oldOpt;
+
   if (newOpt !== "maybe") return newOpt;
   return oldOpt;
+
 }
