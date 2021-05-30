@@ -11,6 +11,11 @@ import { Keyboard } from "./components/keyboard/keyboard";
 import { ChordFinderUi } from "./components/chord-finder/chord-finder-ui";
 
 import * as Tone from "tone";
+import {
+  DragDropContext,
+  DropResult,
+  ResponderProvided,
+} from "react-beautiful-dnd";
 
 export const appState = new AppStateStore();
 
@@ -35,38 +40,46 @@ const makeASound = () => {
   Tone.Transport.stop(3);
 };
 
+
 const App = observer(() => {
+
+  const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
+    console.log(result);
+    console.log(provided);
+  };
   return (
     <>
       <SvgPatterns />
       <button onClick={() => makeASound()}>klik mi</button>
       <hr></hr>
-      <div className={styles.appContainer}>
-        {/* <div className={styles.keyboardArea}>
-          <Keyboard
+      <DragDropContext onDragEnd={onDragEnd}>
+          <div className={styles.appContainer}>
+            {/* <div className={styles.keyboardArea}>
+            <Keyboard
             keyboardDefinition={appState.keyboardDefinition}
             layerStore={appState.layerStore}
-          />
-        </div> */}
+            />
+          </div> */}
 
-        <div className={styles.fretboardArea}>
-          <SvgFretboard
-            fretboardDefinition={appState.fretboardDefinition}
-            layerStore={appState.layerStore}
-          />
-        </div>
+            <div className={styles.fretboardArea}>
+              <SvgFretboard
+                fretboardDefinition={appState.fretboardDefinition}
+                layerStore={appState.layerStore}
+              />
+            </div>
 
-        <div className={styles.noteSelectorArea}>
-          <LayerStackEditor layerStore={appState.layerStore} />
-        </div>
+            <div className={styles.noteSelectorArea}>
+              <LayerStackEditor layerStore={appState.layerStore} />
+            </div>
 
-        <div className={styles.matchesArea}>
-          <ChordFinderUi
-            layerStore={appState.layerStore}
-            chordFinder={appState.chordFinder}
-          />
-        </div>
-      </div>
+            <div className={styles.matchesArea}>
+              <ChordFinderUi
+                layerStore={appState.layerStore}
+                chordFinder={appState.chordFinder}
+              />
+            </div>
+          </div>
+      </DragDropContext>
     </>
   );
 });
