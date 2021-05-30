@@ -104,6 +104,7 @@ export const ChordFinderUi = observer(
         </div>
         <div className={chordFinderStyles.chordMatches}>
           {basicNotesArray.map(note => {
+            
             const suggestionsForNote = chordFinder.suggestionsByRoot[note.id];
             const renderedSuggesitonsForNote = suggestionsForNote.map(match => {
               
