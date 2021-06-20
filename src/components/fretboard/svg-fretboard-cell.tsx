@@ -5,21 +5,22 @@ import { observer } from 'mobx-react-lite';
 import { appState } from '../../App';
 import { addSemitones } from '../../fretka/interval-functions';
 import { NoteSelectionLayer } from '../../fretka/layers/note-selection-layer';
-import { LayerStore } from '../../store/app-state';
+import { LayerStore } from "../../store/layer-store";
 import { action } from "mobx";
 
 import styles from './svg-fretboard.module.scss';
 
 const r = 11;
+const dx = 0.4;
 const rBig = 11;
 const fontSize = 1.2 * rBig;
 type DotArrangementType =
   | "shadow"
   | "side-by-side"
   | "side-by-side with overlap";
-const overlap = r*1.5;
-const deltaR = r/2;
-const arrangement: DotArrangementType = "side-by-side with overlap";
+const overlap = 0.01;
+const deltaR = 0.02;
+const arrangement: DotArrangementType = "side-by-side";
 
 const getCellDotClass = (layer : NoteSelectionLayer, isRoot: boolean) => {
   return classNames({
@@ -42,14 +43,13 @@ const getStartDotPosition = (
 ) => {
   if (style === 'side-by-side') {
     return {
-      x: centerX - r * (selCount-1),
+      x: centerX - dx * (selCount - 1),
       y: centerY,
     };
   }
-  if (style === 'side-by-side with overlap') {
-    
+  if (style === "side-by-side with overlap") {
     return {
-      x: centerX - (selCount - 1) * ( r - overlap/2),
+      x: centerX - (selCount - 1) * (dx - overlap / 2),
       y: centerY,
     };
   }
@@ -69,13 +69,13 @@ const getNthDotPosition = (
 {
   if (style === "side-by-side") {
     return {
-      x: start.x + r * n * 2,
+      x: start.x + dx * n * 2,
       y: start.y,
     };
   }
   if (style === 'side-by-side with overlap') {
     return {
-      x: start.x + (r * 2 - overlap) * n,
+      x: start.x + (dx * 2 - overlap) * n,
       y: start.y,
     };
   }
@@ -111,9 +111,9 @@ export const SvgFretboardCell = observer(
       <React.Fragment>
         <rect
           key="clickarea"
-          x={props.centerX - props.width / 2}
+          x={props.centerX - props.width / 2 + "%"}
           y={props.centerY - props.height / 2}
-          width={props.width}
+          width={props.width + "%"}
           height={props.height}
           onClick={action(() => props.layerStore.handleNotePick(note))}
           fill="transparent"
@@ -131,22 +131,21 @@ export const SvgFretboardCell = observer(
             <React.Fragment key={"selfrag" + sel.layer.id}>
               <circle
                 key={"sel" + sel.layer.id}
-                cx={dotPos.x}
+                cx={dotPos.x + "%"}
                 cy={dotPos.y}
                 r={sel.interval ? rBig : r}
                 className={getCellDotClass(sel.layer, sel.root)}
                 onClick={() => toggle(sel)}
-              >
-              </circle>
+              ></circle>
               <text
                 className={styles.noteText}
                 style={{ fontSize }}
-                x={dotPos.x}
-                y={dotPos.y + fontSize * .34}
+                x={dotPos.x + "%"}
+                y={dotPos.y + fontSize * 0.34}
                 onClick={() => toggle(sel)}
               >
                 {sel.interval?.dotAbbr ?? sel.interval?.abbr}
-                </text>
+              </text>
             </React.Fragment>
           );
         })}

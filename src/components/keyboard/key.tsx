@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { KeyboardDefinition } from "../../fretka/keyboard-definition";
 import { NoteAbsolute, SharpNoteClassId } from "../../fretka/notes";
-import { LayerStore } from "../../store/app-state";
+import { LayerStore } from "../../store/layer-store";
 import { layerColors } from "../../fretka/layers/fretka-layer";
 
 export const Key = observer(

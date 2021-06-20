@@ -1,7 +1,7 @@
+import { AppStateStore } from "./store/app-state";
 import { SvgFretboard } from "./components/fretboard/svg-fretboard";
 import { LayerStackEditor } from "./components/layer-editors/layer-stack-editor";
 import { SvgPatterns } from "./components/svg-patterns/svg-patterns";
-import { AppStateStore } from "./store/app-state";
 
 import "./vars.scss";
 import styles from "./App.module.scss";
@@ -40,45 +40,48 @@ const makeASound = () => {
   Tone.Transport.stop(3);
 };
 
-
 const App = observer(() => {
-
   const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
-    console.log(result);
-    console.log(provided);
+    if (
+      result.source.droppableId === 'layerStore'
+      && result.destination?.droppableId === 'layerStore'
+    ) {
+      appState.layerStore.reorderLayer(result.source.index, result.destination.index);
+    }
   };
+
   return (
     <>
       <SvgPatterns />
       <button onClick={() => makeASound()}>klik mi</button>
       <hr></hr>
       <DragDropContext onDragEnd={onDragEnd}>
-          <div className={styles.appContainer}>
-            {/* <div className={styles.keyboardArea}>
+        <div className={styles.appContainer}>
+          {/* <div className={styles.keyboardArea}>
             <Keyboard
             keyboardDefinition={appState.keyboardDefinition}
             layerStore={appState.layerStore}
             />
           </div> */}
 
-            <div className={styles.fretboardArea}>
-              <SvgFretboard
-                fretboardDefinition={appState.fretboardDefinition}
-                layerStore={appState.layerStore}
-              />
-            </div>
-
-            <div className={styles.noteSelectorArea}>
-              <LayerStackEditor layerStore={appState.layerStore} />
-            </div>
-
-            <div className={styles.matchesArea}>
-              <ChordFinderUi
-                layerStore={appState.layerStore}
-                chordFinder={appState.chordFinder}
-              />
-            </div>
+          <div className={styles.fretboardArea}>
+            <SvgFretboard
+              fretboardDefinition={appState.fretboardDefinition}
+              layerStore={appState.layerStore}
+            />
           </div>
+
+          <div className={styles.noteSelectorArea}>
+            <LayerStackEditor layerStore={appState.layerStore} />
+          </div>
+
+          <div className={styles.matchesArea}>
+            <ChordFinderUi
+              layerStore={appState.layerStore}
+              chordFinder={appState.chordFinder}
+            />
+          </div>
+        </div>
       </DragDropContext>
     </>
   );

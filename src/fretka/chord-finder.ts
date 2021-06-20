@@ -1,5 +1,5 @@
 import { computed, makeObservable, observable } from "mobx";
-import { LayerStore } from "../store/app-state";
+import { LayerStore } from "../store/layer-store";
 import {
   EnharmonicHistogram,
   getEnharmonicHistogramForSelection,

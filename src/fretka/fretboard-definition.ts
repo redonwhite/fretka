@@ -6,11 +6,13 @@ export class FretboardDefinition {
   fretCount: number;
   tuning: GuitarTuning;
   stringDistance: number = 25;
-  fretboardWidth: number = 1398;
+  get fretboardWidth() {
+    return 100 - this.marginRight - this.marginLeft;
+  }
   marginTop: number = 20;
   marginBottom: number = 40;
-  marginRight: number = 1;
-  marginLeft: number = 1;
+  marginRight: number = 0;
+  marginLeft: number = 0;
   stringStrokeWidth: number = 1;
   fretStrokeWidth: number = 1;
   fretColor: string = "black";
@@ -28,9 +30,7 @@ export class FretboardDefinition {
     return this.fretboardWidth / this.fretCount;
   }
 
-  get svgWidth() {
-    return this.marginLeft + this.fretboardWidth + this.marginRight;
-  }
+  svgWidth: number = 100; //this.marginLeft + this.fretboardWidth + this.marginRight;
 
   get svgHeight() {
     return this.marginTop + this.fretboardHeight + this.marginBottom;
@@ -56,17 +56,17 @@ export class FretboardDefinition {
       fretCount: observable,
       tuning: observable,
       stringDistance: observable,
-      fretboardWidth: observable,
       marginTop: observable,
       marginRight: observable,
       marginLeft: observable,
       stringStrokeWidth: observable,
       fretStrokeWidth: observable,
-
+      svgWidth: observable,
+      
+      fretboardWidth: computed,
       stringCount: computed,
       fretboardHeight: computed,
       fretWidth: computed,
-      svgWidth: computed,
       svgHeight: computed,
       stringPosX: computed,
       fretTopY: computed,
@@ -75,11 +75,11 @@ export class FretboardDefinition {
   }
 
   public getFretCenterPosX(fretIdx: number) {
-    return Math.round(this.marginLeft + (0.5 + fretIdx) * this.fretWidth);
+    return this.marginLeft + (0.5 + fretIdx) * this.fretWidth;
   }
 
   public getFretPosX(fretIdx: number) {
-    return Math.round(this.marginLeft + fretIdx * this.fretWidth);
+    return this.marginLeft + fretIdx * this.fretWidth;
   }
 
   public getStringPosY(idx: number): number {

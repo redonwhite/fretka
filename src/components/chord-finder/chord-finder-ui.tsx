@@ -1,20 +1,19 @@
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
-import {
-  ChordFinder,
-  noteSuggestionOptionsArray,
-  NoteTypeForSuggestions,
-} from "../../fretka/chord-finder";
+import { ChordFinder, NoteTypeForSuggestions } from "../../fretka/chord-finder";
 import { Interval } from "../../fretka/intervals";
 import { LayerColorId, layerColorsArray } from "../../fretka/layers/fretka-layer";
-import { basicNotesArray, getPrettyNoteName, NoteClass } from "../../fretka/notes";
-import { LayerStore, NoteSelectionProps } from "../../store/app-state";
+import {
+  basicNotesArray,
+  getPrettyNoteName,
+  NoteClass,
+} from "../../fretka/notes";
 
-import chordFinderStyles from './chord-finder.module.scss';
-import ui from "../ui.module.scss";
+import chordFinderStyles from "./chord-finder.module.scss";
 import { PopSelector } from "../layer-editors/pop-selector";
-import { action, runInAction } from "mobx";
+import { runInAction } from "mobx";
 import { noteSuggestionOptions } from "../layer-editors/pop-selector-options";
+import { LayerStore } from "../../store/layer-store";
 
 const getWrapClass = (color?: LayerColorId, isRoot?: boolean) => {
   return classNames({

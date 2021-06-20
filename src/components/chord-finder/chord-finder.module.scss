@@ -26,9 +26,11 @@
 
 .rootedChordMatches {
   display: flex;
+  min-height: 40px;
   
   .rootName {
     width: 35px;
+    line-height: 40px;
     margin: 0;
   }
 
@@ -52,6 +54,8 @@
     border-radius: var(--fretka-base-border-radius);
     padding: 5px 15px;
     list-style: none;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .05)
   }
 
   .chordName {
@@ -60,6 +64,7 @@
     font-size: 12pt;
     text-align: center;
     margin-right: 5px;
+    line-height: 25px;
 
     sup, sub {
       vertical-align: baseline;
@@ -79,6 +84,7 @@
 .chordNotes {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .noteOuterWrap {

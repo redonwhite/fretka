@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { ReactElement } from "react";
 import { KeyboardDefinition } from "../../fretka/keyboard-definition";
 import { basicNotesArray } from "../../fretka/notes";
-import { LayerStore } from "../../store/app-state";
+import { LayerStore } from "../../store/layer-store";
 import { Key } from "./key";
 
 import styles from "./svg-keyboard.module.scss";

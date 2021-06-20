@@ -4,7 +4,7 @@ import { NoteAbsolute, notes } from '../../fretka/notes';
 import { observer } from 'mobx-react-lite';
 import { SvgFretboardCell } from './svg-fretboard-cell';
 import { FretboardDefinition } from "../../fretka/fretboard-definition";
-import { LayerStore } from "../../store/app-state";
+import { LayerStore } from "../../store/layer-store";
 
 import stylesSvg from "./svg-fretboard.module.scss";
 
@@ -41,8 +41,8 @@ export const SvgFretboardString = observer(
           key="string line"
           stroke={props.fretboardDefinition.stringColor}
           strokeWidth={props.fretboardDefinition.stringStrokeWidth}
-          x1={props.fromX}
-          x2={props.toX}
+          x1={props.fromX + "%"}
+          x2={props.toX + "%"}
           y1={props.fromY}
           y2={props.toY}
           className={stylesSvg.string}

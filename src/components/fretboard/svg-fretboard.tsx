@@ -2,7 +2,7 @@ import React from 'react';
 import { SvgFretboardString } from './svg-fretboard-string';
 import { observer } from 'mobx-react-lite';
 import { FretboardDefinition } from "../../fretka/fretboard-definition";
-import { LayerStore } from "../../store/app-state";
+import { LayerStore } from "../../store/layer-store";
 import { SvgShapeLayer } from './svg-shape-layer';
 
 import stylesSvg from './svg-fretboard.module.scss';
@@ -18,7 +18,7 @@ export const SvgFretboard = observer(
       <svg
         className={stylesSvg.fretSvg}
         style={{
-          width: fretboardDefinition.svgWidth + "px",
+          width: "100%",
           height: fretboardDefinition.svgHeight + "px",
         }}
       >
@@ -39,8 +39,8 @@ export const SvgFretboard = observer(
                 className={stylesSvg.fret}
                 stroke={fretboardDefinition.fretColor}
                 strokeWidth={fretboardDefinition.fretStrokeWidth}
-                x1={fretboardDefinition.getFretPosX(idx)}
-                x2={fretboardDefinition.getFretPosX(idx)}
+                x1={fretboardDefinition.getFretPosX(idx) + "%"}
+                x2={fretboardDefinition.getFretPosX(idx) + "%"}
                 y1={fretboardDefinition.fretTopY}
                 y2={fretboardDefinition.fretBottomY}
                 // shapeRendering="crispEdges"
