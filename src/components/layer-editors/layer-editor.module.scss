@@ -2,6 +2,10 @@
 
   --fretka-layer-color: #999;
   
+  &:global(.layerColor-purple) {
+    --fretka-layer-color: #e3f;
+  }
+
   &:global(.layerColor-red) {
     --fretka-layer-color: red;
   }

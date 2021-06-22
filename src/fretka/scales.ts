@@ -119,6 +119,11 @@ const aeolian: Mode = {
   intervals: [root, maj2, min3, perf4, perf5, min6, min7],
 };
 
+const harmonicMinor: ScaleMovable = {
+  name: "harmonic minor",
+  intervals: [root, maj2, min3, perf4, perf5, min6, maj7],
+};
+
 const locrian: Mode = {
   name: "Locrian mode",
   modeOf: major,
@@ -147,6 +152,7 @@ export function makeRootedScale(
 
 export const scales = {
   major: withHistogram(major),
+  harmonicMinor: withHistogram(harmonicMinor),
   minorPentatonic: withHistogram(minorPentatonic),
 };
 
@@ -174,7 +180,7 @@ export interface Rooted {
 
 export interface RootedScaleLike extends ScaleLike, Rooted { }
 
-function getNotesFromRootAndSpans(rootId: NoteClassId, spans: number[]) {
+export function getNotesFromRootAndSpans(rootId: NoteClassId, spans: number[]) {
   const rootIdx = basicNotes[rootId].idx;
   return spans.map(span => basicNoteIds[(rootIdx + span + 12) % 12]);
 }

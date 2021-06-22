@@ -2,7 +2,12 @@ import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import { ChordFinder, NoteTypeForSuggestions } from "../../fretka/chord-finder";
 import { Interval } from "../../fretka/intervals";
-import { LayerColorId, layerColorsArray } from "../../fretka/layers/fretka-layer";
+import {
+  LayerColorId,
+  layerColorsArray,
+  permanentLayerColors,
+  permanentLayerColorsArray,
+} from "../../fretka/layers/fretka-layer";
 import {
   basicNotesArray,
   getPrettyNoteName,
@@ -82,7 +87,7 @@ export const ChordFinderUi = observer(
     return (
       <>
         <div className={chordFinderStyles.chordFinderMenu}>
-          {layerColorsArray.map(color => (
+          {permanentLayerColorsArray.map(color => (
             <div key={color.id} className={chordFinderStyles.menuItem}>
               {color.id}:{" "}
               <SuggOptionPopSelector
@@ -103,10 +108,8 @@ export const ChordFinderUi = observer(
         </div>
         <div className={chordFinderStyles.chordMatches}>
           {basicNotesArray.map(note => {
-            
             const suggestionsForNote = chordFinder.suggestionsByRoot[note.id];
             const renderedSuggesitonsForNote = suggestionsForNote.map(match => {
-              
               const chordNotes = match.intervals.map(interval => {
                 const note =
                   basicNotesArray[(match.root.idx + interval.span) % 12];
@@ -117,13 +120,24 @@ export const ChordFinderUi = observer(
               });
               const noteName = getPrettyNoteName(match.root);
               const chordName = match.abbr ?? match.shortName ?? match.name;
-              const spacer = (match.abbr !== undefined || match.shortName !== undefined) ? '' : ' ';
-              const fullChordName = <>{noteName}{spacer}{chordName}</>;
+              const spacer =
+                match.abbr !== undefined || match.shortName !== undefined
+                  ? ""
+                  : " ";
+              const fullChordName = (
+                <>
+                  {noteName}
+                  {spacer}
+                  {chordName}
+                </>
+              );
 
               return (
                 <div
                   key={"match " + match.root.id + " " + match.name}
                   className={chordFinderStyles.chordMatch}
+                  onMouseEnter={() => layerStore.addScalePreview(match)}
+                  onMouseLeave={() => layerStore.clearTempLayers()}
                 >
                   <div className={chordFinderStyles.chordName}>
                     {fullChordName}
@@ -137,14 +151,15 @@ export const ChordFinderUi = observer(
               );
             });
 
-
-
             return (
-              <div className={classNames({
-                [chordFinderStyles.rootedChordMatches]: true,
-                [chordFinderStyles.zeroMatches]: renderedSuggesitonsForNote.length === 0
-              })}>
-                <h2 className={chordFinderStyles.rootName }>
+              <div
+                className={classNames({
+                  [chordFinderStyles.rootedChordMatches]: true,
+                  [chordFinderStyles.zeroMatches]:
+                    renderedSuggesitonsForNote.length === 0,
+                })}
+              >
+                <h2 className={chordFinderStyles.rootName}>
                   {getPrettyNoteName(note)}
                 </h2>
                 <div className={chordFinderStyles.matchesForRoot}>
@@ -152,7 +167,6 @@ export const ChordFinderUi = observer(
                 </div>
               </div>
             );
-
           })}
         </div>
       </>

@@ -5,7 +5,7 @@ import {
   getEnharmonicHistogramForSelection,
   histogramInRange,
 } from "./histograms";
-import { LayerColorId } from "./layers/fretka-layer";
+import { LayerColorId, PermanentLayerColorId } from "./layers/fretka-layer";
 import {
   NoteSelection,
   NoteSelectionLayer,
@@ -30,7 +30,7 @@ export type SuggesitonRootParameters = Record<
 >;
 
 export const noteSuggestionOptionsArray: NoteSuggestionOption[] = ['yes', 'no', 'maybe'];
-export type NoteTypeForSuggestions = LayerColorId | "unselected";
+export type NoteTypeForSuggestions = PermanentLayerColorId | "unselected";
 
 export class ChordFinder {
   suggestionOptionByColor: {
@@ -49,7 +49,9 @@ export class ChordFinder {
     );
 
     this.selectionLayers.forEach(layer => {
-      const newOpt = this.suggestionOptionByColor[layer.color];
+      if (layer.isTemporary) return;
+      const newOpt =
+        this.suggestionOptionByColor[layer.color as PermanentLayerColorId];
       basicNoteIds.forEach(noteId => {
         if (layer.selection[noteId]) {
           const oldOpt = result[noteId];
@@ -151,12 +153,12 @@ export class ChordFinder {
 
   constructor(layerStore: LayerStore) {
     this.suggestionOptionByColor = {
-      black: "yes",
-      blue: "yes",
-      red: "yes",
-      gray: "no",
-      green: "yes",
-      unselected: "maybe",
+      black: "maybe",
+      blue: "maybe",
+      red: "maybe",
+      gray: "maybe",
+      green: "maybe",
+      unselected: "no",
     };
 
     this.layerStore = layerStore;

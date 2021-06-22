@@ -1,5 +1,10 @@
 import { makeObservable, override, observable, action } from "mobx";
 import { basicNoteIds, NoteClassId } from "../notes";
+import {
+  getNotesFromRootAndSpans,
+  RootedScaleLike,
+  ScaleLike,
+} from "../scales";
 import { FretkaLayer, getOriginalState, LayerColorId } from "./fretka-layer";
 
 export type NoteSelection = {
@@ -12,14 +17,35 @@ export function createEmptySelection<Tkey extends string>(keys: Tkey[]) {
   };
 }
 
+export function makeNoteSelectionLayerFromScale(
+  scale: RootedScaleLike,
+  color: LayerColorId,
+  isTemporary: boolean = false
+): NoteSelectionLayer {
+  const layer = new NoteSelectionLayer(color, scale.name, isTemporary);
+  const selectedNoteIds = getNotesFromRootAndSpans(
+    scale.root.id,
+    scale.intervals.map(i => i.span)
+  );
+  layer.root = scale.root.id;
+  for (let noteId of selectedNoteIds) {
+    layer.selection[noteId] = true;
+  }
+  return layer;
+}
+
 export class NoteSelectionLayer extends FretkaLayer {
   originalState: Omit<NoteSelectionLayer, "id">;
   layerType: "noteSelection";
   root: NoteClassId | null;
   selection: NoteSelection;
 
-  constructor(color: LayerColorId, name: string = "New note selection") {
-    super(color, name);
+  constructor(
+    color: LayerColorId,
+    name: string = "New note selection",
+    isTemporary: boolean = false
+  ) {
+    super(color, name, isTemporary);
     this.layerType = "noteSelection";
     this.root = null;
     this.selection = createEmptySelection(basicNoteIds);

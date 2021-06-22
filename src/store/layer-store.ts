@@ -8,9 +8,10 @@ import {
   layerColorRotation,
   isNoteSelectionLayer,
 } from "../fretka/layers/fretka-layer";
-import { NoteSelectionLayer } from "../fretka/layers/note-selection-layer";
+import { makeNoteSelectionLayerFromScale, NoteSelectionLayer } from "../fretka/layers/note-selection-layer";
 import { ShapeLayer } from "../fretka/layers/shape-layer";
 import { NoteClassId, NoteAbsolute } from "../fretka/notes";
+import { RootedScaleLike } from "../fretka/scales";
 import { SingleStringId, IFretShapeSpec } from "../fretka/shapes";
 
 export type LayerStateInStore = "normal" | "leaving";
@@ -31,7 +32,9 @@ export abstract class Store extends RootStore {
 }
 
 export class LayerStore extends Store {
+  
   layers: FretkaLayer[] = [];
+
   layerStates: Map<string, LayerStateInStore>;
   currentLayer: FretkaLayer | null;
 
@@ -107,6 +110,8 @@ export class LayerStore extends Store {
       removeLayer: action,
       animatedRemoveLayer: action,
       handleNotePick: action,
+      addScalePreview: action,
+      clearTempLayers: action,
     });
   }
 
@@ -146,4 +151,18 @@ export class LayerStore extends Store {
   reorderLayer = (fromIndex: number, toIndex: number) => {
     this.layers.splice(toIndex, 0, this.layers.splice(fromIndex, 1)[0]);
   };
+
+  clearTempLayers = () => {
+    this
+      .layers
+      .filter(layer => layer.isTemporary)
+      .forEach(layer => this.removeLayer(layer));
+  }
+
+  addScalePreview = (scale: RootedScaleLike) => {
+    this.clearTempLayers();
+    this.layers.push(
+      makeNoteSelectionLayerFromScale(scale, "purple", true)
+    )
+  }
 }

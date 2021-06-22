@@ -22,17 +22,25 @@ export abstract class FretkaLayer {
   abstract layerType: FretkaLayerType;
   color: LayerColorId;
   name: string;
+  isTemporary: boolean;
 
-  constructor(color: LayerColorId, name: string = "New layer", id = nanoid()) {
+  constructor(
+    color: LayerColorId,
+    name: string = "New layer",
+    isTemporary = false,
+    id = nanoid()
+  ) {
     this.id = id;
     this.name = name;
     this.color = color;
+    this.isTemporary = isTemporary;
 
     makeObservable(this, {
       id: observable,
       layerType: observable,
       color: observable,
       name: observable,
+      isTemporary: observable,
       reset: action,
       resetTo: action,
       setColor: action,
@@ -57,8 +65,8 @@ export abstract class FretkaLayer {
   }
 }
 
-export const layerColors: {
-  [key in LayerColorId]: { id: key } & LayerColor;
+export const permanentLayerColors: {
+  [key in PermanentLayerColorId]: { id: key } & LayerColor;
 } = {
   black: {
     id: "black",
@@ -81,6 +89,18 @@ export const layerColors: {
     value: "rgb(31, 216, 77)",
   },
 };
+
+export const layerColors: {
+  [key in LayerColorId]: { id: key } & LayerColor;
+} = {
+  ...permanentLayerColors,
+  purple: {
+    id: "purple",
+    value: "#e3f",
+  },
+};
+
+export const permanentLayerColorsArray = Object.values(permanentLayerColors);
 export const layerColorsArray = Object.values(layerColors);
 export const layerColorRotation: LayerColorId[] = [
   "black",
@@ -95,7 +115,9 @@ export function getOriginalState<T extends { id: string }>(layer: T) {
   return clone;
 }
 
-export type LayerColorId = "black" | "red" | "green" | "blue" | "gray";
+export type PermanentLayerColorId = "black" | "red" | "green" | "blue" | "gray";
+
+export type LayerColorId = PermanentLayerColorId | "purple";
 
 export type LayerColor = {
   id: LayerColorId;
