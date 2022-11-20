@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { FretboardDefinition } from "../../fretka/fretboard-definition";
 import { ShapeLayer } from '../../fretka/layers/shape-layer';
-import { FretShapeSpec, fretSpaceShapeToGridSpace } from '../../fretka/shapes';
+import { FretShapeSpec, fretSpaceShapeToGridSpace, XyCoord } from '../../fretka/shapes';
 import { xyCoordSetToPathD } from '../../fretka/svg';
 
 export const SvgFretSpaceShape = observer(
@@ -21,7 +21,12 @@ export const SvgFretSpaceShape = observer(
   );
 
   const xyCoordSets = gridSpaceCoordSets.map(coord => fretboardDefinition.gridSpaceToXySpace(coord));
-  const pathDs = xyCoordSets.map(xyCoordSetToPathD);
+  const xyCoordSetsWithAbsWidths = xyCoordSets.map(
+    xyCoordSet => xyCoordSet.map(
+      xyCoord => [(xyCoord[0] * 0.01) * fretboardDefinition.fretboardWidth, xyCoord[1]] as XyCoord
+    )
+  );
+  const pathDs = xyCoordSetsWithAbsWidths.map(xyCoordSetToPathD);
 
     return <>{pathDs.map((d, idx) => (
       <path className="fretkaShape" d={d} key={idx} {...shapeAppearance} />

@@ -26,7 +26,7 @@ export const Key = observer(
     if (note.isNatural) {
       // natural note - white key
       return (
-        <>
+        <React.Fragment key={'key' + note.id + note.absIdx}>
           <rect
             fill={overrideColor ?? "#efefef"}
             x={x + gap + "%"}
@@ -38,7 +38,7 @@ export const Key = observer(
           {/* <text x={x + natWidth / 2 + "%"} y="50%">
             {note.id}
           </text> */}
-        </>
+        </React.Fragment>
       );
     } else {
       // sharp note - black key

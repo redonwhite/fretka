@@ -14,64 +14,82 @@ export const SvgFretboard = observer(
   }) => {
     const { fretboardDefinition, layerStore } = props;
 
+    // TODO: make a second SVG here with:
+    // viewbox="0 0 100 100" preserveAspectRatio="none" vector-effect="non-scaling-stroke"
+    // just to hold the shape layers. Then the shapes will scale and I'll be able to use path d's
+    // to draw shapes in percentage-width-space.
     return (
-      <svg
-        className={stylesSvg.fretSvg}
-        style={{
-          width: "100%",
-          height: fretboardDefinition.svgHeight + "px",
-        }}
-      >
-        {layerStore.shapeLayers.map(layer => (
-          <SvgShapeLayer
-            fretboardDefinition={fretboardDefinition}
-            layer={layer}
-            key={layer.id}
-          />
-        ))}
-        {
-          // frets:
-          Array.from(Array(fretboardDefinition.fretCount + 1).keys()).map(
-            (_, idx) => (
-              <line
-                key={"fret" + idx}
-                id={"fret" + idx}
-                className={stylesSvg.fret}
-                stroke={fretboardDefinition.fretColor}
-                strokeWidth={fretboardDefinition.fretStrokeWidth}
-                x1={fretboardDefinition.getFretPosX(idx) + "%"}
-                x2={fretboardDefinition.getFretPosX(idx) + "%"}
-                y1={fretboardDefinition.fretTopY}
-                y2={fretboardDefinition.fretBottomY}
-                // shapeRendering="crispEdges"
-              />
-            )
-          )
-        }
-        {
-          // strings, including note selections:
-          Array.from(fretboardDefinition.tuning.stringTunings).map(
-            (stringTuning, idx) => (
-              <SvgFretboardString
-                layerStore={layerStore}
+      <>
+        <svg
+          className={stylesSvg.fretSvg}
+          style={{
+            width: "100%",
+            height: fretboardDefinition.svgHeight + "px",
+          }}
+        >
+          <svg
+            className={stylesSvg.fretSvg}
+            y={0}
+            style={{
+              width: "100%",
+              height: fretboardDefinition.fretboardHeight + "px",
+            }}
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            vectorEffect="non-scaling-stroke"
+          >
+            {layerStore.shapeLayers.map(layer => (
+              <SvgShapeLayer
                 fretboardDefinition={fretboardDefinition}
-                key={"string " + (idx + 1)}
-                fromX={fretboardDefinition.stringPosX}
-                fromY={fretboardDefinition.getStringPosY(idx)}
-                toX={
-                  fretboardDefinition.stringPosX +
-                  fretboardDefinition.fretboardWidth
-                }
-                toY={fretboardDefinition.getStringPosY(idx)}
-                height={fretboardDefinition.stringDistance}
-                stringTuning={stringTuning}
-                fretCount={fretboardDefinition.fretCount}
-                strokeWidth={fretboardDefinition.stringStrokeWidth}
+                layer={layer}
+                key={layer.id}
               />
+            ))}
+          </svg>
+          {
+            // frets:
+            Array.from(Array(fretboardDefinition.fretCount + 1).keys()).map(
+              (_, idx) => (
+                <line
+                  key={"fret" + idx}
+                  id={"fret" + idx}
+                  className={stylesSvg.fret}
+                  stroke={fretboardDefinition.fretColor}
+                  strokeWidth={fretboardDefinition.fretStrokeWidth}
+                  x1={fretboardDefinition.getFretPosX(idx) + "%"}
+                  x2={fretboardDefinition.getFretPosX(idx) + "%"}
+                  y1={fretboardDefinition.fretTopY}
+                  y2={fretboardDefinition.fretBottomY}
+                  // shapeRendering="crispEdges"
+                />
+              )
             )
-          )
-        }
-      </svg>
+          }
+          {
+            // strings, including note selections:
+            Array.from(fretboardDefinition.tuning.stringTunings).map(
+              (stringTuning, idx) => (
+                <SvgFretboardString
+                  layerStore={layerStore}
+                  fretboardDefinition={fretboardDefinition}
+                  key={"string " + (idx + 1)}
+                  fromX={fretboardDefinition.stringPosX}
+                  fromY={fretboardDefinition.getStringPosY(idx)}
+                  toX={
+                    fretboardDefinition.stringPosX +
+                    fretboardDefinition.fretboardWidth
+                  }
+                  toY={fretboardDefinition.getStringPosY(idx)}
+                  height={fretboardDefinition.stringDistance}
+                  stringTuning={stringTuning}
+                  fretCount={fretboardDefinition.fretCount}
+                  strokeWidth={fretboardDefinition.stringStrokeWidth}
+                />
+              )
+            )
+          }
+        </svg>
+      </>
     );
   }
 );

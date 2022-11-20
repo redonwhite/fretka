@@ -57,12 +57,12 @@ const App = observer(() => {
       <hr></hr>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className={styles.appContainer}>
-          {/* <div className={styles.keyboardArea}>
+          <div className={styles.keyboardArea}>
             <Keyboard
             keyboardDefinition={appState.keyboardDefinition}
             layerStore={appState.layerStore}
             />
-          </div> */}
+          </div>
 
           <div className={styles.fretboardArea}>
             <SvgFretboard
