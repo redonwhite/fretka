@@ -7,7 +7,7 @@ import { LayerHeader } from './layer-header';
 import { SelectionLayerEditor } from './selection-layer-editor';
 
 import styles from './layer-editor.module.scss';
-import { LayerBullet } from './layer-bullet';
+// import { LayerBullet } from './layer-bullet';
 import { LayerStore } from "../../store/layer-store";
 import { NoteSelectionLayer } from '../../fretka/layers/note-selection-layer';
 import React from 'react';

@@ -6,7 +6,7 @@ import type { FretkaLayer } from '../../fretka/layers/fretka-layer';
 import { LayerMenu } from './layer-menu';
 
 import styles from './layer-editor.module.scss';
-import { LayerBullet } from "./layer-bullet";
+// import { LayerBullet } from "./layer-bullet";
 
 export const LayerHeader = observer((props: { layer: FretkaLayer, layerStore: LayerStore }) => {
   const { layer, layerStore } = props;

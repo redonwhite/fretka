@@ -86,7 +86,7 @@ export const ChordFinderUi = observer(
 
     return (
       <>
-        <div className={chordFinderStyles.chordFinderMenu}>
+        <div className={chordFinderStyles.chordFinderMenu} key="chord finder menu">
           {permanentLayerColorsArray.map(color => (
             <div key={color.id} className={chordFinderStyles.menuItem}>
               {color.id}:{" "}
@@ -97,7 +97,7 @@ export const ChordFinderUi = observer(
             </div>
           ))}
           {
-            <div className={chordFinderStyles.menuItem}>
+            <div className={chordFinderStyles.menuItem} key="unselected">
               unselected:{" "}
               <SuggOptionPopSelector
                 chordFinder={chordFinder}
@@ -106,7 +106,7 @@ export const ChordFinderUi = observer(
             </div>
           }
         </div>
-        <div className={chordFinderStyles.chordMatches}>
+        <div className={chordFinderStyles.chordMatches} key="chord finder matches">
           {basicNotesArray.map(note => {
             const suggestionsForNote = chordFinder.suggestionsByRoot[note.id];
             const renderedSuggesitonsForNote = suggestionsForNote.map(match => {

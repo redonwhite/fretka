@@ -5,7 +5,6 @@ import { SvgPatterns } from "./components/svg-patterns/svg-patterns";
 
 import "./vars.scss";
 import styles from "./App.module.scss";
-import _ from "lodash";
 import { observer } from "mobx-react-lite";
 import { Keyboard } from "./components/keyboard/keyboard";
 import { ChordFinderUi } from "./components/chord-finder/chord-finder-ui";
@@ -16,21 +15,28 @@ import {
   DropResult,
   ResponderProvided,
 } from "react-beautiful-dnd";
+// import {injectStores} from '@mobx-devtools/tools';
 
 export const appState = new AppStateStore();
 
-const synth = new Tone.Synth().toDestination();
+// for Mobx debugging extension for Chrome DevTools. 
+// Seems to have a heavy performance impact!
+// injectStores({
+//   appState,
+// });
+
+// const synth = new Tone.Synth().toDestination();
 
 const makeASound = () => {
   // create two monophonic synths
   const synthA = new Tone.FMSynth().toDestination();
   const synthB = new Tone.AMSynth().toDestination();
   //play a note every quarter-note
-  const loopA = new Tone.Loop(time => {
+  new Tone.Loop(time => {
     synthA.triggerAttackRelease("C2", "8n", time);
   }, "4n").start(0);
   //play another note every off quarter-note, by starting it "8n"
-  const loopB = new Tone.Loop(time => {
+  new Tone.Loop(time => {
     synthB.triggerAttackRelease("C4", "8n", time);
   }, "4n").start("8n");
   // the loops start when the Transport is started
