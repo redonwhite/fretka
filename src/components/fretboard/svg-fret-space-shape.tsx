@@ -21,12 +21,7 @@ export const SvgFretSpaceShape = observer(
   );
 
   const xyCoordSets = gridSpaceCoordSets.map(coord => fretboardDefinition.gridSpaceToXySpace(coord));
-  const xyCoordSetsWithAbsWidths = xyCoordSets.map(
-    xyCoordSet => xyCoordSet.map(
-      xyCoord => [(xyCoord[0] * 0.01) * fretboardDefinition.fretboardWidth, xyCoord[1]] as XyCoord
-    )
-  );
-  const pathDs = xyCoordSetsWithAbsWidths.map(xyCoordSetToPathD);
+  const pathDs = xyCoordSets.map(xyCoordSetToPathD);
 
     return <>{pathDs.map((d, idx) => (
       <path className="fretkaShape" d={d} key={idx} {...shapeAppearance} />

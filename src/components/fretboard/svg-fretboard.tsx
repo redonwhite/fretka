@@ -24,17 +24,16 @@ export const SvgFretboard = observer(
           className={stylesSvg.fretSvg}
           style={{
             width: "100%",
-            height: fretboardDefinition.svgHeight + "px",
+            height: fretboardDefinition.svgHeight_px + "px",
           }}
         >
           <svg
-            y="0px"
-            x="0px"
-            height={fretboardDefinition.svgHeight + "px"}
+            y={fretboardDefinition.marginTop_px + "px"}
+            height={fretboardDefinition.fretboardHeight_px + "px"}
             width="100%"
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
-            vectorEffect="non-scaling-stroke"
+//            vectorEffect="non-scaling-stroke"
           >
             <rect x="0" y="0" width="100" height="100" style={{fill: 'antiquewhite'}}/>
             {layerStore.shapeLayers.map(layer => (
@@ -55,10 +54,10 @@ export const SvgFretboard = observer(
                   className={stylesSvg.fret}
                   stroke={fretboardDefinition.fretColor}
                   strokeWidth={fretboardDefinition.fretStrokeWidth}
-                  x1={fretboardDefinition.getFretPosX(idx) + "%"}
-                  x2={fretboardDefinition.getFretPosX(idx) + "%"}
-                  y1={fretboardDefinition.fretTopY}
-                  y2={fretboardDefinition.fretBottomY}
+                  x1={fretboardDefinition.getFretPosX_percent(idx) + "%"}
+                  x2={fretboardDefinition.getFretPosX_percent(idx) + "%"}
+                  y1={fretboardDefinition.fretTopY_px}
+                  y2={fretboardDefinition.fretBottomY_percent}
                   // shapeRendering="crispEdges"
                 />
               )
@@ -72,14 +71,14 @@ export const SvgFretboard = observer(
                   layerStore={layerStore}
                   fretboardDefinition={fretboardDefinition}
                   key={"string " + (idx + 1)}
-                  fromX={fretboardDefinition.stringPosX}
-                  fromY={fretboardDefinition.getStringPosY(idx)}
+                  fromX={fretboardDefinition.stringPosX_percent}
+                  fromY={fretboardDefinition.getStringPosY_px(idx)}
                   toX={
-                    fretboardDefinition.stringPosX +
-                    fretboardDefinition.fretboardWidth
+                    fretboardDefinition.stringPosX_percent +
+                    fretboardDefinition.fretboardWidth_percent
                   }
-                  toY={fretboardDefinition.getStringPosY(idx)}
-                  height={fretboardDefinition.stringDistance}
+                  toY={fretboardDefinition.getStringPosY_px(idx)}
+                  height={fretboardDefinition.stringDistance_px}
                   stringTuning={stringTuning}
                   fretCount={fretboardDefinition.fretCount}
                   strokeWidth={fretboardDefinition.stringStrokeWidth}
