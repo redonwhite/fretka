@@ -2,6 +2,7 @@ import { AppStateStore } from "./store/app-state";
 import { SvgFretboard } from "./components/fretboard/svg-fretboard";
 import { LayerStackEditor } from "./components/layer-editors/layer-stack-editor";
 import { SvgPatterns } from "./components/svg-patterns/svg-patterns";
+import { Tonnetz } from "./components/tonnetz/tonnetz";
 
 import "./vars.scss";
 import styles from "./App.module.scss";
@@ -63,6 +64,11 @@ const App = observer(() => {
       <hr></hr>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className={styles.appContainer}>
+          
+          <div className={styles.tonnetzArea}>
+            <Tonnetz layerStore={appState.layerStore} />
+          </div>
+          
           <div className={styles.keyboardArea}>
             <Keyboard
             keyboardDefinition={appState.keyboardDefinition}
