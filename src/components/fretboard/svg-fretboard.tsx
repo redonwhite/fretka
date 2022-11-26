@@ -14,10 +14,6 @@ export const SvgFretboard = observer(
   }) => {
     const { fretboardDefinition, layerStore } = props;
 
-    // TODO: make a second SVG here with:
-    // viewbox="0 0 100 100" preserveAspectRatio="none" vector-effect="non-scaling-stroke"
-    // just to hold the shape layers. Then the shapes will scale and I'll be able to use path d's
-    // to draw shapes in percentage-width-space.
     return (
       <>
         <svg
