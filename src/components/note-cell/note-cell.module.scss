@@ -1,0 +1,18 @@
+circle:global(.noteCellDot) {
+  fill: var(--fretka-layer-color);
+  stroke-width: 0;
+  transition: all var(--fretka-transition-time);
+}
+
+circle:global(.noteCellRootDot) {
+  //fill: white;
+  //stroke-width: 4px;
+  stroke: var(--fretka-layer-color);
+  transition: all var(--fretka-transition-time);
+}
+
+text.noteText {
+  fill: white;
+  font-weight: bold;
+  text-anchor: middle;
+}

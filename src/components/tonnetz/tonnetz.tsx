@@ -6,6 +6,8 @@ import { LayerStore } from '../../store/layer-store';
 import * as notes from '../../fretka/notes';
 import * as intervals from '../../fretka/intervals';
 import * as intervalFunctions from '../../fretka/interval-functions';
+import { SvgNoteCell } from '../note-cell/note-cell';
+import { appState } from '../../App';
 
 
 const semitoneDeltaX_px = 10;
@@ -54,12 +56,15 @@ export const NoteRow = observer(
       rowNotes.map(
             (note, noteIdx) => {
               const noteProps = {
-                x_px: xStart_px + noteIdx * tonnetzDimensions.perf5_px,
-                y_px: yStart_px,
-                r_px: r_px,
-                note
+                centerX: xStart_px + noteIdx * tonnetzDimensions.perf5_px,
+                centerY: yStart_px,
+                width: 20,
+                height: 20,
+                note,
+                layerStore: appState.layerStore,
+                key: 'cell ' + note.id + note.absIdx
               } 
-              return <NoteCircle {...noteProps} key={ "note " + note.id + " " + note.absIdx} />
+              return <SvgNoteCell {...noteProps} widthUnit='px'/>
             }
           )
       }
