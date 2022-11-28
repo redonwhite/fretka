@@ -40,8 +40,8 @@ export const NoteRow = observer(
     xStart_px: number,
     yStart_px: number,
     r_px: number,
-    startNote: notes.NoteAbsolute
-    noteCount: number
+    startNote: notes.NoteAbsolute,
+    noteCount: number,
   }) => {
 
     const { xStart_px, yStart_px, r_px, startNote, noteCount } = props;
@@ -53,27 +53,68 @@ export const NoteRow = observer(
     );
 
     return <React.Fragment key={"note row " + startNote.id + " " + startNote.absIdx}> {
-      rowNotes.map(
-            (note, noteIdx) => {
-              const noteProps = {
-                centerX: xStart_px + noteIdx * tonnetzDimensions.perf5_px,
-                centerY: yStart_px,
-                width: 20,
-                height: 20,
-                note,
-                layerStore: appState.layerStore,
-                key: 'cell ' + note.id + note.absIdx
-              } 
-              return <SvgNoteCell {...noteProps} widthUnit='px'/>
-            }
-          )
+        rowNotes.map(
+          (note, noteIdx) => {
+            const noteProps = {
+              centerX: xStart_px + noteIdx * tonnetzDimensions.perf5_px,
+              centerY: yStart_px,
+              width: 20,
+              height: 20,
+              note,
+              layerStore: appState.layerStore,
+              key: 'cell ' + note.id + note.absIdx
+            } 
+            return <SvgNoteCell {...noteProps} widthUnit='px'/>
+          }
+        )
+      }
+      </React.Fragment>
+  }
+);
+
+export const TonnetzEdges = observer(
+  (props : { 
+    xStart_px: number,
+    yStart_px: number,
+    r_px: number,
+    startNote: notes.NoteAbsolute,
+    noteCount: number,
+  }) => {
+
+    const { xStart_px, yStart_px, r_px, startNote, noteCount } = props;
+
+    const noteIndexes = Array.from(Array(noteCount).keys());
+
+    const rowNotes = noteIndexes.map(
+      (val, idx) => intervalFunctions.addSemitones(startNote, idx * intervals.perf5.span)
+    );
+
+    return <React.Fragment>
+      {
+        rowNotes.map(
+          (note, noteIdx) => {
+            const x = xStart_px + noteIdx * tonnetzDimensions.perf5_px;
+            const y = yStart_px;
+            
+            const xP5 = x + tonnetzDimensions.perf5_px;
+            const yP5 = y;
+            const noteP5 = intervalFunctions.addSemitones(note, 7); 
+            
+            const xM3 = x + tonnetzDimensions.maj3_px;
+            const yM3 = y - tonnetzDimensions.rowDeltaY_px;
+            const noteM3 = intervalFunctions.addSemitones(note, 4);
+
+            return <React.Fragment>
+              <line x1={x} y1={y} x2={xP5} y2={yP5} className={styles.tonnetzLine}/>
+              <line x1={x} y1={y} x2={xM3} y2={yM3} className={styles.tonnetzLine}/>
+              <line x1={xM3} y1={yM3} x2={xP5} y2={yP5} className={styles.tonnetzLine}/>
+            </React.Fragment>
+          }
+        )
       }
     </React.Fragment>
   }
 );
-
-
-
 
 export const Tonnetz = observer(
   (props : { layerStore : LayerStore }) => {
@@ -100,7 +141,8 @@ export const Tonnetz = observer(
 
     console.log(rowDefinitions);
 
-    return <svg width="400" height={tonnetzDimensions.svgHeight_px} className={styles.tonnetz}> 
+    return <svg width="100%" height={tonnetzDimensions.svgHeight_px} className={styles.tonnetz}> 
+      { rowDefinitions.map(noteRowProps => <TonnetzEdges {...noteRowProps} />) }
       { rowDefinitions.map(noteRowProps => <NoteRow {...noteRowProps} />) }
     </svg>
   }

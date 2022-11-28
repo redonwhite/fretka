@@ -19,7 +19,7 @@ export class AppStateStore extends RootStore {
     this.fretboardDefinition = new FretboardDefinition(
       guitarTuningsLibrary.standard
     );
-    this.keyboardDefinition = new KeyboardDefinition(12 * 8, c1);
+    this.keyboardDefinition = new KeyboardDefinition(12 * 3, c1);
     this.chordFinder = new ChordFinder(this.layerStore);
     makeObservable(this, {
       layerStore: observable,

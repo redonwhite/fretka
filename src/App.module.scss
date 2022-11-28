@@ -17,10 +17,14 @@ body {
   grid-template-rows: /*auto*/   fit-content(0) fit-content(0) auto;
   gap: 10px;
   grid-template-areas:
-    '.               keyboard'
+    'keyboard        tonnetz'
     'fretboard       fretboard     '
     'noteSelector    matches'
     'noteSelector    matches       ';
+}
+
+.tonnetzArea {
+  grid-area: tonnetz;
 }
 
 .keyboardArea {
