@@ -15,7 +15,7 @@ import {
   DragDropContext,
   DropResult,
   ResponderProvided,
-} from "react-beautiful-dnd";
+} from '@hello-pangea/dnd';
 // import {injectStores} from '@mobx-devtools/tools';
 
 export const appState = new AppStateStore();

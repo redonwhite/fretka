@@ -1,7 +1,7 @@
 import { runInAction } from "mobx";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Draggable, Droppable, DroppableProvided } from "react-beautiful-dnd";
+import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { pentatonicMinorPos1, pentatonicMinorPos2, pentatonicMinorPos3, pentatonicMinorPos4, pentatonicMinorPos5 } from "../../fretka/shape-library";
 import { LayerStore } from "../../store/layer-store";
 import { LayerEditor } from "./layer-editor";

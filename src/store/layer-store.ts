@@ -111,6 +111,7 @@ export class LayerStore extends Store {
       animatedRemoveLayer: action,
       handleNotePick: action,
       addScalePreview: action,
+      addScalePermanently: action,
       clearTempLayers: action,
     });
   }
@@ -163,6 +164,13 @@ export class LayerStore extends Store {
     this.clearTempLayers();
     this.layers.push(
       makeNoteSelectionLayerFromScale(scale, "purple", true)
+    )
+  }
+
+  addScalePermanently = (scale: RootedScaleLike) => {
+    this.clearTempLayers();
+    this.layers.push(
+      makeNoteSelectionLayerFromScale(scale, this.nextLayerColor, false)
     )
   }
 }

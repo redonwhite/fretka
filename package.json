@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@hello-pangea/dnd": "^16.3.0",
     "@mobx-devtools/tools": "^0.0.4",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -11,7 +12,6 @@
     "@types/lodash": "^4.14.189",
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
-    "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-dom": "^18.0.0",
     "classnames": "^2.3.2",
     "lodash": "^4.17.21",
@@ -19,7 +19,6 @@
     "mobx-react-lite": "^3.4.0",
     "mobx-utils": "^6.0.5",
     "react": "^18.2.0",
-    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
     "react-tiny-popover": "^7.2.0",

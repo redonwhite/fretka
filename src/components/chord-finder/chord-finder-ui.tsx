@@ -147,6 +147,7 @@ export const ChordFinderUi = observer(
                       <ChordNote {...chordNote} key={chordNote.note.id} />
                     ))}
                   </div>
+                  <button onClick={() => layerStore.addScalePermanently(match)} />
                 </div>
               );
             });
