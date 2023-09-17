@@ -1,4 +1,8 @@
-.fretSvg {
+.fretboardSvg {
+
+  .fretboardBg {
+    fill: var(--fretka-fretboard-bg);
+  }
 
   transition: 400ms all;
   .fret, .string {
@@ -17,3 +21,4 @@
   height: 150px;
   margin: 0px 0;
 }
+

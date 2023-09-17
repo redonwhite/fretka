@@ -17,7 +17,7 @@ export const SvgFretboard = observer(
     return (
       <>
         <svg
-          className={stylesSvg.fretSvg}
+          className={stylesSvg.fretboardSvg}
           style={{
             width: "100%",
             height: fretboardDefinition.svgHeight_px + "px",
@@ -31,7 +31,7 @@ export const SvgFretboard = observer(
             preserveAspectRatio="none"
 //            vectorEffect="non-scaling-stroke"
           >
-            <rect x="0" y="0" width="100" height="100" style={{fill: 'antiquewhite'}}/>
+            <rect x="0" y="0" width="100" height="100" className={stylesSvg.fretboardBg} />
             {layerStore.shapeLayers.map(layer => (
               <SvgShapeLayer
                 fretboardDefinition={fretboardDefinition}
