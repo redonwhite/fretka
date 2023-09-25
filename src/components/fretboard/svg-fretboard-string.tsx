@@ -21,12 +21,16 @@ export const SvgFretboardString = observer(
     strokeWidth: number;
     height: number;
   }) => {
+    console.log('STRING mapping string ', props.stringTuning);
     const fretNotes: Array<NoteAbsolute> = Array.from(
       { length: props.fretCount },
       (_, idx) => props.stringTuning.absIdx + idx
     ).map(absIdx => {
+
       const idx = absIdx % 12;
       const note = notes.basicNotesArray[idx];
+
+      console.log('mapping absIdx ' + absIdx + ' to note ', note)
       return {
         ...note,
         absIdx: absIdx,
@@ -41,7 +45,7 @@ export const SvgFretboardString = observer(
           key="string line"
           stroke={props.fretboardDefinition.stringColor}
           strokeWidth={props.fretboardDefinition.stringStrokeWidth}
-          x1={props.fromX + "%"}
+          x1={(props.fromX) + "%"}
           x2={props.toX + "%"}
           y1={props.fromY}
           y2={props.toY}

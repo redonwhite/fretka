@@ -113,7 +113,7 @@ export const SvgNoteCell = observer(
           y={props.centerY - props.height / 2}
           width={props.width + parsedWidthUnit}
           height={props.height}
-          onClick={action(() => props.layerStore.handleNotePick(note))} // 🤔 do I need to pass layerStore via props?
+          onClick={action(() => props.layerStore.rootStore.handleNotePick(note))} // 🤔 do I need to pass layerStore via props?
           fill="transparent"
           cursor="pointer"
         />

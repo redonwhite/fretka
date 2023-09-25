@@ -3,6 +3,9 @@
   .fretboardBg {
     fill: var(--fretka-fretboard-bg);
   }
+  .fretboardHeadBg {
+    fill: var(--fretka-fretboard-head-bg);
+  }
 
   transition: 400ms all;
   .fret, .string {

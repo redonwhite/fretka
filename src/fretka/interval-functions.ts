@@ -23,7 +23,7 @@ export function addSemitones(
   semitones: number
 ): NoteAbsolute {
   const newNote_AbsIdx = note.absIdx + semitones;
-  const newNoteClass_Idx = (newNote_AbsIdx + 3 + 12) % 12;
+  const newNoteClass_Idx = (newNote_AbsIdx) % 12;
   const newNoteClass = basicNotesArray[newNoteClass_Idx];
 
   const newNote: NoteAbsolute = {

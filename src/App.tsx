@@ -26,27 +26,6 @@ export const appState = new AppStateStore();
 //   appState,
 // });
 
-// const synth = new Tone.Synth().toDestination();
-
-const makeASound = () => {
-  // create two monophonic synths
-  const synthA = new Tone.FMSynth().toDestination();
-  const synthB = new Tone.AMSynth().toDestination();
-  //play a note every quarter-note
-  new Tone.Loop(time => {
-    synthA.triggerAttackRelease("C2", "8n", time);
-  }, "4n").start(0);
-  //play another note every off quarter-note, by starting it "8n"
-  new Tone.Loop(time => {
-    synthB.triggerAttackRelease("C4", "8n", time);
-  }, "4n").start("8n");
-  // the loops start when the Transport is started
-  Tone.Transport.start();
-  // ramp up to 800 bpm over 10 seconds
-  //Tone.Transport.bpm.rampTo(800, 10);
-  Tone.Transport.stop(3);
-};
-
 const App = observer(() => {
   const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
     if (
@@ -60,8 +39,6 @@ const App = observer(() => {
   return (
     <>
       <SvgPatterns />
-      <button onClick={() => makeASound()}>klik mi</button>
-      <hr></hr>
       <DragDropContext onDragEnd={onDragEnd}>
         <div className={styles.appContainer}>
           
@@ -77,6 +54,8 @@ const App = observer(() => {
           </div>
 
           <div className={styles.fretboardArea}>
+            <button onClick={() => {appState.handleToolPick('playSoundTool')}}>play</button>&nbsp;
+            <button onClick={() => {appState.handleToolPick('selectTool')}}>select</button>
             <SvgFretboard
               fretboardDefinition={appState.fretboardDefinition}
               layerStore={appState.layerStore}

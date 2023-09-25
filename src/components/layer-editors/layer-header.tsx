@@ -13,7 +13,7 @@ export const LayerHeader = observer((props: { layer: FretkaLayer, layerStore: La
 
   return (
     <div className={styles.layerHeader}>
-      ⠿&nbsp;
+      ⠶&nbsp;
       <div className={styles.layerTitle}>
         <input
           className={styles.layerNameInput}

@@ -50,6 +50,7 @@ export class FretboardDefinition {
 
   constructor(tuning: GuitarTuning, fretCount: number = 24) {
     this.tuning = tuning;
+    console.log({ tuning: this.tuning })
     this.fretCount = fretCount;
 
     makeObservable(this, {

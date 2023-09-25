@@ -31,7 +31,8 @@ export const SvgFretboard = observer(
             preserveAspectRatio="none"
 //            vectorEffect="non-scaling-stroke"
           >
-            <rect x="0" y="0" width="100" height="100" className={stylesSvg.fretboardBg} />
+            <rect x={0} y="0" width="100" height="100" className={stylesSvg.fretboardHeadBg} />
+            <rect x={100 / fretboardDefinition.fretCount} y="0" width="100" height="100" className={stylesSvg.fretboardBg} />
             {layerStore.shapeLayers.map(layer => (
               <SvgShapeLayer
                 fretboardDefinition={fretboardDefinition}
@@ -49,7 +50,7 @@ export const SvgFretboard = observer(
                   id={"fret" + idx}
                   className={stylesSvg.fret}
                   stroke={fretboardDefinition.fretColor}
-                  strokeWidth={fretboardDefinition.fretStrokeWidth}
+                  strokeWidth={idx === 0 ? 0 : idx === 1 ? 1 * fretboardDefinition.fretStrokeWidth : fretboardDefinition.fretStrokeWidth}
                   x1={fretboardDefinition.getFretPosX_percent(idx) + "%"}
                   x2={fretboardDefinition.getFretPosX_percent(idx) + "%"}
                   y1={fretboardDefinition.fretTopY_px}

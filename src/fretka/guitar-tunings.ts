@@ -1,5 +1,5 @@
 import { makeObservable, observable } from "mobx";
-import { NoteAbsolute, basicNotes } from "./notes";
+import { NoteAbsolute, a2, b3, d3, e2, e4, g3 } from "./notes";
 
 export type StringTunings = Array<NoteAbsolute>;
 
@@ -26,13 +26,6 @@ export interface IGuitarTuning {
 export const guitarTuningsLibrary: { [key: string]: IGuitarTuning } = {
   standard: {
     name: "Standard Tuning",
-    stringTunings: [
-      { ...basicNotes.e, absIdx: basicNotes.e.idx },
-      { ...basicNotes.a, absIdx: basicNotes.a.idx + 12 },
-      { ...basicNotes.d, absIdx: basicNotes.d.idx + 12 },
-      { ...basicNotes.g, absIdx: basicNotes.g.idx + 12 },
-      { ...basicNotes.b, absIdx: basicNotes.b.idx + 24 },
-      { ...basicNotes.e, absIdx: basicNotes.e.idx + 24 },
-    ],
+    stringTunings: [ e2, a2, d3, g3, b3, e4 ]
   },
 };

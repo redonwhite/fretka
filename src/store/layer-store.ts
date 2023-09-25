@@ -13,6 +13,7 @@ import { ShapeLayer } from "../fretka/layers/shape-layer";
 import { NoteClassId, NoteAbsolute } from "../fretka/notes";
 import { RootedScaleLike } from "../fretka/scales";
 import { SingleStringId, IFretShapeSpec } from "../fretka/shapes";
+import { AppStateStore } from "./app-state";
 
 export type LayerStateInStore = "normal" | "leaving";
 export type NoteSelectionProps = ReturnType<LayerStore["getSelectionsForNote"]>;
@@ -37,7 +38,8 @@ export class LayerStore extends Store {
 
   layerStates: Map<string, LayerStateInStore>;
   currentLayer: FretkaLayer | null;
-
+  rootStore: AppStateStore;
+  
   getSelectionsForNote = computedFn(function selForNote(
     this: LayerStore,
     noteId: NoteClassId
@@ -91,9 +93,9 @@ export class LayerStore extends Store {
     return leastRecentlyUsedColor;
   }
 
-  constructor(rootStore: RootStore) {
-    super(rootStore);
-    this.rootStore = rootStore;
+  constructor(appStateStore: AppStateStore) {
+    super(appStateStore);
+    this.rootStore = appStateStore;
     this.layerStates = new Map<string, LayerStateInStore>();
     this.currentLayer = null;
 
@@ -109,14 +111,14 @@ export class LayerStore extends Store {
       addShapeLayer: action,
       removeLayer: action,
       animatedRemoveLayer: action,
-      handleNotePick: action,
+      handleNoteSelect: action,
       addScalePreview: action,
       addScalePermanently: action,
       clearTempLayers: action,
     });
   }
 
-  handleNotePick = (
+  handleNoteSelect = (
     note: NoteAbsolute,
     _string?: SingleStringId,
     _fretNumber?: number
