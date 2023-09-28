@@ -4,7 +4,16 @@ import { RootStore } from "./layer-store";
 
 import * as Tone from "tone";
 
-const synth = new Tone.Synth().toDestination();
+const synth = new Tone.Sampler(
+  {
+    E4: 'samples/guitar/e4.mp3',
+    B3: 'samples/guitar/b3.mp3',
+    G3: 'samples/guitar/g3.mp3',
+    D3: 'samples/guitar/d3.mp3',
+    A2: 'samples/guitar/a2.mp3',
+    E2: 'samples/guitar/e2.mp3'
+  }, 
+  ).toDestination();
 
 export class SoundPlayerStore extends RootStore {
   
