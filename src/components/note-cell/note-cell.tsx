@@ -9,17 +9,18 @@ import { action } from "mobx";
 
 import styles from './note-cell.module.scss';
 
-const r = 11;
+const r = 7;
+const rBig = r;
 const dx = 0.4;
-const rBig = 11;
 const fontSize = 1.2 * rBig;
 type DotArrangementType =
   | "shadow"
   | "side-by-side"
-  | "side-by-side with overlap";
+  | "side-by-side with overlap"
+  | "side-by-side regular";
 const overlap = 0.01;
 const deltaR = 0.02;
-const arrangement: DotArrangementType = "side-by-side";
+const arrangement: DotArrangementType = "side-by-side regular";
 
 const getCellDotClass = (layer : NoteSelectionLayer, isRoot: boolean) => {
   return classNames({
@@ -34,35 +35,27 @@ const getStartDotPosition = (
   centerX: number,
   centerY: number,
   selCount: number,
+  totalSelectionLayerCount: number,
   r: number,
   style: DotArrangementType = 'shadow'
 ) => {
-  if (style === 'side-by-side') {
-    return {
-      x: centerX - dx * (selCount - 1),
-      y: centerY,
-    };
-  }
-  if (style === "side-by-side with overlap") {
-    return {
-      x: centerX - (selCount - 1) * (dx - overlap / 2),
-      y: centerY,
-    };
-  }
-  
-  return {
-    x: centerX - (deltaR * (selCount - 1)) / 2,
-    y: centerY + (deltaR * (selCount - 1)) / 2
-  }
+  return getNthDotPosition({x: centerX, y: centerY}, 0, selCount, totalSelectionLayerCount, r, style)
 }
 
 const getNthDotPosition = (
   start: { x: number, y: number },
   n: number,
-  _selCount: number,
+  layersWithNoteSelectedCount: number,
+  totalSelectionLayerCount: number,
   r: number,
   style: DotArrangementType) =>
 {
+  if (style === "side-by-side regular") {
+    return {
+      x: start.x + (2 * n - totalSelectionLayerCount / 2 + 1 / 2) * dx,
+      y: start.y,
+    }
+  }
   if (style === "side-by-side") {
     return {
       x: start.x + dx * n * 2,
@@ -95,9 +88,17 @@ export const SvgNoteCell = observer(
     
     const selections =
       appState.layerStore.getSelectionsForNote(note.id);
-  
-    const selCount = selections.length;
-    const start = getStartDotPosition(props.centerX, props.centerY, selCount, r, arrangement);
+    const totalSelectionLayerCount = appState.layerStore.noteSelectionLayers.length;
+    const layersWhereNoteSelectedCount = selections.length;
+
+    const start = getStartDotPosition(
+      props.centerX,
+      props.centerY,
+      layersWhereNoteSelectedCount,
+      totalSelectionLayerCount,
+      r,
+      arrangement
+    );
   
   const toggle: (_sel: typeof selections[0]) => void = sel => {
     sel.root ? sel.layer.toggleRoot(note.id) : sel.layer.toggleNote(note.id);
@@ -118,7 +119,7 @@ export const SvgNoteCell = observer(
           cursor="pointer"
         />
         {selections.map((sel, idx) => {
-          const dotPos = getNthDotPosition(start, idx, selCount, r, arrangement);
+          const dotPos = getNthDotPosition(start, props.layerStore.getSelectionLayerOrderByLayerId(sel.layer.id), layersWhereNoteSelectedCount, totalSelectionLayerCount, r, arrangement);
           return (
             <React.Fragment key={"selfrag" + sel.layer.id}>
               <circle

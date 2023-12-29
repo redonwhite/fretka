@@ -7,6 +7,7 @@ import {
   LayerColorId,
   layerColorRotation,
   isNoteSelectionLayer,
+  FretkaLayerType,
 } from "../fretka/layers/fretka-layer";
 import { makeNoteSelectionLayerFromScale, NoteSelectionLayer } from "../fretka/layers/note-selection-layer";
 import { ShapeLayer } from "../fretka/layers/shape-layer";
@@ -40,6 +41,16 @@ export class LayerStore extends Store {
   currentLayer: FretkaLayer | null;
   rootStore: AppStateStore;
   
+  
+  get selectionLayerOrders() {
+    return new Map(this.noteSelectionLayers.map((l, idx) => [l.id, idx]));
+  }
+
+  getSelectionLayerOrderByLayerId = computedFn(function f(this: LayerStore, id : string) {
+    const o = this.selectionLayerOrders.get(id)
+    return o ?? -1;
+  });
+
   getSelectionsForNote = computedFn(function selForNote(
     this: LayerStore,
     noteId: NoteClassId
@@ -115,6 +126,7 @@ export class LayerStore extends Store {
       addScalePreview: action,
       addScalePermanently: action,
       clearTempLayers: action,
+      selectionLayerOrders: computed
     });
   }
 

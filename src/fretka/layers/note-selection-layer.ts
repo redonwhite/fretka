@@ -39,7 +39,7 @@ export class NoteSelectionLayer extends FretkaLayer {
   layerType: "noteSelection";
   root: NoteClassId | null;
   selection: NoteSelection;
-
+  
   constructor(
     color: LayerColorId,
     name: string = "New note selection",
