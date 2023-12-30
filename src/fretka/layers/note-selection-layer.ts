@@ -3,7 +3,6 @@ import { basicNoteIds, NoteClassId } from "../notes";
 import {
   getNotesFromRootAndSpans,
   RootedScaleLike,
-  ScaleLike,
 } from "../scales";
 import { FretkaLayer, getOriginalState, LayerColorId } from "./fretka-layer";
 
@@ -58,6 +57,40 @@ export class NoteSelectionLayer extends FretkaLayer {
       toggleRoot: action,
       toggleNote: action,
     });
+  }
+
+  public transposeUp() {
+    this.selection = {
+      a: this.selection.gsharp,
+      asharp: this.selection.a,
+      b: this.selection.asharp,
+      c: this.selection.b,
+      csharp: this.selection.c,
+      d: this.selection.csharp,
+      dsharp: this.selection.d,
+      e: this.selection.dsharp,
+      f: this.selection.e,
+      fsharp: this.selection.f,
+      g: this.selection.fsharp,
+      gsharp: this.selection.a
+    }
+  }
+
+  public transposeDown() {
+    this.selection = {
+      a: this.selection.asharp,
+      asharp: this.selection.b,
+      b: this.selection.c,
+      c: this.selection.csharp,
+      csharp: this.selection.d,
+      d: this.selection.dsharp,
+      dsharp: this.selection.e,
+      e: this.selection.f,
+      f: this.selection.fsharp,
+      fsharp: this.selection.g,
+      g: this.selection.gsharp,
+	    gsharp: this.selection.a
+    }
   }
 
   public toggleRoot(noteId: NoteClassId) {

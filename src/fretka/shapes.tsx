@@ -11,6 +11,8 @@ import {
   getShortestDelta,
 } from "./interval-functions";
 import { GuitarTuning } from "./guitar-tunings";
+import { NoteSelection } from "./layers/note-selection-layer";
+import { FretboardDefinition } from "./fretboard-definition";
 
 export type AbsoluteStringSpec = {
   id: AbsoluteStringSpecId;
@@ -361,6 +363,40 @@ export function getFretIndexAndNoteFromRelSpec(
   const toNote = addInterval(fromNote, ...relIntervalSpec);
   const deltaFrets = getShortestDelta(fromNoteSameFretOnToString, toNote);
   return [fromFretIdx + deltaFrets, toNote];
+}
+
+export function getConnectedFretMaybe(
+  fromFretIdx: number,
+  fromNote: NoteAbsolute,
+  toStringIdx: number,
+  fretCount: number,
+  tuning: GuitarTuning,
+  noteSelection: NoteSelection,
+): [toFretIdx: number, toNote: NoteAbsolute] | null {
+  const toStringNote = tuning.stringTunings[toStringIdx];
+  const sameFretNote = addSemitones(toStringNote, fromFretIdx);
+  
+  if (noteSelection[sameFretNote.id]) {
+    return [fromFretIdx, sameFretNote];
+  }
+
+  if (fromFretIdx > 0) {
+    const lowerFretIdx = fromFretIdx - 1;
+    const lowerFretNote = addSemitones(toStringNote, lowerFretIdx);
+    if (noteSelection[lowerFretNote.id]) {
+      return [lowerFretIdx, lowerFretNote];
+    }
+  }
+
+  if (fromFretIdx < fretCount - 1) {
+    const higherFretIdx = fromFretIdx + 1;
+    const higherFretNote = addSemitones(toStringNote, higherFretIdx);
+    if (noteSelection[higherFretNote.id]) {
+      return [higherFretIdx, higherFretNote];
+    }
+  }
+
+  return null;
 }
 
 export type GridSpaceCoord = [stringIdx: number, fretIdx: number];
