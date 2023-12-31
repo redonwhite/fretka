@@ -6,16 +6,15 @@ body {
 
 .appContainer {
 
-  width: 100vw;
   margin: auto;
   min-height: 100vh;
   
   
   display: grid;
   justify-content: center;
-  grid-template-columns: 30vw 60vw;
+  grid-template-columns: 1fr minmax(auto, 60vw);
   grid-template-rows: /*auto*/   fit-content(0) fit-content(0) auto;
-  gap: 10px;
+  gap: 30px;
   grid-template-areas:
     'keyboard        tonnetz'
     'fretboard       fretboard     '
