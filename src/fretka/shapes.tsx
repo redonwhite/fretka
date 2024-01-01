@@ -267,7 +267,7 @@ export const fretShapeTypeArray: FretShapeSpecType[] = [
 ];
 
 export interface IFretShapeSpec {
-  type: FretShapeSpecTypeId;
+  type: "sequence of intervals";
   segments: FretShapeCoordArray;
   appearance: IShapeAppearance;
 }
@@ -365,26 +365,28 @@ export function getFretIndexAndNoteFromRelSpec(
   return [fromFretIdx + deltaFrets, toNote];
 }
 
-export function getConnectedFretMaybe(
+export function getConnectedFrets(
   fromFretIdx: number,
   fromNote: NoteAbsolute,
   toStringIdx: number,
   fretCount: number,
   tuning: GuitarTuning,
   noteSelection: NoteSelection,
-): [toFretIdx: number, toNote: NoteAbsolute] | null {
+): [[toFretIdx: number, toNote: NoteAbsolute]?] {
+
   const toStringNote = tuning.stringTunings[toStringIdx];
   const sameFretNote = addSemitones(toStringNote, fromFretIdx);
-  
+  const results : ReturnType<typeof getConnectedFrets> = [];
+
   if (noteSelection[sameFretNote.id]) {
-    return [fromFretIdx, sameFretNote];
+    results.push([fromFretIdx, sameFretNote]);
   }
 
   if (fromFretIdx > 0) {
     const lowerFretIdx = fromFretIdx - 1;
     const lowerFretNote = addSemitones(toStringNote, lowerFretIdx);
     if (noteSelection[lowerFretNote.id]) {
-      return [lowerFretIdx, lowerFretNote];
+      results.push([lowerFretIdx, lowerFretNote]);
     }
   }
 
@@ -392,11 +394,11 @@ export function getConnectedFretMaybe(
     const higherFretIdx = fromFretIdx + 1;
     const higherFretNote = addSemitones(toStringNote, higherFretIdx);
     if (noteSelection[higherFretNote.id]) {
-      return [higherFretIdx, higherFretNote];
+      results.push([higherFretIdx, higherFretNote]);
     }
   }
 
-  return null;
+  return results;
 }
 
 export type GridSpaceCoord = [stringIdx: number, fretIdx: number];
